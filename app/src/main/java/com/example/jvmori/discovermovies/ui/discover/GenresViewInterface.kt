@@ -1,4 +1,4 @@
-package com.example.jvmori.discovermovies.ui
+package com.example.jvmori.discovermovies.ui.discover
 
 import com.example.jvmori.discovermovies.data.network.response.GenreResponse
 

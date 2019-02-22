@@ -1,4 +1,4 @@
-package com.example.jvmori.discovermovies.ui
+package com.example.jvmori.discovermovies.ui.discover
 
 import android.util.Log
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
@@ -10,7 +10,7 @@ import io.reactivex.schedulers.Schedulers
 
 class GenresPresenter (
     var genresViewInterface: GenresViewInterface
-): GenresPresenterInterface{
+): GenresPresenterInterface {
 
     override fun getMovies() {
         getObservable().subscribeWith(getObserver())
