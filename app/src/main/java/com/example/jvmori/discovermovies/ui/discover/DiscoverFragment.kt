@@ -44,11 +44,11 @@ class DiscoverFragment : Fragment(), GenresViewInterface {
     }
 
     override fun showProgressBar() {
-
+        progress_circular.visibility = View.VISIBLE
     }
 
     override fun hideProgressBar() {
-
+        progress_circular.visibility = View.GONE
     }
 
     override fun displayGenres(genreResponse: GenreResponse) {

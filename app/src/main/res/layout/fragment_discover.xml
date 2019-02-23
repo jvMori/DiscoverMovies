@@ -8,6 +8,19 @@
              tools:context=".ui.discover.DiscoverFragment">
 
     <androidx.recyclerview.widget.RecyclerView android:layout_width="match_parent"
-                                               android:layout_height="wrap_content" android:id="@+id/genresRv"/>
+                                               android:layout_height="wrap_content" android:id="@+id/genresRv"
+                                               android:visibility="visible"/>
+
+    <RelativeLayout
+            android:background="@color/colorPrimaryDark"
+            android:id="@+id/progress_circular"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:visibility="visible">
+        <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content" android:foregroundGravity="center"/>
+    </RelativeLayout>
+
 
 </FrameLayout>
