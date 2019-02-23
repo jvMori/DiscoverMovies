@@ -12,7 +12,7 @@ class GenresPresenter (
     var genresViewInterface: GenresViewInterface
 ): GenresPresenterInterface {
 
-    override fun getMovies() {
+    override fun getGenres() {
         getObservable().subscribeWith(getObserver())
     }
 

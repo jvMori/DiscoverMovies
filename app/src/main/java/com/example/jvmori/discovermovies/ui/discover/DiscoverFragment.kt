@@ -1,15 +1,22 @@
 package com.example.jvmori.discovermovies.ui.discover
 
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 
 import com.example.jvmori.discovermovies.R
+import com.example.jvmori.discovermovies.data.network.response.Genre
 import com.example.jvmori.discovermovies.data.network.response.GenreResponse
+import com.example.jvmori.discovermovies.ui.adapters.GenreAdapter
+import kotlinx.android.synthetic.main.fragment_discover.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,7 +40,7 @@ class DiscoverFragment : Fragment(), GenresViewInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val genrePresenter = GenresPresenter(this)
-        genrePresenter.getMovies()
+        genrePresenter.getGenres()
     }
 
     override fun showProgressBar() {
@@ -46,9 +53,17 @@ class DiscoverFragment : Fragment(), GenresViewInterface {
 
     override fun displayGenres(genreResponse: GenreResponse) {
         Log.i("result", genreResponse.genres.toString())
+        createAdapter(genreResponse.genres)
     }
 
     override fun displayError(s: String) {
         Log.i("result", s)
+    }
+
+    fun createAdapter(genres : List<Genre>){
+        val adapter = GenreAdapter(genres)
+        genresRv.layoutManager = GridLayoutManager(this.context, 2, RecyclerView.VERTICAL, false)
+        genresRv.setHasFixedSize(true)
+        genresRv.adapter = adapter
     }
 }
