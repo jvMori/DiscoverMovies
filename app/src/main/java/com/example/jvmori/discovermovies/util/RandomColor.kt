@@ -7,8 +7,8 @@ class RandomColor
 {
     companion object {
         val colors = mutableListOf(
-            "#E3170A", "#e5ab3a", "#01295F",
-            "#7CB518", "#F34213", "#00A5CF",
+            "#e5ab3a", "#01295F",
+            "#7CB518",  "#00A5CF",
             "#5603AD")
 
         fun generateColor() : Int {
