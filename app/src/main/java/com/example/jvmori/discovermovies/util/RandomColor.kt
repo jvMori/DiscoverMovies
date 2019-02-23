@@ -6,7 +6,10 @@ import java.util.*
 class RandomColor
 {
     companion object {
-        val colors = mutableListOf("#E3170A", "#e5ab3a", "#01295F", "#7CB518", "#F34213")
+        val colors = mutableListOf(
+            "#E3170A", "#e5ab3a", "#01295F",
+            "#7CB518", "#F34213", "#00A5CF",
+            "#5603AD")
 
         fun generateColor() : Int {
             val randomColor = Random()
