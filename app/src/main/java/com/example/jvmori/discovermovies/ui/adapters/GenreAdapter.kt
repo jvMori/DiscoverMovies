@@ -23,7 +23,11 @@ class GenreAdapter(
     override fun onBindViewHolder(holder: GenreViewHolder, position: Int) {
         holder.itemView.itemName.text = allGenres[position].name
         holder.itemView.cardView2.setCardBackgroundColor(RandomColor.generateColor())
+        holder.itemView.setOnClickListener {
+
+        }
     }
 
     class GenreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
 }
