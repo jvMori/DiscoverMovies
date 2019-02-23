@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/bottom_navigation"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/navigation"
             app:startDestination="@id/discoverFragment">
 
     <fragment android:id="@+id/discoverFragment"
               android:name="com.example.jvmori.discovermovies.ui.discover.DiscoverFragment"
               android:label="fragment_discover" tools:layout="@layout/fragment_discover">
-        <action android:id="@+id/action_discoverFragment_to_moviesFragment" app:destination="@id/moviesFragment"/>
+        <action android:id="@+id/specifyGenreId" app:destination="@id/moviesFragment">
+            <argument
+                    android:name="genre"
+                    app:argType="integer"
+                    android:defaultValue="0" />
+        </action>
+
     </fragment>
     <fragment android:id="@+id/moviesFragment" android:name="com.example.jvmori.discovermovies.ui.movies.MoviesFragment"
               android:label="fragment_movies" tools:layout="@layout/fragment_movies">
-        <argument android:name="genreId" app:argType="integer"/>
     </fragment>
 </navigation>
