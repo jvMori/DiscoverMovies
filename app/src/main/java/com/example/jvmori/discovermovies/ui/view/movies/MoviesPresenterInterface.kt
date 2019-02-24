@@ -4,4 +4,5 @@ interface MoviesPresenterInterface {
     fun getMovies(
         parameters : DiscoverQueryParam
     )
+    fun getGenresMap () : HashMap<Int, String>
 }
