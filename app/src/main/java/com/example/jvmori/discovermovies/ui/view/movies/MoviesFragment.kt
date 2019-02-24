@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.network.response.DiscoverMovieResponse
+import com.example.jvmori.discovermovies.data.network.response.GenreResponse
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 
 
@@ -24,8 +25,10 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class MoviesFragment : Fragment(), MoviesViewInterface{
+
     private var genreId : Int? = null
     private var moviesPresenter : MoviesPresenter = MoviesPresenter(this, MoviesRepository(TmdbAPI.invoke(), this.context!!))
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,12 +52,16 @@ class MoviesFragment : Fragment(), MoviesViewInterface{
 
     }
 
-    override fun displayGenres(movieResponse: DiscoverMovieResponse) {
+    override fun displayItems(movieResponse: DiscoverMovieResponse) {
         Log.i("Data", movieResponse.results.toString())
 
     }
 
     override fun displayError(s: String) {
         Log.i("Data", s)
+    }
+
+    override fun displayGenres(response: GenreResponse) {
+
     }
 }

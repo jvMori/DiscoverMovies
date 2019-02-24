@@ -15,7 +15,7 @@ class MoviesPresenter (
     override fun getMovies(parameters : DiscoverQueryParam) {
         getObservable(parameters).subscribeWith(getObserver())
     }
-
+    
     private fun getObservable(parameters : DiscoverQueryParam) : Observable<DiscoverMovieResponse>{
         return repository.getMoviesToDiscover(parameters)
             .subscribeOn(Schedulers.io())
@@ -30,7 +30,7 @@ class MoviesPresenter (
             }
 
             override fun onNext(t: DiscoverMovieResponse) {
-                moviesViewInterface.displayGenres(t)
+                moviesViewInterface.displayItems(t)
             }
 
             override fun onError(e: Throwable) {
