@@ -36,17 +36,17 @@ class MoviesFragment : Fragment(), MoviesViewInterface{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        genreId =  MoviesFragmentArgs.fromBundle(arguments).genreId
+        genreId =  MoviesFragmentArgs.fromBundle(arguments).genre
         genreId?.let {
             moviesPresenter.getMovies(DiscoverQueryParam(it.toString(), 1))
         }
     }
     override fun showProgressBar() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun hideProgressBar() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun displayGenres(movieResponse: DiscoverMovieResponse) {
@@ -54,6 +54,6 @@ class MoviesFragment : Fragment(), MoviesViewInterface{
     }
 
     override fun displayError(s: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.i("Data", s)
     }
 }

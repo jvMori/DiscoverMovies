@@ -17,6 +17,6 @@
     </fragment>
     <fragment android:id="@+id/moviesFragment" android:name="com.example.jvmori.discovermovies.ui.view.movies.MoviesFragment"
               android:label="fragment_movies" tools:layout="@layout/fragment_movies">
-        <argument android:name="genreId" app:argType="integer" android:defaultValue="0"/>
+        <argument android:name="genre" app:argType="integer" android:defaultValue="0"/>
     </fragment>
 </navigation>
