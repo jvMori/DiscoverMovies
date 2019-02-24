@@ -1,4 +1,4 @@
-package com.example.jvmori.discovermovies.ui.discover
+package com.example.jvmori.discovermovies.ui.view.discover
 
 import android.util.Log
 import com.example.jvmori.discovermovies.data.network.TmdbAPI

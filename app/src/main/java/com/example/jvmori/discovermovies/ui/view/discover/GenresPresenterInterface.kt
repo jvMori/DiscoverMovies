@@ -1,4 +1,4 @@
-package com.example.jvmori.discovermovies.ui.discover
+package com.example.jvmori.discovermovies.ui.view.discover
 
 interface GenresPresenterInterface
 {

@@ -7,7 +7,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.data.network.response.Genre
-import com.example.jvmori.discovermovies.ui.discover.DiscoverFragmentDirections
+import com.example.jvmori.discovermovies.ui.view.discover.DiscoverFragmentDirections
 import com.example.jvmori.discovermovies.util.RandomColor
 import kotlinx.android.synthetic.main.genre_item.view.*
 
