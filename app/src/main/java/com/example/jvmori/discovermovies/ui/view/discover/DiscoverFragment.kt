@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 import com.example.jvmori.discovermovies.R
-import com.example.jvmori.discovermovies.data.network.response.Genre
+import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.network.response.GenreResponse
 import com.example.jvmori.discovermovies.ui.adapters.GenreAdapter
 import kotlinx.android.synthetic.main.fragment_discover.*

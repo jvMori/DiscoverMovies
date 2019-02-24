@@ -25,7 +25,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class MoviesFragment : Fragment(), MoviesViewInterface{
     private var genreId : Int? = null
-    private var moviesPresenter : MoviesPresenter = MoviesPresenter(this, MoviesRepository(TmdbAPI.invoke()))
+    private var moviesPresenter : MoviesPresenter = MoviesPresenter(this, MoviesRepository(TmdbAPI.invoke(), this.context!!))
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,6 +51,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface{
 
     override fun displayGenres(movieResponse: DiscoverMovieResponse) {
         Log.i("Data", movieResponse.results.toString())
+
     }
 
     override fun displayError(s: String) {
