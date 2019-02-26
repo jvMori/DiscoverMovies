@@ -1,18 +1,32 @@
 package com.example.jvmori.discovermovies.ui.view.movies
 
+import android.annotation.SuppressLint
 import com.example.jvmori.discovermovies.data.network.response.DiscoverMovieResponse
+import com.example.jvmori.discovermovies.data.network.response.MovieDetails
+import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Function
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.observables.ConnectableObservable
+
+
 
 class MoviesPresenter (
     val moviesViewInterface: MoviesViewInterface,
     private val repository: MoviesRepository
 ) : MoviesPresenterInterface{
 
+
+    @SuppressLint("CheckResult")
     override fun getMovies(parameters : DiscoverQueryParam) {
+        var moviesObservable = repository.getMoviesToDiscover (parameters).replay()
+        moviesObservable
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
         getObservable(parameters).subscribeWith(getObserver())
     }
     

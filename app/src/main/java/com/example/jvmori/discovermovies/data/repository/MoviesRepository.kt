@@ -6,9 +6,12 @@ import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.network.response.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.network.response.GenreResponse
+import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 
 class MoviesRepository(
@@ -28,9 +31,13 @@ class MoviesRepository(
         parameters["year"] = queryParam.year
 
         return tmdpApi.getMovies(parameters)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
-
+    fun getMovieDetails(id: Int) : Observable<MovieDetails>{
+        return tmdpApi.getMovieDetails(id)
+    }
 
     fun getAllGenres() : Observable<GenreResponse>{
         return tmdpApi.getGenres()

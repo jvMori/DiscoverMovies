@@ -5,13 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jvmori.discovermovies.R
+import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.util.LoadImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 
 class MoviesAdapter(
-    var movieItems: List<MovieResult>,
-    var genreMap: HashMap<Int, String?>
+    private var movieItems: List<MovieResult>,
+    private var genreList: List<Genre>
 ) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -29,7 +30,7 @@ class MoviesAdapter(
         holder.itemView.review.text = currentItem.voteCount.toString()
         holder.itemView.icon.clipToOutline = true
         currentItem.genreIds.forEachIndexed { index, item ->
-            holder.itemView.category.append(genreMap[item])
+            holder.itemView.category.append(genreList[item].name)
             if (index != currentItem.genreIds.lastIndex)
                 holder.itemView.category.append(" | ")
         }
