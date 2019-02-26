@@ -35,9 +35,13 @@ class MoviesRepository(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getMovieDetails(id: Int) : Observable<MovieDetails>{
-        return tmdpApi.getMovieDetails(id)
-    }
+//    fun getMovieDetails(id: Int) : Observable<MovieDetails>{
+//         getMoviesToDiscover().flatMap {
+//            it.results.flatMap {
+//                tmdpApi.getMovieDetails(it.id)
+//            }
+//        }
+//    }
 
     fun getAllGenres() : Observable<GenreResponse>{
         return tmdpApi.getGenres()
