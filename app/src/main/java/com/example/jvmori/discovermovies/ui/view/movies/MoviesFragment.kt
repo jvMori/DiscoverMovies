@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment
 
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
-import com.example.jvmori.discovermovies.data.network.response.DiscoverMovieResponse
-import com.example.jvmori.discovermovies.data.network.response.GenreResponse
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import io.reactivex.disposables.CompositeDisposable
@@ -65,16 +63,8 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
         Log.i("Data", movieResponse.toString())
     }
 
-    override fun displayItems(movieResponse: DiscoverMovieResponse) {
-        Log.i("Data", movieResponse.results.toString())
-
-    }
-
     override fun displayError(s: String) {
         Log.i("Data", s)
     }
 
-    override fun displayGenres(response: GenreResponse) {
-
-    }
 }
