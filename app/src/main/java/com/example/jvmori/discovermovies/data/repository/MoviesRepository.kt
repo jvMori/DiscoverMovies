@@ -13,6 +13,8 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function
+import io.reactivex.internal.operators.observable.ObservableFromIterable
+import io.reactivex.observables.ConnectableObservable
 import io.reactivex.schedulers.Schedulers
 
 
@@ -35,6 +37,13 @@ class MoviesRepository(
         return tmdpApi.getMovies(parameters)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun moviesObservable(queryParam: DiscoverQueryParam) : Observable<List<MovieResult>>{
+        return getMoviesToDiscover(queryParam)
+            .map {
+                return@map (it.results)
+            }
     }
 
     fun getDetails(movieResult: MovieResult): Observable<MovieResult> {
