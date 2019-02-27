@@ -29,13 +29,6 @@ private const val ARG_PARAM2 = "param2"
 class MoviesFragment : Fragment(), MoviesViewInterface {
 
     private var genreId: Int? = null
-    private var moviesPresenter: MoviesPresenter = MoviesPresenter(
-        this,
-        MoviesRepository(
-            TmdbAPI.invoke(),
-            this.requireContext()
-        )
-    )
     private val disposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
@@ -43,6 +36,8 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        val moviesPresenter = MoviesPresenter(this, MoviesRepository(TmdbAPI.invoke(),
+            this.requireContext()))
         return inflater.inflate(R.layout.fragment_movies, container, false)
     }
 
