@@ -46,14 +46,14 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
         genreId = MoviesFragmentArgs.fromBundle(arguments).genre
         genreId?.let {
             val moviesObservable = moviesPresenter?.getContactableObservable(DiscoverQueryParam(it.toString(), 1))
-            moviesPresenter?.fetchAllMovies(DiscoverQueryParam(it.toString(), 1))?.let { it1 ->
+            moviesPresenter?.fetchAllMovies(DiscoverQueryParam(it.toString(), 1))?.let { disposableItem ->
                 disposable.add(
-                    it1
+                    disposableItem
                 )
             }
-            moviesPresenter?.getDetailsForEachMovie()?.let { it1 ->
+            moviesPresenter?.getDetailsForEachMovie(DiscoverQueryParam(it.toString(), 1))?.let { disposableItem ->
                 disposable.add(
-                    it1
+                    disposableItem
                 )
             }
             moviesObservable?.connect()

@@ -5,7 +5,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.observables.ConnectableObservable
 
 interface MoviesPresenterInterface {
-    fun getDetailsForEachMovie() : Disposable
+    fun getDetailsForEachMovie(parameters: DiscoverQueryParam) : Disposable
 
     fun getContactableObservable(parameters: DiscoverQueryParam) : ConnectableObservable<List<MovieResult>>
 

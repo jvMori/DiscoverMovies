@@ -21,7 +21,7 @@ class MoviesPresenter(
     private val repository: MoviesRepository
 ) : MoviesPresenterInterface {
 
-    private lateinit var movies: ConnectableObservable<List<MovieResult>>
+    //private var movies: ConnectableObservable<List<MovieResult>>()
 
     @SuppressLint("CheckResult")
     override fun fetchAllMovies(parameters: DiscoverQueryParam) : Disposable{
@@ -38,8 +38,8 @@ class MoviesPresenter(
     }
 
     @SuppressLint("CheckResult")
-    override fun getDetailsForEachMovie() : Disposable {
-        return movies.subscribeOn(Schedulers.io())
+    override fun getDetailsForEachMovie(parameters: DiscoverQueryParam) : Disposable {
+        return getContactableObservable(parameters).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 return@flatMap ObservableFromIterable(it)
