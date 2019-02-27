@@ -38,6 +38,7 @@ class MoviesAdapter(
             holder.itemView.rating.text = details.voteAverage.toString()
             holder.itemView.review.text = details.voteCount.toString()
             holder.itemView.icon.clipToOutline = true
+            holder.itemView.category.text= ""
             details.genres.forEachIndexed { index, item ->
                 holder.itemView.category.append(item.name)
                 if (index != details.genres.lastIndex)

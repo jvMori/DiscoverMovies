@@ -1,6 +1,7 @@
 package com.example.jvmori.discovermovies.ui.view.movies
 
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -52,15 +53,16 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
     }
 
     override fun showProgressBar() {
-
+        recyclerViewMovies.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
     }
 
     override fun hideProgressBar() {
-
+        recyclerViewMovies.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
     }
 
     override fun displayMovie(movieResult: MovieResult) {
-        //Log.i("Data", movieResult.toString())
         val position = moviesAdapter?.getItemPosition(movieResult)
         position.let {
             moviesAdapter?.setItem(it, movieResult.movieDetails)
@@ -69,9 +71,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
     }
 
     override fun displayAllItems(movieResponse: List<MovieResult>) {
-        //Log.i("Data", movieResponse.toString())
         moviesAdapter = MoviesAdapter(movieResponse.toMutableList())
-        textToDisplay.text = movieResponse.toString()
         recyclerViewMovies!!.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL ,false)
         recyclerViewMovies!!.setHasFixedSize(true)
         recyclerViewMovies!!.adapter = moviesAdapter
@@ -80,5 +80,4 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
     override fun displayError(s: String) {
         Log.i("Data", s)
     }
-
 }
