@@ -7,12 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.fragment_movies.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -27,8 +31,8 @@ private const val ARG_PARAM2 = "param2"
 class MoviesFragment : Fragment(), MoviesViewInterface {
 
     private var genreId: Int? = null
-    private val disposable: CompositeDisposable = CompositeDisposable()
     private var moviesPresenter : MoviesPresenter? = null
+    private var moviesAdapter : MoviesAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,11 +60,21 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
     }
 
     override fun displayMovie(movieResult: MovieResult) {
-        Log.i("Data", movieResult.toString())
+        //Log.i("Data", movieResult.toString())
+        val position = moviesAdapter?.getItemPosition(movieResult)
+        position.let {
+            moviesAdapter?.setItem(it, movieResult.movieDetails)
+            moviesAdapter?.notifyItemChanged(position!!)
+        }
     }
 
     override fun displayAllItems(movieResponse: List<MovieResult>) {
-        Log.i("Data", movieResponse.toString())
+        //Log.i("Data", movieResponse.toString())
+        moviesAdapter = MoviesAdapter(movieResponse.toMutableList())
+        textToDisplay.text = movieResponse.toString()
+        recyclerViewMovies!!.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL ,false)
+        recyclerViewMovies!!.setHasFixedSize(true)
+        recyclerViewMovies!!.adapter = moviesAdapter
     }
 
     override fun displayError(s: String) {

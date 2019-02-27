@@ -20,10 +20,9 @@ class MoviesPresenter(
         observableMovies
             .observeOn(Schedulers.io())
             .subscribeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(
+            .subscribe(
                 getObserverForAllItems()
             )
-            .onComplete()
 
         observableMovies
             .observeOn(Schedulers.io())
@@ -34,10 +33,9 @@ class MoviesPresenter(
             .flatMap {
                 return@flatMap repository.getDetails(it)
             }
-            .subscribeWith(
+            .subscribe(
                 getMovieResultObserver()
             )
-            .onComplete()
 
         observableMovies.connect()
     }
@@ -62,7 +60,7 @@ class MoviesPresenter(
     private fun getObserverForAllItems(): DisposableObserver<List<MovieResult>> {
         return object : DisposableObserver<List<MovieResult>>() {
             override fun onComplete() {
-                moviesViewInterface.hideProgressBar()
+
             }
 
             override fun onNext(t: List<MovieResult>) {

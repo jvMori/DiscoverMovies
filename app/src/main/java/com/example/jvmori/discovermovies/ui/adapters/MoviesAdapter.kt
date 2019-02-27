@@ -5,38 +5,46 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jvmori.discovermovies.R
-import com.example.jvmori.discovermovies.data.local.entity.Genre
+import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.util.LoadImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 
 class MoviesAdapter(
-    private var movieItems: List<MovieResult>,
-    private var genreList: List<Genre>
+    private val movieItems: MutableList<MovieResult> = mutableListOf()
 ) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
         return MovieViewHolder(view)
     }
+    fun getItemPosition(movieResult : MovieResult) : Int{
+        return movieItems.indexOf(movieResult)
+    }
 
+    fun setItem(position: Int?, movieResult: MovieDetails){
+        position.let {
+           movieItems[position!!].movieDetails = movieResult
+        }
+    }
     override fun getItemCount(): Int = movieItems.size
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = movieItems[position]
-//        holder.itemView.title.text = currentItem.title
-//        holder.itemView.year.text = currentItem.releaseDate
-//        holder.itemView.rating.text = currentItem.voteAverage.toString()
-//        holder.itemView.review.text = currentItem.voteCount.toString()
-//        holder.itemView.icon.clipToOutline = true
-//        currentItem.genreIds.forEachIndexed { index, item ->
-//            holder.itemView.category.append(genreList[item].name)
-//            if (index != currentItem.genreIds.lastIndex)
-//                holder.itemView.category.append(" | ")
-//        }
-//        LoadImage.loadImage(holder.itemView.icon, currentItem.posterPath)
+        val details = currentItem.movieDetails
+        details.let {
+            holder.itemView.title.text = details.title
+            holder.itemView.year.text = details.releaseDate
+            holder.itemView.rating.text = details.voteAverage.toString()
+            holder.itemView.review.text = details.voteCount.toString()
+            holder.itemView.icon.clipToOutline = true
+            details.genres.forEachIndexed { index, item ->
+                holder.itemView.category.append(item.name)
+                if (index != details.genres.lastIndex)
+                    holder.itemView.category.append(" | ")
+            }
+            LoadImage.loadImage(holder.itemView.icon, details.posterPath)
+        }
     }
-
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
 }

@@ -12,9 +12,6 @@ import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Function
-import io.reactivex.internal.operators.observable.ObservableFromIterable
-import io.reactivex.observables.ConnectableObservable
 import io.reactivex.schedulers.Schedulers
 
 
@@ -24,7 +21,7 @@ class MoviesRepository(
 ) {
     private val genreDao = MovieDatabase.invoke(context.applicationContext).genreDao()
 
-    fun getMoviesToDiscover(
+    private fun getMoviesToDiscover(
         queryParam: DiscoverQueryParam
     ): Observable<DiscoverMovieResponse> {
         val parameters: HashMap<String, String> = HashMap()
@@ -41,6 +38,8 @@ class MoviesRepository(
 
     fun moviesObservable(queryParam: DiscoverQueryParam) : Observable<List<MovieResult>>{
         return getMoviesToDiscover(queryParam)
+            .observeOn(Schedulers.io())
+            .subscribeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 return@flatMap Observable.just(it.results)
             }
