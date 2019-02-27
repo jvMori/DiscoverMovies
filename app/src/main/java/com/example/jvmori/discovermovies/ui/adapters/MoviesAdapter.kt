@@ -31,8 +31,8 @@ class MoviesAdapter(
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = movieItems[position]
-        val details = currentItem.movieDetails
-        details.let {
+        val details: MovieDetails? = currentItem.movieDetails
+        details?.let {
             holder.itemView.title.text = details.title
             holder.itemView.year.text = details.releaseDate
             holder.itemView.rating.text = details.voteAverage.toString()

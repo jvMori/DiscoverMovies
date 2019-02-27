@@ -8,7 +8,7 @@ class LoadImage {
     companion object {
         fun loadImage(view: ImageView, imageUrl: String) {
             Picasso.get()
-                .load(imageUrl)
+                .load(Const.base_poster_url + imageUrl)
                 .error(R.drawable.gradient)
                 .placeholder(R.drawable.gradient)
                 .into(view)

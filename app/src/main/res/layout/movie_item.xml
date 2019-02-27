@@ -42,7 +42,7 @@
             android:layout_marginStart="@dimen/margin_start"
             android:elevation="@dimen/elevation"
             android:padding="2dp"
-            android:text="@string/category"
+            android:text=""
             android:textColor="@color/textGrayed"
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/icon"
