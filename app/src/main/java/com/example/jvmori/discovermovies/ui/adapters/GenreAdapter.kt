@@ -1,9 +1,13 @@
 package com.example.jvmori.discovermovies.ui.adapters
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.data.local.entity.Genre
@@ -12,7 +16,8 @@ import com.example.jvmori.discovermovies.util.RandomColor
 import kotlinx.android.synthetic.main.genre_item.view.*
 
 class GenreAdapter(
-    private val allGenres: List<Genre> = mutableListOf()
+    private val allGenres: List<Genre> = mutableListOf(),
+    private val fragment : Fragment
 ) : RecyclerView.Adapter<GenreAdapter.GenreViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreViewHolder {
@@ -35,6 +40,7 @@ class GenreAdapter(
     private fun navigateToMovieList(view: View, position: Int){
         val id = allGenres[position].idGenre
         val action = DiscoverFragmentDirections.specifyGenreId().setGenre(id)
-        Navigation.findNavController(view).navigate(action)
+        val nav =  NavHostFragment.findNavController(fragment)
+        nav.navigate(action)
     }
 }

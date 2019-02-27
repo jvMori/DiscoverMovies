@@ -59,7 +59,7 @@ class DiscoverFragment : Fragment(), GenresViewInterface {
     }
 
     private fun createAdapter(genres : List<Genre>){
-        val adapter = GenreAdapter(genres)
+        val adapter = GenreAdapter(genres, this)
         genresRv.layoutManager = GridLayoutManager(this.context, 2, RecyclerView.VERTICAL, false)
         genresRv.setHasFixedSize(true)
         genresRv.adapter = adapter

@@ -24,17 +24,17 @@ class MoviesAdapter(
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = movieItems[position]
-        holder.itemView.title.text = currentItem.title
-        holder.itemView.year.text = currentItem.releaseDate
-        holder.itemView.rating.text = currentItem.voteAverage.toString()
-        holder.itemView.review.text = currentItem.voteCount.toString()
-        holder.itemView.icon.clipToOutline = true
-        currentItem.genreIds.forEachIndexed { index, item ->
-            holder.itemView.category.append(genreList[item].name)
-            if (index != currentItem.genreIds.lastIndex)
-                holder.itemView.category.append(" | ")
-        }
-        LoadImage.loadImage(holder.itemView.icon, currentItem.posterPath)
+//        holder.itemView.title.text = currentItem.title
+//        holder.itemView.year.text = currentItem.releaseDate
+//        holder.itemView.rating.text = currentItem.voteAverage.toString()
+//        holder.itemView.review.text = currentItem.voteCount.toString()
+//        holder.itemView.icon.clipToOutline = true
+//        currentItem.genreIds.forEachIndexed { index, item ->
+//            holder.itemView.category.append(genreList[item].name)
+//            if (index != currentItem.genreIds.lastIndex)
+//                holder.itemView.category.append(" | ")
+//        }
+//        LoadImage.loadImage(holder.itemView.icon, currentItem.posterPath)
     }
 
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
