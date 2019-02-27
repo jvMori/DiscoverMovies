@@ -30,13 +30,13 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
 
     private var genreId: Int? = null
     private val disposable: CompositeDisposable = CompositeDisposable()
-
+    private var moviesPresenter : MoviesPresenter? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val moviesPresenter = MoviesPresenter(this, MoviesRepository(TmdbAPI.invoke(),
+         moviesPresenter = MoviesPresenter(this, MoviesRepository(TmdbAPI.invoke(),
             this.requireContext()))
         return inflater.inflate(R.layout.fragment_movies, container, false)
     }
@@ -45,14 +45,18 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
         super.onViewCreated(view, savedInstanceState)
         genreId = MoviesFragmentArgs.fromBundle(arguments).genre
         genreId?.let {
-            //            val moviesObservable = moviesPresenter.getContactableObservable(DiscoverQueryParam(it.toString(), 1))
-//            disposable.add(
-//                moviesPresenter.fetchAllMovies(DiscoverQueryParam(it.toString(), 1))
-//            )
-//            disposable.add(
-//                moviesPresenter.getDetailsForEachMovie()
-//            )
-//            moviesObservable.connect()
+            val moviesObservable = moviesPresenter?.getContactableObservable(DiscoverQueryParam(it.toString(), 1))
+            moviesPresenter?.fetchAllMovies(DiscoverQueryParam(it.toString(), 1))?.let { it1 ->
+                disposable.add(
+                    it1
+                )
+            }
+            moviesPresenter?.getDetailsForEachMovie()?.let { it1 ->
+                disposable.add(
+                    it1
+                )
+            }
+            moviesObservable?.connect()
         }
     }
 
