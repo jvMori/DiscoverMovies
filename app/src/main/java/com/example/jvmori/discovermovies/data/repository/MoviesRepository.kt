@@ -7,10 +7,12 @@ import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.network.response.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.network.response.GenreResponse
 import com.example.jvmori.discovermovies.data.network.response.MovieDetails
+import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 
 
@@ -35,17 +37,20 @@ class MoviesRepository(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-//    fun getMovieDetails(id: Int) : Observable<MovieDetails>{
-//         getMoviesToDiscover().flatMap {
-//            it.results.flatMap {
-//                tmdpApi.getMovieDetails(it.id)
-//            }
-//        }
-//    }
+    fun getDetails(movieResult: MovieResult): Observable<MovieResult> {
+        return tmdpApi.getMovieDetails(movieResult.id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { movieDetails: MovieDetails ->
+                movieResult.movieDetails = movieDetails
+                return@map movieResult
+            }
+    }
 
-    fun getAllGenres() : Observable<GenreResponse>{
+    fun getAllGenres(): Observable<GenreResponse> {
         return tmdpApi.getGenres()
     }
+
     fun getGenreById(genreId: Int): Single<Genre> {
         return genreDao.getGenre(genreId)
     }
