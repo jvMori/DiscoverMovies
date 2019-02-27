@@ -12,7 +12,9 @@ import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.network.response.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.network.response.GenreResponse
+import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import io.reactivex.disposables.CompositeDisposable
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -28,6 +30,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface{
 
     private var genreId : Int? = null
     private var moviesPresenter : MoviesPresenter = MoviesPresenter(this, MoviesRepository(TmdbAPI.invoke(), this.context!!))
+    private val disposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +44,14 @@ class MoviesFragment : Fragment(), MoviesViewInterface{
         super.onViewCreated(view, savedInstanceState)
         genreId =  MoviesFragmentArgs.fromBundle(arguments).genre
         genreId?.let {
-            moviesPresenter.getMovies(DiscoverQueryParam(it.toString(), 1))
+            val moviesObservable = moviesPresenter.getContactableObservable(DiscoverQueryParam(it.toString(), 1))
+            disposable.add(
+                moviesPresenter.fetchAllMovies(DiscoverQueryParam(it.toString(), 1))
+            )
+            disposable.add(
+                moviesPresenter.getDetailsForEachMovie()
+            )
+            moviesObservable.connect()
         }
     }
     override fun showProgressBar() {
@@ -50,6 +60,14 @@ class MoviesFragment : Fragment(), MoviesViewInterface{
 
     override fun hideProgressBar() {
 
+    }
+
+    override fun displayMovie(movieResult: MovieResult) {
+        Log.i("Data", movieResult.toString())
+    }
+
+    override fun displayAllItems(movieResponse: List<MovieResult>) {
+        Log.i("Data", movieResponse.toString())
     }
 
     override fun displayItems(movieResponse: DiscoverMovieResponse) {

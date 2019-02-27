@@ -8,6 +8,7 @@ import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function
 import io.reactivex.internal.operators.observable.ObservableFromIterable
 import io.reactivex.observers.DisposableObserver
@@ -20,17 +21,25 @@ class MoviesPresenter(
     private val repository: MoviesRepository
 ) : MoviesPresenterInterface {
 
+    private lateinit var movies: ConnectableObservable<List<MovieResult>>
 
     @SuppressLint("CheckResult")
-    override fun getMovies(parameters: DiscoverQueryParam) {
-//        var moviesObservable = repository.getMoviesToDiscover (parameters).replay()
-//        moviesObservable
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//        getObservable(parameters).subscribeWith(getObserver())
+    override fun fetchAllMovies(parameters: DiscoverQueryParam) : Disposable{
+        return repository.moviesObservable(parameters)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(
+                getObserverForAllItems()
+            )
+    }
 
-        val movies: ConnectableObservable<List<MovieResult>> = repository.moviesObservable(parameters).replay()
-        movies.subscribeOn(Schedulers.io())
+    override fun getContactableObservable(parameters: DiscoverQueryParam): ConnectableObservable<List<MovieResult>> {
+        return repository.moviesObservable(parameters).replay()
+    }
+
+    @SuppressLint("CheckResult")
+    override fun getDetailsForEachMovie() : Disposable {
+        return movies.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 return@flatMap ObservableFromIterable(it)
@@ -43,21 +52,14 @@ class MoviesPresenter(
             )
     }
 
-    private fun getObservable(parameters: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
-        return repository.getMoviesToDiscover(parameters)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { moviesViewInterface.showProgressBar() }
-    }
-
-    private fun getMovieResultObserver(): DisposableObserver<MovieResult>{
-        return object : DisposableObserver<MovieResult>(){
+    private fun getMovieResultObserver(): DisposableObserver<MovieResult> {
+        return object : DisposableObserver<MovieResult>() {
             override fun onComplete() {
                 moviesViewInterface.hideProgressBar()
             }
 
             override fun onNext(t: MovieResult) {
-              moviesViewInterface.displayMovie(t)
+                moviesViewInterface.displayMovie(t)
             }
 
             override fun onError(e: Throwable) {
@@ -67,19 +69,26 @@ class MoviesPresenter(
         }
     }
 
-    private fun getObserver(): DisposableObserver<DiscoverMovieResponse> {
-        return object : DisposableObserver<DiscoverMovieResponse>() {
+    private fun getObserverForAllItems(): DisposableObserver<List<MovieResult>> {
+        return object : DisposableObserver<List<MovieResult>>() {
             override fun onComplete() {
                 moviesViewInterface.hideProgressBar()
             }
 
-            override fun onNext(t: DiscoverMovieResponse) {
-                moviesViewInterface.displayItems(t)
+            override fun onNext(t: List<MovieResult>) {
+                moviesViewInterface.displayAllItems(t)
             }
 
             override fun onError(e: Throwable) {
                 moviesViewInterface.displayError("Error while loading data. Try again!" + e.message)
             }
         }
+    }
+
+    private fun getObservable(parameters: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
+        return repository.getMoviesToDiscover(parameters)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { moviesViewInterface.showProgressBar() }
     }
 }

@@ -10,4 +10,5 @@ interface MoviesViewInterface : BaseViewInterface
     fun displayItems(movieResponse: DiscoverMovieResponse)
     fun displayGenres(response : GenreResponse)
     fun displayMovie(movieResult : MovieResult)
+    fun displayAllItems(movieResponse: List<MovieResult>)
 }
