@@ -41,8 +41,8 @@ class MoviesRepository(
 
     fun moviesObservable(queryParam: DiscoverQueryParam) : Observable<List<MovieResult>>{
         return getMoviesToDiscover(queryParam)
-            .map {
-                return@map (it.results)
+            .flatMap {
+                return@flatMap Observable.just(it.results)
             }
     }
 

@@ -10,4 +10,6 @@ interface MoviesPresenterInterface {
     fun getContactableObservable(parameters: DiscoverQueryParam) : ConnectableObservable<List<MovieResult>>
 
     fun fetchAllMovies(parameters : DiscoverQueryParam) : Disposable
+
+    fun fetchMovies(parameters: DiscoverQueryParam)
 }

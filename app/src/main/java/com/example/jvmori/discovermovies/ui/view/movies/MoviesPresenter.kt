@@ -1,6 +1,7 @@
 package com.example.jvmori.discovermovies.ui.view.movies
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.example.jvmori.discovermovies.data.network.response.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
@@ -21,11 +22,37 @@ class MoviesPresenter(
     private val repository: MoviesRepository
 ) : MoviesPresenterInterface {
 
+    override fun fetchMovies(parameters: DiscoverQueryParam) {
+       val observableMovies : ConnectableObservable<List<MovieResult>> = repository.moviesObservable(parameters).replay()
+        observableMovies
+            .observeOn(Schedulers.io())
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(
+                getObserverForAllItems()
+            ).onComplete()
+
+        observableMovies
+            .observeOn(Schedulers.io())
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .flatMap {
+                return@flatMap ObservableFromIterable(it)
+            }
+            .flatMap {
+                return@flatMap repository.getDetails(it)
+            }
+            .subscribeWith(
+                getMovieResultObserver()
+            )
+            .onComplete()
+
+        observableMovies.connect()
+    }
+
     //private var movies: ConnectableObservable<List<MovieResult>>()
 
     @SuppressLint("CheckResult")
-    override fun fetchAllMovies(parameters: DiscoverQueryParam) : Disposable{
-        return repository.moviesObservable(parameters)
+    override fun fetchAllMovies(parameters: DiscoverQueryParam) : Disposable {
+        return getContactableObservable(parameters)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(
