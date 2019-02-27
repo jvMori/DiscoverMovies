@@ -38,8 +38,8 @@ class MoviesRepository(
 
     fun moviesObservable(queryParam: DiscoverQueryParam) : Observable<List<MovieResult>>{
         return getMoviesToDiscover(queryParam)
-            .observeOn(Schedulers.io())
-            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 return@flatMap Observable.just(it.results)
             }

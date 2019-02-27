@@ -1,6 +1,8 @@
 package com.example.jvmori.discovermovies.ui.view.movies
 
 
+import android.os.Looper
+import android.util.Log
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,15 +20,15 @@ class MoviesPresenter(
     override fun fetchMovies(parameters: DiscoverQueryParam) {
        val observableMovies : ConnectableObservable<List<MovieResult>> = repository.moviesObservable(parameters).replay()
         observableMovies
-            .observeOn(Schedulers.io())
-            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 getObserverForAllItems()
             )
 
         observableMovies
-            .observeOn(Schedulers.io())
-            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 return@flatMap ObservableFromIterable(it)
             }
@@ -64,6 +66,10 @@ class MoviesPresenter(
             }
 
             override fun onNext(t: List<MovieResult>) {
+                if (Looper.myLooper() != Looper.getMainLooper()) {
+                    // Current thread is the UI/Main thread
+                    Log.i("THREAD", "NOT UI THREAD")
+                }
                 moviesViewInterface.displayAllItems(t)
             }
 
