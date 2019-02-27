@@ -26,10 +26,16 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class MoviesFragment : Fragment(), MoviesViewInterface{
+class MoviesFragment : Fragment(), MoviesViewInterface {
 
-    private var genreId : Int? = null
-    private var moviesPresenter : MoviesPresenter = MoviesPresenter(this, MoviesRepository(TmdbAPI.invoke(), this.context!!))
+    private var genreId: Int? = null
+    private var moviesPresenter: MoviesPresenter = MoviesPresenter(
+        this,
+        MoviesRepository(
+            TmdbAPI.invoke(),
+            this.requireContext()
+        )
+    )
     private val disposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
@@ -42,18 +48,19 @@ class MoviesFragment : Fragment(), MoviesViewInterface{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        genreId =  MoviesFragmentArgs.fromBundle(arguments).genre
+        genreId = MoviesFragmentArgs.fromBundle(arguments).genre
         genreId?.let {
-            val moviesObservable = moviesPresenter.getContactableObservable(DiscoverQueryParam(it.toString(), 1))
-            disposable.add(
-                moviesPresenter.fetchAllMovies(DiscoverQueryParam(it.toString(), 1))
-            )
-            disposable.add(
-                moviesPresenter.getDetailsForEachMovie()
-            )
-            moviesObservable.connect()
+            //            val moviesObservable = moviesPresenter.getContactableObservable(DiscoverQueryParam(it.toString(), 1))
+//            disposable.add(
+//                moviesPresenter.fetchAllMovies(DiscoverQueryParam(it.toString(), 1))
+//            )
+//            disposable.add(
+//                moviesPresenter.getDetailsForEachMovie()
+//            )
+//            moviesObservable.connect()
         }
     }
+
     override fun showProgressBar() {
 
     }

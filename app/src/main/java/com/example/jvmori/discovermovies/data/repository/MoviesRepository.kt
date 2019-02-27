@@ -22,7 +22,7 @@ class MoviesRepository(
     private val tmdpApi: TmdbAPI,
     context: Context
 ) {
-    private val genreDao = MovieDatabase.invoke(context).genreDao()
+    private val genreDao = MovieDatabase.invoke(context.applicationContext).genreDao()
 
     fun getMoviesToDiscover(
         queryParam: DiscoverQueryParam

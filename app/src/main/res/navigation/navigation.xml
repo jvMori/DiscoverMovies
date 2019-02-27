@@ -8,10 +8,10 @@
               android:name="com.example.jvmori.discovermovies.ui.view.discover.DiscoverFragment"
               android:label="fragment_discover" tools:layout="@layout/fragment_discover">
         <action android:id="@+id/specifyGenreId" app:destination="@id/moviesFragment">
-            <argument
-                    android:name="genre"
-                    app:argType="integer"
-                    android:defaultValue="0" />
+            <!--<argument-->
+                    <!--android:name="genre"-->
+                    <!--app:argType="integer"-->
+                    <!--android:defaultValue="0" />-->
         </action>
 
     </fragment>
