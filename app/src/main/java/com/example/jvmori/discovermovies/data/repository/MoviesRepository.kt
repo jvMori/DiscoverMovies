@@ -54,7 +54,15 @@ class MoviesRepository(
 
     }
 
-    fun getAllGenresRemote(): Observable<List<Genre>> {
+    fun getGenres() : Observable<List<Genre>>{
+        return Observable.concat(getAllGenresLocal(), getAllGenresRemote())
+            .filter{
+                list -> !list.isEmpty()
+            }
+            .take(1)
+    }
+
+    private fun getAllGenresRemote(): Observable<List<Genre>> {
         return tmdpApi.getGenres()
             .flatMap {
                 return@flatMap Observable.just(it.genres)
@@ -70,7 +78,7 @@ class MoviesRepository(
         genreDao.insert(data)
     }
 
-    fun getAllGenresLocal() : Observable<List<Genre>>{
+    private fun getAllGenresLocal() : Observable<List<Genre>>{
         return genreDao.getAllGenres()
     }
 

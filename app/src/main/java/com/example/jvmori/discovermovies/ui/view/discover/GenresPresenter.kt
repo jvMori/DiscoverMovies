@@ -23,7 +23,7 @@ class GenresPresenter (
     }
 
     private fun getObservable() : Observable<List<Genre>>{
-        return repository.getAllGenresRemote()
+        return repository.getGenres()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { genresViewInterface.showProgressBar() }
