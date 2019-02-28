@@ -58,12 +58,16 @@ class MoviesRepository(
     fun getGenres() : Observable<List<Genre>>{
         return Observable.concat(getAllGenresLocal(), getAllGenresRemote())
             .filter{
-                list -> !list.isEmpty()
+               // item -> item.fetchTime < ZonedDateTime.now().minusHours(10)
+                true
             }
-            .take(1)
+            .flatMap {
+                return@flatMap Observable.just(it.genres)
+            }
+
     }
 
-    private fun getAllGenresRemote(): Observable<List<Genre>> {
+    private fun getAllGenresRemote(): Observable<GenreEntry> {
         return tmdpApi.getGenres()
             .flatMap{
                 it.fetchTime = ZonedDateTime.now()
@@ -71,9 +75,6 @@ class MoviesRepository(
             }
             .doOnNext{
                 saveData(it)
-            }
-            .flatMap {
-                return@flatMap Observable.just(it.genres)
             }
             .subscribeOn(Schedulers.io())
     }
@@ -83,14 +84,9 @@ class MoviesRepository(
         genreDao.insert(data)
     }
 
-    private fun getAllGenresLocal() : Observable<List<Genre>>{
+    private fun getAllGenresLocal() : Observable<GenreEntry>{
         return genreDao.getAllGenres()
-            .filter{
-                it.fetchTime < ZonedDateTime.now().minusHours(10)
-            }
-            .flatMap {
-                return@flatMap Observable.just(it.genres)
-            }
             .subscribeOn(Schedulers.io())
+            .observeOn( AndroidSchedulers.mainThread())
     }
 }
