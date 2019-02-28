@@ -9,6 +9,7 @@ import com.example.jvmori.discovermovies.data.network.response.DiscoverMovieResp
 import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -56,19 +57,19 @@ class MoviesRepository(
     }
 
     fun getGenres() : Observable<List<Genre>>{
-        return Observable.concat(getAllGenresLocal(), getAllGenresRemote())
+        return Maybe.concat(getAllGenresLocal(), getAllGenresRemote())
             .filter{
                 list -> list.isNotEmpty()
             }
             .take(1)
+            .toObservable()
     }
 
-    private fun getAllGenresRemote(): Observable<List<Genre>> {
+    private fun getAllGenresRemote(): Maybe<List<Genre>> {
         return tmdpApi.getGenres()
             .flatMap {
-                return@flatMap Observable.just(it.genres)
-            }
-            .doOnNext{
+                return@flatMap Maybe.just(it.genres)
+            }.doAfterSuccess{
                 saveData(it)
             }
             .doOnError {
@@ -82,7 +83,7 @@ class MoviesRepository(
         genreDao.insert(data)
     }
 
-    private fun getAllGenresLocal() : Observable<List<Genre>>{
+    private fun getAllGenresLocal() : Maybe<List<Genre>> {
         return genreDao.getAllGenres()
     }
 

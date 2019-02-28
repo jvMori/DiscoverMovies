@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.jvmori.discovermovies.data.local.entity.Genre
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -18,5 +19,5 @@ interface GenreDao
     fun getGenre(genreId: Int) : Single<Genre>
 
     @Query("select * from movie_table")
-    fun getAllGenres() : Observable<List<Genre>>
+    fun getAllGenres() : Maybe<List<Genre>>
 }
