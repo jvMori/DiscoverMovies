@@ -66,10 +66,6 @@ class MoviesPresenter(
             }
 
             override fun onNext(t: List<MovieResult>) {
-                if (Looper.myLooper() != Looper.getMainLooper()) {
-                    // Current thread is the UI/Main thread
-                    Log.i("THREAD", "NOT UI THREAD")
-                }
                 moviesViewInterface.displayAllItems(t)
             }
 
