@@ -1,16 +1,13 @@
 package com.example.jvmori.discovermovies.ui.adapters
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jvmori.discovermovies.R
-import com.example.jvmori.discovermovies.data.local.entity.Genre
+import com.example.jvmori.discovermovies.data.network.response.Genre
 import com.example.jvmori.discovermovies.ui.view.discover.DiscoverFragmentDirections
 import com.example.jvmori.discovermovies.util.RandomColor
 import kotlinx.android.synthetic.main.genre_item.view.*

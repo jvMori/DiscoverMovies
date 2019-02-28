@@ -79,5 +79,6 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
 
     override fun displayError(s: String) {
         Log.i("Data", s)
+        progressBar.visibility = View.GONE
     }
 }

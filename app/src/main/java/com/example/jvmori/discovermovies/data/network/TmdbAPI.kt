@@ -1,7 +1,7 @@
 package com.example.jvmori.discovermovies.data.network
 
 import com.example.jvmori.discovermovies.data.network.response.DiscoverMovieResponse
-import com.example.jvmori.discovermovies.data.network.response.GenreResponse
+import com.example.jvmori.discovermovies.data.local.entity.GenreEntry
 import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import com.example.jvmori.discovermovies.util.Const
 import io.reactivex.Observable
@@ -17,7 +17,7 @@ import retrofit2.http.QueryMap
 interface TmdbAPI
 {
     @GET("genre/movie/list")
-    fun getGenres() : Observable<GenreResponse>
+    fun getGenres() : Observable<GenreEntry>
 
     @GET("discover/movie")
     fun getMovies(@QueryMap options : Map<String, String>) : Observable<DiscoverMovieResponse>

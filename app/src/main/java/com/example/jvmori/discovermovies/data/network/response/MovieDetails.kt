@@ -1,6 +1,5 @@
 package com.example.jvmori.discovermovies.data.network.response
 
-import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.google.gson.annotations.SerializedName
 
 data class MovieDetails(
@@ -40,10 +39,6 @@ data class MovieDetails(
     val revenue: Int,
     @SerializedName("runtime")
     val runtime: Int,
-    @SerializedName("spoken_languages")
-    val spokenLanguages: List<SpokenLanguage>,
-    @SerializedName("status")
-    val status: String,
     @SerializedName("tagline")
     val tagline: String,
     @SerializedName("title")

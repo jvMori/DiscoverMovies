@@ -55,7 +55,6 @@ class MoviesPresenter(
             override fun onError(e: Throwable) {
                 moviesViewInterface.displayError("Error while loading data. Try again!" + e.message)
             }
-
         }
     }
 

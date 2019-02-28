@@ -4,10 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.jvmori.discovermovies.data.local.GenreDao
-import com.example.jvmori.discovermovies.data.local.entity.Genre
+import com.example.jvmori.discovermovies.data.local.entity.GenreEntry
+import com.example.jvmori.discovermovies.util.ListGenreTypeConverter
+import com.example.jvmori.discovermovies.util.ZonedTimeTypeConverter
 
-@Database(entities = [Genre::class], version = 1 )
+@Database(entities = [GenreEntry::class], version = 1 )
+@TypeConverters(ListGenreTypeConverter::class, ZonedTimeTypeConverter::class)
 abstract class MovieDatabase : RoomDatabase(){
     abstract fun genreDao() : GenreDao
 
