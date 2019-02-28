@@ -5,19 +5,13 @@ import com.example.jvmori.discovermovies.data.local.database.MovieDatabase
 import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.network.response.DiscoverMovieResponse
-import com.example.jvmori.discovermovies.data.network.response.GenreResponse
 import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
-import io.reactivex.Flowable
-import io.reactivex.FlowableSubscriber
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
-import org.reactivestreams.Subscription
-
 
 class MoviesRepository(
     private val tmdpApi: TmdbAPI,
@@ -57,13 +51,27 @@ class MoviesRepository(
                 movieResult.movieDetails = movieDetails
                 return@map movieResult
             }
+
     }
 
-    fun getAllGenres(): Observable<List<Genre>> {
+    fun getAllGenresRemote(): Observable<List<Genre>> {
         return tmdpApi.getGenres()
             .flatMap {
                 return@flatMap Observable.just(it.genres)
             }
+            .doOnNext{
+                saveData(it)
+            }
+            .observeOn(Schedulers.io())
+    }
+
+    private fun saveData(data : List<Genre>)
+    {
+        genreDao.insert(data)
+    }
+
+    fun getAllGenresLocal() : Observable<List<Genre>>{
+        return genreDao.getAllGenres()
     }
 
     fun getGenreById(genreId: Int): Single<Genre> {
