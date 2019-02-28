@@ -32,12 +32,10 @@ class GenresPresenter (
         return object : DisposableObserver<GenreResponse>() {
 
             override fun onNext(response: GenreResponse) {
-                Log.d("Error", "OnNext" + response.genres)
                 genresViewInterface.displayGenres(response)
             }
 
             override fun onError( e: Throwable) {
-                Log.d("error", "Error$e")
                 e.printStackTrace()
                 genresViewInterface.displayError("Error fetching Movie Data")
             }
