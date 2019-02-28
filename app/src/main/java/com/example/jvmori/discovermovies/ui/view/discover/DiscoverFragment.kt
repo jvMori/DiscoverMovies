@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.data.local.entity.Genre
+import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.network.response.GenreResponse
+import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.ui.adapters.GenreAdapter
 import kotlinx.android.synthetic.main.fragment_discover.*
 
@@ -37,7 +39,9 @@ class DiscoverFragment : Fragment(), GenresViewInterface {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val genrePresenter = GenresPresenter(this)
+        val genrePresenter = GenresPresenter(this, MoviesRepository(
+            TmdbAPI.invoke(), this.requireContext()
+        ))
         genrePresenter.getGenres()
     }
 
@@ -49,9 +53,9 @@ class DiscoverFragment : Fragment(), GenresViewInterface {
         progress_circular.visibility = View.GONE
     }
 
-    override fun displayGenres(genreResponse: GenreResponse) {
-        Log.i("result", genreResponse.genres.toString())
-        createAdapter(genreResponse.genres)
+    override fun displayGenres(genreResponse: List<Genre>) {
+        Log.i("result", genreResponse.toString())
+        createAdapter(genreResponse)
     }
 
     override fun displayError(s: String) {

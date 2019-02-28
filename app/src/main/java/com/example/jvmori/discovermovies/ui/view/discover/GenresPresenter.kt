@@ -13,7 +13,8 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
 class GenresPresenter (
-    var genresViewInterface: GenresViewInterface
+    var genresViewInterface: GenresViewInterface,
+    private val repository: MoviesRepository
 ): GenresPresenterInterface {
 
     @SuppressLint("CheckResult")
@@ -21,18 +22,19 @@ class GenresPresenter (
         getObservable().subscribeWith(getObserver())
     }
 
-    private fun getObservable() : Observable<GenreResponse>{
-        return TmdbAPI.invoke().getGenres()
+    private fun getObservable() : Observable<List<Genre>>{
+        return repository.getAllGenresRemote()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { genresViewInterface.showProgressBar() }
     }
 
-    private fun getObserver() : DisposableObserver<GenreResponse> {
-        return object : DisposableObserver<GenreResponse>() {
+    private fun getObserver() : DisposableObserver<List<Genre>> {
+        return object : DisposableObserver<List<Genre>>() {
 
-            override fun onNext(response: GenreResponse) {
+            override fun onNext(response: List<Genre>) {
                 genresViewInterface.displayGenres(response)
+                //genresViewInterface.hideProgressBar()
             }
 
             override fun onError( e: Throwable) {
