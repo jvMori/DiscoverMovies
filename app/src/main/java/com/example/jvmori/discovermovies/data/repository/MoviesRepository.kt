@@ -9,10 +9,14 @@ import com.example.jvmori.discovermovies.data.network.response.GenreResponse
 import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
+import io.reactivex.Flowable
+import io.reactivex.FlowableSubscriber
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
+import org.reactivestreams.Subscription
 
 
 class MoviesRepository(
@@ -55,11 +59,15 @@ class MoviesRepository(
             }
     }
 
-    fun getAllGenres(): Observable<GenreResponse> {
+    fun getAllGenres(): Observable<List<Genre>> {
         return tmdpApi.getGenres()
+            .flatMap {
+                return@flatMap Observable.just(it.genres)
+            }
     }
 
     fun getGenreById(genreId: Int): Single<Genre> {
         return genreDao.getGenre(genreId)
     }
+
 }
