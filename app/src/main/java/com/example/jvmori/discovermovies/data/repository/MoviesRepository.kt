@@ -62,7 +62,7 @@ class MoviesRepository(
             .doOnNext{
                 saveData(it)
             }
-            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
     }
 
     private fun saveData(data : List<Genre>)
