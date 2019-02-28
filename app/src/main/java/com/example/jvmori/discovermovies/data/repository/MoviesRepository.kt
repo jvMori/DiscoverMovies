@@ -1,6 +1,7 @@
 package com.example.jvmori.discovermovies.data.repository
 
 import android.content.Context
+import android.util.Log
 import com.example.jvmori.discovermovies.data.local.database.MovieDatabase
 import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
@@ -57,7 +58,7 @@ class MoviesRepository(
     fun getGenres() : Observable<List<Genre>>{
         return Observable.concat(getAllGenresLocal(), getAllGenresRemote())
             .filter{
-                list -> !list.isEmpty()
+                list -> list.isNotEmpty()
             }
             .take(1)
     }
@@ -69,6 +70,9 @@ class MoviesRepository(
             }
             .doOnNext{
                 saveData(it)
+            }
+            .doOnError {
+                Log.i("Error", "Error")
             }
             .subscribeOn(Schedulers.io())
     }

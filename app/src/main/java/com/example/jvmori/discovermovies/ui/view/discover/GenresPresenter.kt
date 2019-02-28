@@ -19,14 +19,14 @@ class GenresPresenter (
 
     @SuppressLint("CheckResult")
     override fun getGenres() {
-        getObservable().subscribeWith(getObserver())
+        getObservable().subscribe(getObserver())
     }
 
     private fun getObservable() : Observable<List<Genre>>{
         return repository.getGenres()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { genresViewInterface.showProgressBar() }
+            //.doOnSubscribe { genresViewInterface.showProgressBar() }
     }
 
     private fun getObserver() : DisposableObserver<List<Genre>> {
@@ -34,7 +34,7 @@ class GenresPresenter (
 
             override fun onNext(response: List<Genre>) {
                 genresViewInterface.displayGenres(response)
-                //genresViewInterface.hideProgressBar()
+                genresViewInterface.hideProgressBar()
             }
 
             override fun onError( e: Throwable) {
