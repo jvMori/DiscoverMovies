@@ -4,6 +4,7 @@ package com.example.jvmori.discovermovies.ui.view.movies
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
+import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedList
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
@@ -20,19 +21,21 @@ class MoviesPresenter(
     private val repository: MoviesRepository
 ) : MoviesPresenterInterface {
 
-    var movieList: LiveData<PagedList<MovieResult>>? = null
+    lateinit var movieList: LiveData<PagedList<MovieResult>>
+    private lateinit var movieDataSource : LiveData<PageKeyedDataSource<Int, MovieResult>>
     private val pageSize = 1
 
     override fun initMovies(parameters: DiscoverQueryParam) {
         val sourceFactory = MovieDataSourceFactory(repository, parameters)
+        movieDataSource = sourceFactory.moviesLiveData
+
         val config = PagedList.Config.Builder()
             .setPageSize(pageSize)
             .setInitialLoadSizeHint(pageSize * 2)
             .setEnablePlaceholders(false)
             .build()
 
-        movieList = LivePagedListBuilder<Int, MovieResult>(sourceFactory, config).build()
-
+        movieList = (LivePagedListBuilder<Int, MovieResult>(sourceFactory, config)).build()
     }
 
     @SuppressLint("CheckResult")

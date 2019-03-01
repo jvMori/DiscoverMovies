@@ -54,6 +54,10 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
         genreId?.let {
            //moviesPresenter?.fetchMovies(DiscoverQueryParam(genreId.toString(), 1))
             moviesPresenter?.initMovies(DiscoverQueryParam(genreId.toString(), 1))
+            moviesPresenter?.movieList?.observeForever {
+                hideProgressBar()
+                displayAllItems(it)
+            }
         }
     }
 
