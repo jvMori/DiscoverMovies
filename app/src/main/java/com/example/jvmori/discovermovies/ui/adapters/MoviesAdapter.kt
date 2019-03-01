@@ -3,6 +3,8 @@ package com.example.jvmori.discovermovies.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.data.network.response.MovieDetails
@@ -12,7 +14,19 @@ import kotlinx.android.synthetic.main.movie_item.view.*
 
 class MoviesAdapter(
     private val movieItems: MutableList<MovieResult> = mutableListOf()
-) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
+) : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolder>(MovieDiffCallback) {
+
+    companion object {
+        val MovieDiffCallback = object : DiffUtil.ItemCallback<MovieResult>() {
+            override fun areItemsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
