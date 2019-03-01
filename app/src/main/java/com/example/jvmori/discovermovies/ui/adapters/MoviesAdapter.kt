@@ -44,7 +44,7 @@ class MoviesAdapter(
                 if (index != details.genres.lastIndex)
                     holder.itemView.category.append(" | ")
             }
-            LoadImage.loadImage(holder.itemView.icon, details.posterPath)
+            LoadImage.loadImage(holder.itemView.context, holder.itemView.icon, details.posterPath)
         }
     }
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

@@ -1,16 +1,19 @@
 package com.example.jvmori.discovermovies.util
 
+import android.content.Context
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.example.jvmori.discovermovies.R
-import com.squareup.picasso.Picasso
 
 class LoadImage {
     companion object {
-        fun loadImage(view: ImageView, imageUrl: String) {
-            Picasso.get()
+        fun loadImage(context: Context, view: ImageView, imageUrl: String) {
+            Glide.
+                with(context)
                 .load(Const.base_poster_url + imageUrl)
-                .error(R.drawable.gradient)
+                .centerCrop()
                 .placeholder(R.drawable.gradient)
+                .error(R.drawable.gradient)
                 .into(view)
         }
     }
