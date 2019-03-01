@@ -14,6 +14,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 class MoviesRepository(
     private val tmdpApi: TmdbAPI,
@@ -32,8 +33,6 @@ class MoviesRepository(
         parameters["year"] = queryParam.year
 
         return tmdpApi.getMovies(parameters)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun moviesObservable(queryParam: DiscoverQueryParam) : Observable<List<MovieResult>>{
