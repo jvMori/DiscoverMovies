@@ -2,22 +2,38 @@ package com.example.jvmori.discovermovies.ui.view.movies
 
 
 import android.annotation.SuppressLint
-import android.os.Looper
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import com.example.jvmori.discovermovies.ui.view.paging.MovieDataSourceFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.internal.operators.observable.ObservableFromIterable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.observables.ConnectableObservable
-import java.util.concurrent.TimeUnit
 
 
 class MoviesPresenter(
     val moviesViewInterface: MoviesViewInterface,
     private val repository: MoviesRepository
 ) : MoviesPresenterInterface {
+
+    var movieList: LiveData<PagedList<MovieResult>>? = null
+    private val pageSize = 1
+
+    override fun initMovies(parameters: DiscoverQueryParam) {
+        val sourceFactory = MovieDataSourceFactory(repository, parameters)
+        val config = PagedList.Config.Builder()
+            .setPageSize(pageSize)
+            .setInitialLoadSizeHint(pageSize * 2)
+            .setEnablePlaceholders(false)
+            .build()
+
+        movieList = LivePagedListBuilder<Int, MovieResult>(sourceFactory, config).build()
+
+    }
 
     @SuppressLint("CheckResult")
     override fun fetchMovies(parameters: DiscoverQueryParam) {

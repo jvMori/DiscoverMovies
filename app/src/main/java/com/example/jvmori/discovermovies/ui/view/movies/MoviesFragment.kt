@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -16,7 +18,9 @@ import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_movies.*
 
 
@@ -39,7 +43,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-         moviesPresenter = MoviesPresenter(this, MoviesRepository(TmdbAPI.invoke(),
+        moviesPresenter = MoviesPresenter(this, MoviesRepository(TmdbAPI.invoke(),
             this.requireContext()))
         return inflater.inflate(R.layout.fragment_movies, container, false)
     }
@@ -48,7 +52,8 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
         super.onViewCreated(view, savedInstanceState)
         genreId = MoviesFragmentArgs.fromBundle(arguments).genre
         genreId?.let {
-           moviesPresenter?.fetchMovies(DiscoverQueryParam(genreId.toString(), 1))
+           //moviesPresenter?.fetchMovies(DiscoverQueryParam(genreId.toString(), 1))
+            moviesPresenter?.initMovies(DiscoverQueryParam(genreId.toString(), 1))
         }
     }
 
