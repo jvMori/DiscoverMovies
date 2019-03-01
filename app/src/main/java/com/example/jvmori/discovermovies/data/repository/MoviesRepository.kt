@@ -22,7 +22,7 @@ class MoviesRepository(
 ) {
     private val genreDao = MovieDatabase.invoke(context.applicationContext).genreDao()
 
-    private fun getMoviesToDiscover(
+     fun getMoviesToDiscover(
         queryParam: DiscoverQueryParam
     ): Observable<DiscoverMovieResponse> {
         val parameters: HashMap<String, String> = HashMap()
