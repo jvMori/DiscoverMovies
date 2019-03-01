@@ -18,34 +18,41 @@ class MoviesAdapter(
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
         return MovieViewHolder(view)
     }
-    fun getItemPosition(movieResult : MovieResult) : Int{
+
+    fun getItemPosition(movieResult: MovieResult): Int {
         return movieItems.indexOf(movieResult)
     }
 
-    fun setItem(position: Int?, movieResult: MovieDetails){
+    fun setItem(position: Int?, movieResult: MovieDetails) {
         position.let {
-           movieItems[position!!].movieDetails = movieResult
+            movieItems[position!!].movieDetails = movieResult
         }
     }
+
     override fun getItemCount(): Int = movieItems.size
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = movieItems[position]
         val details: MovieDetails? = currentItem.movieDetails
         details?.let {
-            holder.itemView.title.text = details.title
-            holder.itemView.year.text = details.releaseDate
-            holder.itemView.rating.text = details.voteAverage.toString()
-            holder.itemView.review.text = details.voteCount.toString()
-            holder.itemView.icon.clipToOutline = true
-            holder.itemView.category.text= ""
-            details.genres.forEachIndexed { index, item ->
-                holder.itemView.category.append(item.name)
-                if (index != details.genres.lastIndex)
-                    holder.itemView.category.append(" | ")
-            }
-            LoadImage.loadImage(holder.itemView.context, holder.itemView.icon, details.posterPath)
+            holder.bind(details)
         }
     }
-    class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(details: MovieDetails) {
+            itemView.title.text = details.title
+            itemView.year.text = details.releaseDate
+            itemView.rating.text = details.voteAverage.toString()
+            itemView.review.text = details.voteCount.toString()
+            itemView.icon.clipToOutline = true
+            itemView.category.text = ""
+            details.genres.forEachIndexed { index, item ->
+                itemView.category.append(item.name)
+                if (index != details.genres.lastIndex)
+                    itemView.category.append(" | ")
+            }
+            LoadImage.loadImage(itemView.context, itemView.icon, details.posterPath)
+        }
+    }
 }
