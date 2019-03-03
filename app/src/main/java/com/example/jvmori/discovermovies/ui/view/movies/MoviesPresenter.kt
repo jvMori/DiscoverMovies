@@ -9,11 +9,13 @@ import androidx.paging.PagedList
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.ui.view.paging.MovieDataSourceFactory
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.internal.operators.observable.ObservableFromIterable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.observables.ConnectableObservable
+import java.util.*
 
 
 class MoviesPresenter(
@@ -47,9 +49,11 @@ class MoviesPresenter(
                 getObserverForAllItems()
             )
 
-        observableMovies
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        observableMovies.connect()
+    }
+    @SuppressLint("CheckResult")
+    fun fetchDetails(data : List<MovieResult>){
+       Observable.just(data)
             .flatMap {
                 return@flatMap ObservableFromIterable(it)
             }
@@ -59,8 +63,6 @@ class MoviesPresenter(
             .subscribeWith(
                 getMovieResultObserver()
             )
-
-        observableMovies.connect()
     }
 
     private fun getMovieResultObserver(): DisposableObserver<MovieResult> {

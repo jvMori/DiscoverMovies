@@ -58,6 +58,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
             moviesPresenter?.movieDataList?.observe(this, Observer{pageList ->
                 pageList?.let{
                     displayAllItems(pageList)
+                    moviesPresenter?.fetchDetails(pageList)
                 }
             })
         }
