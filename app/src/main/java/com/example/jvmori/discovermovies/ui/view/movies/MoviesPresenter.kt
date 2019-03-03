@@ -4,7 +4,6 @@ package com.example.jvmori.discovermovies.ui.view.movies
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
-import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedList
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
@@ -15,7 +14,6 @@ import io.reactivex.internal.operators.observable.ObservableFromIterable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.observables.ConnectableObservable
-import java.util.*
 
 
 class MoviesPresenter(
@@ -72,7 +70,7 @@ class MoviesPresenter(
             }
 
             override fun onNext(t: MovieResult) {
-                moviesViewInterface.displayMovie(t)
+                moviesViewInterface.setMovieDetails(t)
             }
 
             override fun onError(e: Throwable) {

@@ -5,6 +5,6 @@ import com.example.jvmori.discovermovies.ui.view.BaseViewInterface
 
 interface MoviesViewInterface : BaseViewInterface
 {
-    fun displayMovie(movieResult : MovieResult)
+    fun setMovieDetails(movieResult : MovieResult)
     fun displayAllItems(movieResponse: List<MovieResult>)
 }

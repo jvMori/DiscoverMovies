@@ -36,15 +36,19 @@ private const val ARG_PARAM2 = "param2"
 class MoviesFragment : Fragment(), MoviesViewInterface {
 
     private var genreId: Int? = null
-    private var moviesPresenter : MoviesPresenter? = null
-    private var moviesAdapter : MoviesAdapter? = null
+    private var moviesPresenter: MoviesPresenter? = null
+    private var moviesAdapter: MoviesAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        moviesPresenter = MoviesPresenter(this, MoviesRepository(TmdbAPI.invoke(),
-            this.requireContext()))
+        moviesPresenter = MoviesPresenter(
+            this, MoviesRepository(
+                TmdbAPI.invoke(),
+                this.requireContext()
+            )
+        )
         return inflater.inflate(R.layout.fragment_movies, container, false)
     }
 
@@ -52,11 +56,11 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
         super.onViewCreated(view, savedInstanceState)
         genreId = MoviesFragmentArgs.fromBundle(arguments).genre
         genreId?.let {
-           //moviesPresenter?.fetchMovies(DiscoverQueryParam(genreId.toString(), 1))
+            //moviesPresenter?.fetchMovies(DiscoverQueryParam(genreId.toString(), 1))
             moviesPresenter?.initMovies(DiscoverQueryParam(genreId.toString(), 1))
             moviesPresenter?.initMovies(DiscoverQueryParam(genreId.toString(), 1))
-            moviesPresenter?.movieDataList?.observe(this, Observer{pageList ->
-                pageList?.let{
+            moviesPresenter?.movieDataList?.observe(this, Observer { pageList ->
+                pageList?.let {
                     displayAllItems(pageList)
                     moviesAdapter?.submitList(pageList)
                     moviesPresenter?.fetchDetails(pageList)
@@ -75,17 +79,14 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
         progressBar.visibility = View.GONE
     }
 
-    override fun displayMovie(movieResult: MovieResult) {
-        val position = moviesAdapter?.getItemPosition(movieResult)
-        position.let {
-            moviesAdapter?.setItem(it, movieResult.movieDetails)
-            moviesAdapter?.notifyItemChanged(position!!)
-        }
+    override fun setMovieDetails(movieResult: MovieResult) {
+        moviesAdapter?.setItem(movieResult.movieDetails)
+        moviesAdapter?.notifyDataSetChanged()
     }
 
     override fun displayAllItems(movieResponse: List<MovieResult>) {
-        moviesAdapter = MoviesAdapter(movieResponse.toMutableList())
-        recyclerViewMovies!!.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL ,false)
+        moviesAdapter = MoviesAdapter()
+        recyclerViewMovies!!.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
         recyclerViewMovies!!.setHasFixedSize(true)
         recyclerViewMovies!!.adapter = moviesAdapter
     }

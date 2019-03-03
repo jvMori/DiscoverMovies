@@ -14,7 +14,7 @@ import com.example.jvmori.discovermovies.util.LoadImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 
 class MoviesAdapter(
-    private val movieItems: MutableList<MovieResult> = mutableListOf()
+    //private val movieItems: MutableList<MovieResult> = mutableListOf()
 ) : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolder>(MovieDiffCallback) {
 
     companion object {
@@ -34,13 +34,11 @@ class MoviesAdapter(
         return MovieViewHolder(view)
     }
 
-    fun getItemPosition(movieResult: MovieResult): Int {
-        return movieItems.indexOf(movieResult)
-    }
-
-    fun setItem(position: Int?, movieResult: MovieDetails) {
-        position.let {
-            movieItems[position!!].movieDetails = movieResult
+    fun setItem(movieResult: MovieDetails){
+        currentList?.forEach{
+            if (it.id == movieResult.id) {
+                it.movieDetails = movieResult
+            }
         }
     }
 
@@ -49,8 +47,8 @@ class MoviesAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val currentItem = movieItems[position]
-        val details: MovieDetails? = currentItem.movieDetails
+        val currentItem = getItem(position)
+        val details: MovieDetails? = currentItem?.movieDetails
         details?.let {
             holder.bind(details)
         }
