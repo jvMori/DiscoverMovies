@@ -58,7 +58,6 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
         genreId?.let {
             //moviesPresenter?.fetchMovies(DiscoverQueryParam(genreId.toString(), 1))
             moviesPresenter?.initMovies(DiscoverQueryParam(genreId.toString(), 1))
-            moviesPresenter?.initMovies(DiscoverQueryParam(genreId.toString(), 1))
             moviesPresenter?.movieDataList?.observe(this, Observer { pageList ->
                 pageList?.let {
                     displayAllItems(pageList)

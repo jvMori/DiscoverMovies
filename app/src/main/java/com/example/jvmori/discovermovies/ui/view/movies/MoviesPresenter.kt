@@ -22,7 +22,7 @@ class MoviesPresenter(
 ) : MoviesPresenterInterface {
 
     lateinit var movieDataList : LiveData<PagedList<MovieResult>>
-    private val pageSize = 20
+    private val pageSize = 10
 
     override fun initMovies(parameters: DiscoverQueryParam) {
         val sourceFactory = MovieDataSourceFactory(repository, parameters)
