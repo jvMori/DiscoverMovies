@@ -42,10 +42,6 @@ class MoviesAdapter(
         }
     }
 
-    override fun getItemCount(): Int {
-        return super.getItemCount()
-    }
-
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = getItem(position)
         val details: MovieDetails? = currentItem?.movieDetails

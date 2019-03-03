@@ -7,5 +7,4 @@ import com.example.jvmori.discovermovies.data.network.response.MovieResult
 
 interface MoviesPresenterInterface {
     fun fetchMovies(parameters: DiscoverQueryParam)
-    fun initMovies(parameters: DiscoverQueryParam)
 }

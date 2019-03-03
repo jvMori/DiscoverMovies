@@ -3,6 +3,8 @@ package com.example.jvmori.discovermovies.ui.view.movies
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
@@ -21,20 +23,18 @@ class MoviesPresenter(
     private val repository: MoviesRepository
 ) : MoviesPresenterInterface {
 
-    lateinit var movieDataList : LiveData<PagedList<MovieResult>>
-    private val pageSize = 10
+    private val pageSize = 20
+    lateinit var parameters: DiscoverQueryParam
 
-    override fun initMovies(parameters: DiscoverQueryParam) {
+    val moviesDataList : LiveData<PagedList<MovieResult>> by lazy {
         val sourceFactory = MovieDataSourceFactory(repository, parameters)
         val config = PagedList.Config.Builder()
             .setPageSize(pageSize)
             .setInitialLoadSizeHint(pageSize * 2)
             .setEnablePlaceholders(false)
             .build()
-
-        movieDataList = LivePagedListBuilder<Int, MovieResult>(sourceFactory, config).build()
+        LivePagedListBuilder<Int, MovieResult>(sourceFactory, config).build()
     }
-
 
     @SuppressLint("CheckResult")
     override fun fetchMovies(parameters: DiscoverQueryParam) {

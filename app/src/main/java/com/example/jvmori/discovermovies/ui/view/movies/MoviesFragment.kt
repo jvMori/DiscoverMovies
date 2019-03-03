@@ -55,17 +55,21 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         genreId = MoviesFragmentArgs.fromBundle(arguments).genre
-        genreId?.let {
-            //moviesPresenter?.fetchMovies(DiscoverQueryParam(genreId.toString(), 1))
-            moviesPresenter?.initMovies(DiscoverQueryParam(genreId.toString(), 1))
-            moviesPresenter?.movieDataList?.observe(this, Observer { pageList ->
-                pageList?.let {
-                    displayAllItems(pageList)
-                    moviesAdapter?.submitList(pageList)
-                    moviesPresenter?.fetchDetails(pageList)
-                }
-            })
+        genreId?.let { genreId ->
+            moviesPresenter?.let {
+                it.parameters = DiscoverQueryParam(genreId.toString(), 1)
+                it.moviesDataList.observe(this, Observer { pageList ->
+                    pageList?.let {
+                        displayAllItems(pageList)
+                        moviesAdapter?.submitList(pageList)
+                        moviesPresenter?.fetchDetails(pageList)
+                    }
+                })
+            }
         }
+        moviesPresenter?.moviesDataList?.observe(this, Observer {
+            moviesAdapter?.submitList(it)
+        })
     }
 
     override fun showProgressBar() {
