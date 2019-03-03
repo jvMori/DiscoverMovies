@@ -21,22 +21,19 @@ class MoviesPresenter(
     private val repository: MoviesRepository
 ) : MoviesPresenterInterface {
 
-    private lateinit var movieDataSource : LiveData<PageKeyedDataSource<Int, MovieResult>>
+    lateinit var movieDataList : LiveData<PagedList<MovieResult>>
     private val pageSize = 20
 
-    override fun initMovies(parameters: DiscoverQueryParam) : LiveData<PagedList<MovieResult>>{
+    override fun initMovies(parameters: DiscoverQueryParam) {
         val sourceFactory = MovieDataSourceFactory(repository, parameters)
-        movieDataSource = sourceFactory.moviesLiveData
-
         val config = PagedList.Config.Builder()
             .setPageSize(pageSize)
             .setInitialLoadSizeHint(pageSize * 2)
             .setEnablePlaceholders(false)
             .build()
 
-        return (LivePagedListBuilder<Int, MovieResult>(sourceFactory, config)).build()
+        movieDataList = LivePagedListBuilder<Int, MovieResult>(sourceFactory, config).build()
     }
-
 
 
     @SuppressLint("CheckResult")

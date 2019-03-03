@@ -13,7 +13,7 @@ class MovieDataSourceFactory(
     private val parameters: DiscoverQueryParam
 ) : DataSource.Factory<Int, MovieResult>() {
 
-    val moviesLiveData :MutableLiveData<PageKeyedDataSource<Int, MovieResult>> = MutableLiveData()
+    val moviesLiveData :MutableLiveData<MoviesDataSource> = MutableLiveData()
 
     override fun create(): DataSource<Int, MovieResult> {
         val dataSource = MoviesDataSource(repository, parameters)

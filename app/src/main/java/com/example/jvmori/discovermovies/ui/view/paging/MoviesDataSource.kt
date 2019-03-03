@@ -19,8 +19,6 @@ class MoviesDataSource(
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, MovieResult>) {
         repository.getMoviesToDiscover(parameters)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 object: DisposableObserver<DiscoverMovieResponse>(){
                     override fun onComplete() {
@@ -41,8 +39,6 @@ class MoviesDataSource(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, MovieResult>) {
         repository.getMoviesToDiscover(DiscoverQueryParam(parameters.genresId, params.key))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 object: DisposableObserver<DiscoverMovieResponse>(){
                     override fun onComplete() {
@@ -65,8 +61,6 @@ class MoviesDataSource(
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, MovieResult>) {
         repository.getMoviesToDiscover(DiscoverQueryParam(parameters.genresId, params.key))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 object: DisposableObserver<DiscoverMovieResponse>(){
                     override fun onComplete() {
