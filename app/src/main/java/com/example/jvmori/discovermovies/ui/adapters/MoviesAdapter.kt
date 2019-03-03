@@ -3,6 +3,7 @@ package com.example.jvmori.discovermovies.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -44,12 +45,7 @@ class MoviesAdapter(
     }
 
     override fun getItemCount(): Int {
-        super.getItemCount()
-        return movieItems.size
-    }
-
-    override fun getItem(position: Int): MovieResult? {
-        return super.getItem(position)
+        return super.getItemCount() + 1
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {

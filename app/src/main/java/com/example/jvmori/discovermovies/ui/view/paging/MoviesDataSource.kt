@@ -48,7 +48,7 @@ class MoviesDataSource(
                     override fun onNext(t: DiscoverMovieResponse) {
                         var key : Int? = null
                         if (params.key <  t.totalPages) key = params.key + 1
-                        callback.onResult(t.results, key )
+                        callback.onResult(t.results, key)
                     }
 
                     override fun onError(e: Throwable) {
