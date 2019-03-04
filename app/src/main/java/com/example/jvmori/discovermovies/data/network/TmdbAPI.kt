@@ -1,6 +1,6 @@
 package com.example.jvmori.discovermovies.data.network
 
-import com.example.jvmori.discovermovies.data.network.response.DiscoverMovieResponse
+import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.network.response.GenreResponse
 import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import com.example.jvmori.discovermovies.util.Const
