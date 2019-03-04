@@ -100,4 +100,9 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
     override fun displayError(s: String) {
         Log.i("Data", s)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        moviesPresenter?.clear()
+    }
 }

@@ -17,7 +17,7 @@ interface MovieDao
         deleteUsers(movies.genreId, movies.page)
         insert(movies)
     }
-    
+
     @Query("Delete from movies_discover where genreId like :genreId and page like :page")
     fun deleteUsers(genreId : Int, page: Int)
 }

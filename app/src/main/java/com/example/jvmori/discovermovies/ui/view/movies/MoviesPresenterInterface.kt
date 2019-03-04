@@ -13,4 +13,5 @@ interface MoviesPresenterInterface {
     fun fetchGenreById(id : Int) : Single<Genre>
     val moviesDataList : LiveData<PagedList<MovieResult>>
     var parameters: DiscoverQueryParam
+    fun clear()
 }

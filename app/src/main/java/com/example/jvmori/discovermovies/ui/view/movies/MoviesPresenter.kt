@@ -12,6 +12,7 @@ import com.example.jvmori.discovermovies.data.local.entity.Genre
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.internal.operators.observable.ObservableFromIterable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
@@ -25,10 +26,11 @@ class MoviesPresenter(
 
     private val pageSize = 20
     override lateinit var parameters: DiscoverQueryParam
+    private val disposable = CompositeDisposable()
 
     override val moviesDataList : LiveData<PagedList<MovieResult>> by lazy {
         val sourceFactory =
-            MovieDataSourceFactory(repository, parameters)
+            MovieDataSourceFactory(repository, parameters, disposable)
         val config = PagedList.Config.Builder()
             .setPageSize(pageSize)
             .setInitialLoadSizeHint(pageSize * 2)
@@ -98,5 +100,9 @@ class MoviesPresenter(
                 moviesViewInterface.displayError("Error while loading data. Try again!" + e.message)
             }
         }
+    }
+
+    override fun clear() {
+        disposable.dispose()
     }
 }
