@@ -3,13 +3,11 @@ package com.example.jvmori.discovermovies.ui.view.movies
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
-import com.example.jvmori.discovermovies.ui.view.paging.MovieDataSourceFactory
+import com.example.jvmori.discovermovies.data.datasource.MovieDataSourceFactory
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.internal.operators.observable.ObservableFromIterable
@@ -27,7 +25,8 @@ class MoviesPresenter(
     lateinit var parameters: DiscoverQueryParam
 
     val moviesDataList : LiveData<PagedList<MovieResult>> by lazy {
-        val sourceFactory = MovieDataSourceFactory(repository, parameters)
+        val sourceFactory =
+            MovieDataSourceFactory(repository, parameters)
         val config = PagedList.Config.Builder()
             .setPageSize(pageSize)
             .setInitialLoadSizeHint(pageSize * 2)

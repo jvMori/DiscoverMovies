@@ -1,4 +1,4 @@
-package com.example.jvmori.discovermovies.ui.view.paging
+package com.example.jvmori.discovermovies.data.datasource
 
 import androidx.paging.DataSource
 import com.example.jvmori.discovermovies.data.network.response.MovieResult

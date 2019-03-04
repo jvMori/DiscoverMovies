@@ -3,19 +3,17 @@ package com.example.jvmori.discovermovies.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
+import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.util.LoadImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 
-class MoviesAdapter(
-    //private val movieItems: MutableList<MovieResult> = mutableListOf()
-) : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolder>(MovieDiffCallback) {
+class MoviesAdapter : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolder>(MovieDiffCallback) {
 
     companion object {
         val MovieDiffCallback = object : DiffUtil.ItemCallback<MovieResult>() {
@@ -34,36 +32,29 @@ class MoviesAdapter(
         return MovieViewHolder(view)
     }
 
-    fun setItem(movieResult: MovieDetails){
-        currentList?.forEach{
-            if (it.id == movieResult.id) {
-                it.movieDetails = movieResult
-            }
-        }
-    }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = getItem(position)
-        val details: MovieDetails? = currentItem?.movieDetails
-        details?.let {
-            holder.bind(details)
+        currentItem?.let {
+            holder.bind(it)
         }
     }
 
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(details: MovieDetails) {
-            itemView.title.text = details.title
-            itemView.year.text = details.releaseDate
-            itemView.rating.text = details.voteAverage.toString()
-            itemView.review.text = details.voteCount.toString()
+        fun bind(movieResult: MovieResult) {
+            itemView.title.text = movieResult.title
+            itemView.year.text = movieResult.releaseDate
+            itemView.rating.text = movieResult.voteAverage.toString()
+            itemView.review.text = movieResult.voteCount.toString()
             itemView.icon.clipToOutline = true
             itemView.category.text = ""
-            details.genres.forEachIndexed { index, item ->
-                itemView.category.append(item.name)
-                if (index != details.genres.lastIndex)
-                    itemView.category.append(" | ")
-            }
-            LoadImage.loadImage(itemView.context, itemView.icon, details.posterPath)
+//            movieResult.genreIds.forEachIndexed { index, item ->
+//                val genre = Genre()
+//                itemView.category.append(genre.name)
+//                if (index != movieResult.genreIds.lastIndex)
+//                    itemView.category.append(" | ")
+//            }
+            LoadImage.loadImage(itemView.context, itemView.icon, movieResult.posterPath)
         }
     }
 }

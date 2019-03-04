@@ -50,7 +50,7 @@ class MoviesRepository(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map { movieDetails: MovieDetails ->
-                movieResult.movieDetails = movieDetails
+               // movieResult.movieDetails = movieDetails
                 return@map movieResult
             }
 

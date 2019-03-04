@@ -62,7 +62,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
                     pageList?.let {
                         displayAllItems(pageList)
                         moviesAdapter?.submitList(pageList)
-                        moviesPresenter?.fetchDetails(pageList)
+                        hideProgressBar()
                     }
                 })
             }
@@ -83,8 +83,8 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
     }
 
     override fun setMovieDetails(movieResult: MovieResult) {
-        moviesAdapter?.setItem(movieResult.movieDetails)
-        moviesAdapter?.notifyDataSetChanged()
+       // moviesAdapter?.setItem(movieResult.movieDetails)
+        //moviesAdapter?.notifyDataSetChanged()
     }
 
     override fun displayAllItems(movieResponse: List<MovieResult>) {

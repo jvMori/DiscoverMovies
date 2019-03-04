@@ -1,4 +1,4 @@
-package com.example.jvmori.discovermovies.ui.view.paging
+package com.example.jvmori.discovermovies.data.datasource
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
