@@ -20,8 +20,9 @@ class MoviesRepository(
     context: Context
 ) {
     private val genreDao = MovieDatabase.invoke(context.applicationContext).genreDao()
+    private val moviesDao = MovieDatabase.invoke(context.applicationContext).moviesDao()
 
-     fun getMoviesToDiscover(
+    fun getMoviesToDiscover(
         queryParam: DiscoverQueryParam
     ): Observable<DiscoverMovieResponse> {
         val parameters: HashMap<String, String> = HashMap()
@@ -34,7 +35,17 @@ class MoviesRepository(
         return tmdpApi.getMovies(parameters)
     }
 
-    fun moviesObservable(queryParam: DiscoverQueryParam) : Observable<List<MovieResult>>{
+    fun getMovies(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
+        return Maybe.concat(getAllMoviesLocal(queryParam), getAllMoviesRemote(queryParam))
+            .filter { list ->
+                list.results.isNotEmpty()
+            }
+            .take(1)
+            .toObservable()
+    }
+
+
+    fun moviesObservable(queryParam: DiscoverQueryParam): Observable<List<MovieResult>> {
         return getMoviesToDiscover(queryParam)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -48,26 +59,37 @@ class MoviesRepository(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map { movieDetails: MovieDetails ->
-               // movieResult.movieDetails = movieDetails
+                // movieResult.movieDetails = movieDetails
                 return@map movieResult
             }
 
     }
 
-    fun getGenres() : Observable<List<Genre>>{
+    fun getGenres(): Observable<List<Genre>> {
         return Maybe.concat(getAllGenresLocal(), getAllGenresRemote())
-            .filter{
-                list -> list.isNotEmpty()
+            .filter { list ->
+                list.isNotEmpty()
             }
             .take(1)
             .toObservable()
+    }
+
+    private fun getAllMoviesRemote(queryParam: DiscoverQueryParam): Maybe<DiscoverMovieResponse> {
+        return getMoviesToDiscover(queryParam)
+            .firstElement()
+            .doAfterSuccess {
+                moviesDao.updateData(it)
+            }.doOnError {
+                Log.i("Error", "Error")
+            }
+           // .subscribeOn(Schedulers.io())
     }
 
     private fun getAllGenresRemote(): Maybe<List<Genre>> {
         return tmdpApi.getGenres()
             .flatMap {
                 return@flatMap Maybe.just(it.genres)
-            }.doAfterSuccess{
+            }.doAfterSuccess {
                 saveData(it)
             }
             .doOnError {
@@ -76,17 +98,22 @@ class MoviesRepository(
             .subscribeOn(Schedulers.io())
     }
 
-    private fun saveData(data : List<Genre>)
-    {
+    private fun saveData(data: List<Genre>) {
         genreDao.insert(data)
     }
 
-    private fun getAllGenresLocal() : Maybe<List<Genre>> {
+    private fun getAllGenresLocal(): Maybe<List<Genre>> {
         return genreDao.getAllGenres()
     }
 
     fun getGenreById(genreId: Int): Single<Genre> {
         return genreDao.getGenre(genreId)
+    }
+
+    private fun getAllMoviesLocal(queryParam: DiscoverQueryParam): Maybe<DiscoverMovieResponse> {
+        return moviesDao.getMovies(queryParam.genresId.toInt(), queryParam.page).doAfterSuccess{
+            Log.i("Movies", it.toString())
+        }
     }
 
 }

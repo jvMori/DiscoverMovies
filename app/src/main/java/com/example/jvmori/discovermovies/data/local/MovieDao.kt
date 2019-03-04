@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
+import io.reactivex.Maybe
 
 @Dao
 interface MovieDao
@@ -14,10 +15,13 @@ interface MovieDao
 
     @Transaction
     fun updateData(movies : DiscoverMovieResponse){
-        deleteUsers(movies.genreId, movies.page)
+        deleteMovies(movies.genreId, movies.page)
         insert(movies)
     }
 
     @Query("Delete from movies_discover where genreId like :genreId and page like :page")
-    fun deleteUsers(genreId : Int, page: Int)
+    fun deleteMovies(genreId : Int, page: Int)
+
+    @Query("Select * from movies_discover where genreId like :genreId and page like :page")
+    fun getMovies(genreId : Int, page: Int) : Maybe<DiscoverMovieResponse>
 }

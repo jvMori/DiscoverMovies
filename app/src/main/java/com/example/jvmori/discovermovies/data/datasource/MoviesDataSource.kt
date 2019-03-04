@@ -19,7 +19,7 @@ class MoviesDataSource(
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, MovieResult>) {
         disposable.add(
-            repository.getMoviesToDiscover(parameters)
+            repository.getMovies(parameters)
                 .subscribe(
                     { t ->
                         callback.onResult(t.results, null, firstPage + 1)
@@ -32,7 +32,7 @@ class MoviesDataSource(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, MovieResult>) {
         disposable.add(
-            repository.getMoviesToDiscover(DiscoverQueryParam(parameters.genresId, params.key))
+            repository.getMovies(DiscoverQueryParam(parameters.genresId, params.key))
                 .subscribe(
                     {
                         var key: Int? = null
@@ -47,7 +47,7 @@ class MoviesDataSource(
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, MovieResult>) {
         disposable.add(
-            repository.getMoviesToDiscover(DiscoverQueryParam(parameters.genresId, params.key))
+            repository.getMovies(DiscoverQueryParam(parameters.genresId, params.key))
                 .subscribe(
                     {
                         var key: Int? = null
