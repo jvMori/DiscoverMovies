@@ -8,7 +8,9 @@ import androidx.paging.PagedList
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.data.datasource.MovieDataSourceFactory
+import com.example.jvmori.discovermovies.data.local.entity.Genre
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.internal.operators.observable.ObservableFromIterable
 import io.reactivex.observers.DisposableObserver
@@ -60,6 +62,10 @@ class MoviesPresenter(
             .subscribeWith(
                 getMovieResultObserver()
             )
+    }
+
+    override fun fetchGenreById(id : Int) : Single<Genre>{
+        return repository.getGenreById(id).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
     }
 
     private fun getMovieResultObserver(): DisposableObserver<MovieResult> {

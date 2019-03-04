@@ -7,13 +7,18 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jvmori.discovermovies.R
+import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import com.example.jvmori.discovermovies.ui.view.movies.MoviesPresenter
+import com.example.jvmori.discovermovies.ui.view.movies.MoviesPresenterInterface
 import com.example.jvmori.discovermovies.util.LoadImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 
-class MoviesAdapter : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolder>(MovieDiffCallback) {
+class MoviesAdapter(
+    private var moviesPresenter: MoviesPresenter
+) : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolder>(MovieDiffCallback) {
 
     companion object {
         val MovieDiffCallback = object : DiffUtil.ItemCallback<MovieResult>() {
@@ -36,24 +41,25 @@ class MoviesAdapter : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolde
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = getItem(position)
         currentItem?.let {
-            holder.bind(it)
+            holder.bind(it, presenter = moviesPresenter)
         }
     }
 
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(movieResult: MovieResult) {
+        fun bind(movieResult: MovieResult, presenter: MoviesPresenter) {
             itemView.title.text = movieResult.title
             itemView.year.text = movieResult.releaseDate
             itemView.rating.text = movieResult.voteAverage.toString()
             itemView.review.text = movieResult.voteCount.toString()
             itemView.icon.clipToOutline = true
             itemView.category.text = ""
-//            movieResult.genreIds.forEachIndexed { index, item ->
-//                val genre = Genre()
-//                itemView.category.append(genre.name)
-//                if (index != movieResult.genreIds.lastIndex)
-//                    itemView.category.append(" | ")
-//            }
+            movieResult.genreIds.forEachIndexed { index, item ->
+                presenter.fetchGenreById(item).subscribe { response ->
+                    itemView.category.append(response.name)
+                    if (index != movieResult.genreIds.lastIndex)
+                        itemView.category.append(" | ")
+                }
+            }
             LoadImage.loadImage(itemView.context, itemView.icon, movieResult.posterPath)
         }
     }

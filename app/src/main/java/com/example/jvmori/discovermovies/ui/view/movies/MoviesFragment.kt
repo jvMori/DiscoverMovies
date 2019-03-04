@@ -38,6 +38,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
     private var genreId: Int? = null
     private var moviesPresenter: MoviesPresenter? = null
     private var moviesAdapter: MoviesAdapter? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -88,10 +89,12 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
     }
 
     override fun displayAllItems(movieResponse: List<MovieResult>) {
-        moviesAdapter = MoviesAdapter()
-        recyclerViewMovies!!.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
-        recyclerViewMovies!!.setHasFixedSize(true)
-        recyclerViewMovies!!.adapter = moviesAdapter
+        moviesPresenter?.let {
+            moviesAdapter = MoviesAdapter(moviesPresenter!!)
+            recyclerViewMovies!!.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
+            recyclerViewMovies!!.setHasFixedSize(true)
+            recyclerViewMovies!!.adapter = moviesAdapter
+        }
     }
 
     override fun displayError(s: String) {
