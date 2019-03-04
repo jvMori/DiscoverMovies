@@ -65,6 +65,9 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
                         moviesPresenter?.fetchDetails(pageList)
                     }
                 })
+                it.getNetworkState().observe(this, Observer { networkState ->
+                    moviesAdapter?.setNetworkState(networkState)
+                })
             }
         }
         moviesPresenter?.moviesDataList?.observe(this, Observer {
@@ -96,5 +99,10 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
 
     override fun displayError(s: String) {
         Log.i("Data", s)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        moviesPresenter?.onCleared()
     }
 }

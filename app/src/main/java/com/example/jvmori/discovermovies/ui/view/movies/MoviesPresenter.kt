@@ -3,15 +3,17 @@ package com.example.jvmori.discovermovies.ui.view.movies
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
-import com.example.jvmori.discovermovies.ui.view.paging.MovieDataSourceFactory
+import com.example.jvmori.discovermovies.data.datasource.MovieDataSourceFactory
+import com.example.jvmori.discovermovies.data.datasource.MoviesDataSource
+import com.example.jvmori.discovermovies.data.datasource.NetworkState
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.internal.operators.observable.ObservableFromIterable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
@@ -25,9 +27,17 @@ class MoviesPresenter(
 
     private val pageSize = 20
     lateinit var parameters: DiscoverQueryParam
+    private val compositeDisposable = CompositeDisposable()
+
+    private val sourceFactory by lazy {
+        MovieDataSourceFactory(
+            repository,
+            parameters,
+            compositeDisposable
+        )
+    }
 
     val moviesDataList : LiveData<PagedList<MovieResult>> by lazy {
-        val sourceFactory = MovieDataSourceFactory(repository, parameters)
         val config = PagedList.Config.Builder()
             .setPageSize(pageSize)
             .setInitialLoadSizeHint(pageSize * 2)
@@ -35,6 +45,10 @@ class MoviesPresenter(
             .build()
         LivePagedListBuilder<Int, MovieResult>(sourceFactory, config).build()
     }
+
+    fun getNetworkState(): LiveData<NetworkState> = Transformations.switchMap<MoviesDataSource, NetworkState>(
+        sourceFactory.moviesDataSourceLivaData
+    ) { it.networkState }
 
     @SuppressLint("CheckResult")
     override fun fetchMovies(parameters: DiscoverQueryParam) {
@@ -93,5 +107,9 @@ class MoviesPresenter(
                 moviesViewInterface.displayError("Error while loading data. Try again!" + e.message)
             }
         }
+    }
+
+    override fun onCleared() {
+        compositeDisposable.dispose()
     }
 }
