@@ -24,9 +24,9 @@ class MoviesPresenter(
 ) : MoviesPresenterInterface {
 
     private val pageSize = 20
-    lateinit var parameters: DiscoverQueryParam
+    override lateinit var parameters: DiscoverQueryParam
 
-    val moviesDataList : LiveData<PagedList<MovieResult>> by lazy {
+    override val moviesDataList : LiveData<PagedList<MovieResult>> by lazy {
         val sourceFactory =
             MovieDataSourceFactory(repository, parameters)
         val config = PagedList.Config.Builder()

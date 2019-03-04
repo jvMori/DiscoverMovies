@@ -17,7 +17,7 @@ import com.example.jvmori.discovermovies.util.LoadImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 
 class MoviesAdapter(
-    private var moviesPresenter: MoviesPresenter
+    private var moviesPresenter: MoviesPresenterInterface
 ) : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolder>(MovieDiffCallback) {
 
     companion object {
@@ -46,7 +46,7 @@ class MoviesAdapter(
     }
 
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(movieResult: MovieResult, presenter: MoviesPresenter) {
+        fun bind(movieResult: MovieResult, presenter: MoviesPresenterInterface) {
             itemView.title.text = movieResult.title
             itemView.year.text = movieResult.releaseDate
             itemView.rating.text = movieResult.voteAverage.toString()

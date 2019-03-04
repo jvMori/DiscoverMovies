@@ -36,7 +36,7 @@ private const val ARG_PARAM2 = "param2"
 class MoviesFragment : Fragment(), MoviesViewInterface {
 
     private var genreId: Int? = null
-    private var moviesPresenter: MoviesPresenter? = null
+    private var moviesPresenter: MoviesPresenterInterface? = null
     private var moviesAdapter: MoviesAdapter? = null
 
     override fun onCreateView(
