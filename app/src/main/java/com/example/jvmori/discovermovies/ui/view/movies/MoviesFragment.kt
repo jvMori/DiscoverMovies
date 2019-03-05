@@ -17,6 +17,7 @@ import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import com.example.jvmori.discovermovies.ui.IOnClickListener
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -33,7 +34,7 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class MoviesFragment : Fragment(), MoviesViewInterface {
+class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener{
 
     private var genreId: Int? = null
     private var moviesPresenter: MoviesPresenterInterface? = null
@@ -73,6 +74,10 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
         })
     }
 
+    override fun onMovieItemClicked(movieId: Int) {
+
+    }
+
     override fun showProgressBar() {
         recyclerViewMovies.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
@@ -90,7 +95,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface {
 
     override fun displayAllItems(movieResponse: List<MovieResult>) {
         moviesPresenter?.let {
-            moviesAdapter = MoviesAdapter(moviesPresenter!!)
+            moviesAdapter = MoviesAdapter(moviesPresenter!!, this)
             recyclerViewMovies!!.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
             recyclerViewMovies!!.setHasFixedSize(true)
             recyclerViewMovies!!.adapter = moviesAdapter

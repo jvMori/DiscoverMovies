@@ -31,13 +31,13 @@ class GenreAdapter(
         holder.itemView.itemName.text = allGenres[position].name
         holder.itemView.cardView2.setCardBackgroundColor(RandomColor.generateColor())
         holder.itemView.setOnClickListener {
-           navigateToMovieList(it, position)
+           navigateToMovieList(position)
         }
     }
 
     class GenreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    private fun navigateToMovieList(view: View, position: Int){
+    private fun navigateToMovieList(position: Int){
         val id = allGenres[position].idGenre
         val action = DiscoverFragmentDirections.specifyGenreId().setGenre(id)
         val nav =  NavHostFragment.findNavController(fragment)

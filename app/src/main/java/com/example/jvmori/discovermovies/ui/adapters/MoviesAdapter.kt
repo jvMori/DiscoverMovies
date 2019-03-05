@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
+import com.example.jvmori.discovermovies.ui.IOnClickListener
 import com.example.jvmori.discovermovies.ui.view.movies.MoviesPresenterInterface
 import com.example.jvmori.discovermovies.util.LoadImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 
 class MoviesAdapter(
-    private var moviesPresenter: MoviesPresenterInterface
+    private var moviesPresenter: MoviesPresenterInterface,
+    private var onClickListener : IOnClickListener?
 ) : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolder>(MovieDiffCallback) {
 
     companion object {
@@ -29,7 +31,7 @@ class MoviesAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
         return MovieViewHolder(view)
     }
 
@@ -38,6 +40,7 @@ class MoviesAdapter(
         val currentItem = getItem(position)
         currentItem?.let {
             holder.bind(it, presenter = moviesPresenter)
+            holder.itemView.setOnClickListener { onClickListener?.onMovieItemClicked(currentItem.id) }
         }
     }
 
