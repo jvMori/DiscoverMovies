@@ -18,6 +18,6 @@ interface GenreDao
     @Query("select * from movie_table where idGenre like :genreId")
     fun getGenre(genreId: Int) : Single<Genre>
 
-    @Query("select * from movie_table")
+    @Query("select * from movie_table order by name")
     fun getAllGenres() : Maybe<List<Genre>>
 }
