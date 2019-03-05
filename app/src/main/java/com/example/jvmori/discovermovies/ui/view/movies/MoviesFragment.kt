@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +35,7 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener{
+class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
 
     private var genreId: Int? = null
     private var moviesPresenter: MoviesPresenterInterface? = null
@@ -75,7 +76,13 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener{
     }
 
     override fun onMovieItemClicked(movieId: Int) {
+       navigateToDetails(movieId)
+    }
 
+    fun navigateToDetails(movieId: Int){
+        val action =
+            MoviesFragmentDirections.action_moviesFragment_to_detailsFragment().setMovieId(movieId)
+        NavHostFragment.findNavController(this).navigate(action)
     }
 
     override fun showProgressBar() {
@@ -89,14 +96,15 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener{
     }
 
     override fun setMovieDetails(movieResult: MovieResult) {
-       // moviesAdapter?.setItem(movieResult.movieDetails)
+        // moviesAdapter?.setItem(movieResult.movieDetails)
         //moviesAdapter?.notifyDataSetChanged()
     }
 
     override fun displayAllItems(movieResponse: List<MovieResult>) {
         moviesPresenter?.let {
             moviesAdapter = MoviesAdapter(moviesPresenter!!, this)
-            recyclerViewMovies!!.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
+            recyclerViewMovies!!.layoutManager =
+                    LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
             recyclerViewMovies!!.setHasFixedSize(true)
             recyclerViewMovies!!.adapter = moviesAdapter
         }
