@@ -9,6 +9,7 @@ import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
+import com.example.jvmori.discovermovies.util.Const
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -22,7 +23,7 @@ class MoviesRepository(
     private val genreDao = MovieDatabase.invoke(context.applicationContext).genreDao()
     private val moviesDao = MovieDatabase.invoke(context.applicationContext).moviesDao()
 
-    fun getMoviesToDiscover(
+    private fun getMoviesToDiscover(
         queryParam: DiscoverQueryParam
     ): Observable<DiscoverMovieResponse> {
         val parameters: HashMap<String, String> = HashMap()
@@ -37,13 +38,15 @@ class MoviesRepository(
 
     fun getMovies(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
         return Maybe.concat(getAllMoviesLocal(queryParam), getAllMoviesRemote(queryParam))
-            .filter { list ->
-                list.results.isNotEmpty()
+            .filter { movieResponse ->
+                movieResponse.results.isNotEmpty() && isMovieUpToDate(movieResponse)
             }
             .take(1)
             .toObservable()
     }
-
+    private fun isMovieUpToDate(movie: DiscoverMovieResponse) : Boolean {
+        return movie.timestamp != 0L && System.currentTimeMillis() - movie.timestamp < Const.STALE_MS
+    }
 
     fun moviesObservable(queryParam: DiscoverQueryParam): Observable<List<MovieResult>> {
         return getMoviesToDiscover(queryParam)
@@ -79,6 +82,7 @@ class MoviesRepository(
             .firstElement()
             .flatMap {
                 it.genreId = queryParam.genresId.toInt()
+                it.timestamp = System.currentTimeMillis()
                return@flatMap Maybe.just(it)
             }
             .doAfterSuccess {

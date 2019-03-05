@@ -13,5 +13,6 @@ data class DiscoverMovieResponse(
     @SerializedName("results")
     val results: List<MovieResult>,
     @SerializedName("total_pages")
-    val totalPages: Int
+    val totalPages: Int,
+    var timestamp : Long
 )
