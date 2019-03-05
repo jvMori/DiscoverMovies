@@ -25,4 +25,7 @@
               android:label="DetailsFragment">
         <argument android:name="movieId" app:argType="integer" android:defaultValue="0"/>
     </fragment>
+    <fragment android:id="@+id/searchFragment"
+              android:name="com.example.jvmori.discovermovies.ui.view.search.SearchFragment"
+              android:label="SearchFragment"/>
 </navigation>
