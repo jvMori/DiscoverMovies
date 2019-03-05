@@ -79,7 +79,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
        navigateToDetails(movieId)
     }
 
-    fun navigateToDetails(movieId: Int){
+    private fun navigateToDetails(movieId: Int){
         val action =
             MoviesFragmentDirections.action_moviesFragment_to_detailsFragment().setMovieId(movieId)
         NavHostFragment.findNavController(this).navigate(action)
