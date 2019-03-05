@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 data class DiscoverMovieResponse(
     @SerializedName("page")
     val page: Int,
-    val genreId : Int,
+    var genreId : Int,
     @SerializedName("results")
     val results: List<MovieResult>,
     @SerializedName("total_pages")

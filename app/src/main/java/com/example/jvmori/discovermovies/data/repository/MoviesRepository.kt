@@ -77,12 +77,15 @@ class MoviesRepository(
     private fun getAllMoviesRemote(queryParam: DiscoverQueryParam): Maybe<DiscoverMovieResponse> {
         return getMoviesToDiscover(queryParam)
             .firstElement()
+            .flatMap {
+                it.genreId = queryParam.genresId.toInt()
+               return@flatMap Maybe.just(it)
+            }
             .doAfterSuccess {
                 moviesDao.updateData(it)
             }.doOnError {
                 Log.i("Error", "Error")
             }
-           // .subscribeOn(Schedulers.io())
     }
 
     private fun getAllGenresRemote(): Maybe<List<Genre>> {
