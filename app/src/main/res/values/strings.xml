@@ -8,4 +8,6 @@
     <string name="review">Review</string>
     <string name="year">2016</string>
     <string name="rating">8.0</string>
+    <string name="text_home">Home</string>
+    <string name="collection">Collection</string>
 </resources>
