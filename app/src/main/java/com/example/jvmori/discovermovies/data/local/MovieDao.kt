@@ -22,6 +22,6 @@ interface MovieDao
     @Query("Delete from movies_discover where genreId like :genreId and page like :page")
     fun deleteMovies(genreId : Int, page: Int)
 
-    @Query("Select * from movies_discover where genreId like :genreId and page like :page")
-    fun getMovies(genreId : Int, page: Int) : Maybe<DiscoverMovieResponse>
+    @Query("Select * from movies_discover where genreId like :genreName and page like :pageNr")
+    fun getMovies(genreName : Int, pageNr: Int) : Maybe<DiscoverMovieResponse>
 }
