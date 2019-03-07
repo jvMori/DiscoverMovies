@@ -18,17 +18,21 @@ class DetailsPresenterImpl @Inject constructor(
     }
 
     override fun fetchDetails(id: Int) {
+        view.showProgressBar()
         disposable.add(
             repository.getDetails(id)
                 .subscribe({
-                    Log.i("Succes", it.toString())
+                    view.showResults(it)
                 }, {
                     Log.i("Error", it.message)
+                    view.displayError("Error while fetching data! Try again!")
+                },{
+                    view.hideProgressBar()
                 })
         )
     }
 
     override fun onClear() {
-        disposable.dispose()
+        //disposable.dispose()
     }
 }
