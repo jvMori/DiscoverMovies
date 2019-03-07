@@ -20,6 +20,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class DetailsFragment : Fragment() {
 
+        
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,6 +28,5 @@ class DetailsFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_details, container, false)
     }
-
 
 }
