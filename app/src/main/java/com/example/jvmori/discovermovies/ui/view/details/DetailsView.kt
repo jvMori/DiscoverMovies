@@ -4,5 +4,5 @@ import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import com.example.jvmori.discovermovies.ui.view.BaseViewInterface
 
 interface DetailsView  : BaseViewInterface{
-    fun ShowResults(movieDetails: MovieDetails)
+    fun showResults(movieDetails: MovieDetails)
 }

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
+import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,9 +22,10 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class DetailsFragment : Fragment() {
+class DetailsFragment : Fragment(), DetailsView{
 
-    @Inject lateinit var detailsPresenter: DetailsPresenter
+    @Inject
+    lateinit var detailsPresenter: DetailsPresenter
 
     override fun onAttach(context: Context) {
         (context.applicationContext as MoviesApplication).movieComponent.inject(this)
@@ -38,5 +40,33 @@ class DetailsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_details, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        detailsPresenter.setView(this)
 
+        val movieId : Int? = getMovieId()
+        movieId?.let {
+            detailsPresenter.fetchDetails(movieId)
+        }
+    }
+
+    private fun getMovieId(): Int? {
+        return DetailsFragmentArgs.fromBundle(arguments).movieId
+    }
+
+    override fun showResults(movieDetails: MovieDetails) {
+
+    }
+
+    override fun showProgressBar() {
+
+    }
+
+    override fun hideProgressBar() {
+
+    }
+
+    override fun displayError(s: String) {
+
+    }
 }
