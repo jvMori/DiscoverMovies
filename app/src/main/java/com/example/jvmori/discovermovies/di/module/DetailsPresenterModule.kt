@@ -1,5 +1,6 @@
 package com.example.jvmori.discovermovies.di.module
 
+import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.ui.view.details.DetailsPresenter
 import com.example.jvmori.discovermovies.ui.view.details.DetailsPresenterImpl
 import dagger.Module
@@ -10,5 +11,5 @@ import javax.inject.Singleton
 class DetailsPresenterModule {
     @Provides
     @Singleton
-    fun provideDetailsPresenter() : DetailsPresenter = DetailsPresenterImpl()
+    fun provideDetailsPresenter(repository: MoviesRepository) : DetailsPresenter = DetailsPresenterImpl(repository)
 }

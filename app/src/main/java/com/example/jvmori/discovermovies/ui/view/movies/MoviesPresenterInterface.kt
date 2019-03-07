@@ -9,7 +9,6 @@ import io.reactivex.Single
 
 
 interface MoviesPresenterInterface {
-    fun fetchMovies(parameters: DiscoverQueryParam)
     fun fetchGenreById(id : Int) : Single<Genre>
     val moviesDataList : LiveData<PagedList<MovieResult>>
     var parameters: DiscoverQueryParam

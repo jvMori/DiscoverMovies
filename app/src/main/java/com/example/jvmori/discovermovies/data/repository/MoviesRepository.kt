@@ -15,8 +15,9 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class MoviesRepository(
+class MoviesRepository @Inject constructor (
     private val tmdpApi: TmdbAPI,
     context: Context
 ) {
@@ -57,15 +58,10 @@ class MoviesRepository(
             }
     }
 
-    fun getDetails(movieResult: MovieResult): Observable<MovieResult> {
-        return tmdpApi.getMovieDetails(movieResult.id)
+    fun getDetails(id: Int): Observable<MovieDetails> {
+        return tmdpApi.getMovieDetails(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map { movieDetails: MovieDetails ->
-                // movieResult.movieDetails = movieDetails
-                return@map movieResult
-            }
-
     }
 
     fun getGenres(): Observable<List<Genre>> {

@@ -39,67 +39,8 @@ class MoviesPresenter(
         LivePagedListBuilder<Int, MovieResult>(sourceFactory, config).build()
     }
 
-    @SuppressLint("CheckResult")
-    override fun fetchMovies(parameters: DiscoverQueryParam) {
-       val observableMovies : ConnectableObservable<List<MovieResult>> = repository.moviesObservable(parameters).replay()
-
-        observableMovies
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(
-                getObserverForAllItems()
-            )
-
-        observableMovies.connect()
-    }
-    @SuppressLint("CheckResult")
-    fun fetchDetails(data : List<MovieResult>){
-       Observable.just(data)
-            .flatMap {
-                return@flatMap ObservableFromIterable(it)
-            }
-            .flatMap {
-                return@flatMap repository.getDetails(it)
-            }
-            .subscribeWith(
-                getMovieResultObserver()
-            )
-    }
-
     override fun fetchGenreById(id : Int) : Single<Genre>{
         return repository.getGenreById(id).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-    }
-
-    private fun getMovieResultObserver(): DisposableObserver<MovieResult> {
-        return object : DisposableObserver<MovieResult>() {
-            override fun onComplete() {
-                moviesViewInterface.hideProgressBar()
-            }
-
-            override fun onNext(t: MovieResult) {
-                moviesViewInterface.setMovieDetails(t)
-            }
-
-            override fun onError(e: Throwable) {
-                moviesViewInterface.displayError("Error while loading data. Try again!" + e.message)
-            }
-        }
-    }
-
-    private fun getObserverForAllItems(): DisposableObserver<List<MovieResult>> {
-        return object : DisposableObserver<List<MovieResult>>() {
-            override fun onComplete() {
-
-            }
-
-            override fun onNext(t: List<MovieResult>) {
-                moviesViewInterface.displayAllItems(t)
-            }
-
-            override fun onError(e: Throwable) {
-                moviesViewInterface.displayError("Error while loading data. Try again!" + e.message)
-            }
-        }
     }
 
     override fun clear() {
