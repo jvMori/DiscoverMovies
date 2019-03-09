@@ -63,7 +63,7 @@ class DetailsFragment : Fragment(), DetailsView{
 
     override fun showResults(movieDetails: MovieDetails) {
         setDetailViewUI(movieDetails)
-        setupVideoView(movieDetails.id)
+        //setupVideoView(movieDetails.id)
     }
 
     override fun showProgressBar() {
