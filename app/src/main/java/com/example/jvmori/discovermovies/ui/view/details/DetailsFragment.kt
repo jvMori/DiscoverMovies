@@ -14,6 +14,9 @@ import com.example.jvmori.discovermovies.data.network.response.MovieDetails
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.util.Const
 import com.example.jvmori.discovermovies.util.LoadImage
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener
 import kotlinx.android.synthetic.main.fragment_details.*
 import javax.inject.Inject
 
@@ -60,6 +63,7 @@ class DetailsFragment : Fragment(), DetailsView{
 
     override fun showResults(movieDetails: MovieDetails) {
         setDetailViewUI(movieDetails)
+        setupVideoView(movieDetails.id)
     }
 
     override fun showProgressBar() {
@@ -99,5 +103,16 @@ class DetailsFragment : Fragment(), DetailsView{
         ratingItem.text = movieDetails.voteAverage.toString()
         val rating = (movieDetails.voteAverage) * 10
         MoviesAdapter.setStars(rating, starsLayout)
+    }
+
+    private fun setupVideoView(videoId: String) {
+        lifecycle.addObserver(videoView)
+        videoView.initialize({ youTubePlayer ->
+            youTubePlayer.addListener(object : AbstractYouTubePlayerListener() {
+                override fun onReady() {
+                    youTubePlayer.cueVideo(videoId, 0f)
+                }
+            })
+        }, true)
     }
 }
