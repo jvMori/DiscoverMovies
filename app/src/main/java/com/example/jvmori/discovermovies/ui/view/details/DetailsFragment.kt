@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.network.response.MovieDetails
+import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.util.Const
 import com.example.jvmori.discovermovies.util.LoadImage
 import kotlinx.android.synthetic.main.fragment_details.*
@@ -93,10 +94,10 @@ class DetailsFragment : Fragment(), DetailsView{
             if (txtGenre != txtGenres[txtGenres.size - 1].name)
                 categoryTxt.append(" | ")
         }
-        category.text = categoryTxt
+        categoryItem.text = categoryTxt
         overview.text = movieDetails.overview
-        rating.text = movieDetails.voteAverage.toString()
+        ratingItem.text = movieDetails.voteAverage.toString()
         val rating = (movieDetails.voteAverage) * 10
-        //MovieItemAdapter.setStars(rating, starsLayout)
+        MoviesAdapter.setStars(rating, starsLayout)
     }
 }

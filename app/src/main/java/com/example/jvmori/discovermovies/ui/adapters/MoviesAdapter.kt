@@ -3,6 +3,8 @@ package com.example.jvmori.discovermovies.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +18,7 @@ import kotlinx.android.synthetic.main.movie_item.view.*
 
 class MoviesAdapter(
     private var moviesPresenter: MoviesPresenterInterface,
-    private var onClickListener : IOnClickListener?
+    private var onClickListener: IOnClickListener?
 ) : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolder>(MovieDiffCallback) {
 
     companion object {
@@ -27,6 +29,23 @@ class MoviesAdapter(
 
             override fun areContentsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
                 return oldItem == newItem
+            }
+        }
+
+        fun setStars(rating: Double, starsLayout: LinearLayout) {
+            val maxNumberOfStars = starsLayout.childCount
+            val ratingFromPercentage = rating * maxNumberOfStars / 100
+            val starsCount = Math.floor(ratingFromPercentage)
+            val halfStar = Math.round(ratingFromPercentage).toDouble()
+
+            for (i in 0 until starsLayout.childCount) {
+                val imageView = starsLayout.getChildAt(i) as ImageView
+                if (i < starsCount) {
+                    imageView.setImageResource(R.drawable.ic_star)
+                }
+                if (halfStar != starsCount && i.toDouble() == halfStar - 1) {
+                    imageView.setImageResource(R.drawable.ic_star_half)
+                }
             }
         }
     }
@@ -47,20 +66,22 @@ class MoviesAdapter(
 
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(movieResult: MovieResult, presenter: MoviesPresenterInterface) {
-            itemView.title.text = movieResult.title
-            itemView.year.text = movieResult.releaseDate
-            itemView.rating.text = movieResult.voteAverage.toString()
-            itemView.review.text = movieResult.voteCount.toString()
-            itemView.icon.clipToOutline = true
-            itemView.category.text = ""
+            itemView.titleItem.text = movieResult.title
+            itemView.yearItem.text = movieResult.releaseDate
+            itemView.ratingItem.text = movieResult.voteAverage.toString()
+            itemView.reviewItem.text = movieResult.voteCount.toString()
+            itemView.iconItem.clipToOutline = true
+            itemView.categoryItem.text = ""
             movieResult.genreIds.forEachIndexed { index, item ->
                 presenter.fetchGenreById(item).subscribe { response ->
-                    itemView.category.append(response.name)
+                    itemView.categoryItem.append(response.name)
                     if (index != movieResult.genreIds.lastIndex)
-                        itemView.category.append(" | ")
+                        itemView.categoryItem.append(" | ")
                 }
             }
-            LoadImage.loadImage(itemView.context, itemView.icon, Const.base_poster_url + movieResult.posterPath)
+            LoadImage.loadImage(itemView.context, itemView.iconItem, Const.base_poster_url + movieResult.posterPath)
+            MoviesAdapter.setStars(movieResult.voteAverage * 10, itemView.layoutStars)
         }
     }
+
 }
