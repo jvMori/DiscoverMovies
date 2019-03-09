@@ -10,7 +10,7 @@ class LoadImage {
         fun loadImage(context: Context, view: ImageView, imageUrl: String) {
             Glide.
                 with(context)
-                .load(Const.base_poster_url + imageUrl)
+                .load(imageUrl)
                 .centerCrop()
                 .placeholder(R.drawable.gradient)
                 .error(R.drawable.gradient)

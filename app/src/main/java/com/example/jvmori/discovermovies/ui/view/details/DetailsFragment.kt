@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.network.response.MovieDetails
+import com.example.jvmori.discovermovies.util.Const
+import com.example.jvmori.discovermovies.util.LoadImage
 import kotlinx.android.synthetic.main.fragment_details.*
 import javax.inject.Inject
 
@@ -56,7 +58,7 @@ class DetailsFragment : Fragment(), DetailsView{
     }
 
     override fun showResults(movieDetails: MovieDetails) {
-
+        setDetailViewUI(movieDetails)
     }
 
     override fun showProgressBar() {
@@ -75,5 +77,26 @@ class DetailsFragment : Fragment(), DetailsView{
     override fun onDestroy() {
         super.onDestroy()
         detailsPresenter.onClear()
+    }
+
+    private fun setDetailViewUI(movieDetails: MovieDetails) {
+        LoadImage.loadImage(this.requireContext(), backdropImg, Const.base_backdrop_url + movieDetails.backdropPath)
+        LoadImage.loadImage(this.requireContext(), posterImg, Const.base_poster_url + movieDetails.posterPath)
+        titleTextView.text = movieDetails.title
+        runtimeDate.text = "${movieDetails.runtime} min, ${movieDetails.releaseDate}"
+
+        val categoryTxt = StringBuilder()
+        for (genre in movieDetails.genres) {
+            val txtGenre = genre.name
+            val txtGenres = movieDetails.genres
+            categoryTxt.append(txtGenre)
+            if (txtGenre != txtGenres[txtGenres.size - 1].name)
+                categoryTxt.append(" | ")
+        }
+        category.text = categoryTxt
+        overview.text = movieDetails.overview
+        rating.text = movieDetails.voteAverage.toString()
+        val rating = (movieDetails.voteAverage) * 10
+        //MovieItemAdapter.setStars(rating, starsLayout)
     }
 }

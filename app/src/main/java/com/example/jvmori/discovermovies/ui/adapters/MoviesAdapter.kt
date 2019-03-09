@@ -10,6 +10,7 @@ import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.data.network.response.MovieResult
 import com.example.jvmori.discovermovies.ui.IOnClickListener
 import com.example.jvmori.discovermovies.ui.view.movies.MoviesPresenterInterface
+import com.example.jvmori.discovermovies.util.Const
 import com.example.jvmori.discovermovies.util.LoadImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 
@@ -59,7 +60,7 @@ class MoviesAdapter(
                         itemView.category.append(" | ")
                 }
             }
-            LoadImage.loadImage(itemView.context, itemView.icon, movieResult.posterPath)
+            LoadImage.loadImage(itemView.context, itemView.icon, Const.base_poster_url + movieResult.posterPath)
         }
     }
 }
