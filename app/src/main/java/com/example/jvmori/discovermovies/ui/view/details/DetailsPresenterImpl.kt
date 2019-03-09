@@ -9,7 +9,6 @@ import javax.inject.Inject
 class DetailsPresenterImpl @Inject constructor(
     private var repository: MoviesRepository
 ) : DetailsPresenter {
-
     private lateinit var view: DetailsView
     private val disposable = CompositeDisposable()
 
@@ -30,6 +29,10 @@ class DetailsPresenterImpl @Inject constructor(
                     view.hideProgressBar()
                 })
         )
+    }
+
+    override fun fetchVideo(movieId: Int) {
+
     }
 
     override fun onClear() {
