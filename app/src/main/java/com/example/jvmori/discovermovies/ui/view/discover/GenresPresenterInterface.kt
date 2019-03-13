@@ -1,7 +1,7 @@
 package com.example.jvmori.discovermovies.ui.view.discover
 
 
-interface GenresPresenterInterface
-{
+interface GenresPresenterInterface {
     fun getGenres()
+    fun setView(genresViewInterface: GenresViewInterface)
 }
