@@ -26,32 +26,5 @@ interface TmdbAPI
     @GET("movie/{movieId}")
     fun getMovieDetails(@Path("movieId") id: Int) : Observable<MovieDetails>
 
-    companion object {
-        operator fun invoke() : TmdbAPI {
-            val requestInterceptor = Interceptor { chain ->
-                val url = chain.request()
-                    .url()
-                    .newBuilder()
-                    .addQueryParameter("api_key", Const.API_KEY)
-                    .build()
-                val request = chain.request()
-                    .newBuilder()
-                    .url(url)
-                    .build()
 
-                return@Interceptor chain.proceed(request)
-            }
-            val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(requestInterceptor)
-                .build()
-
-            return Retrofit.Builder()
-                .client(okHttpClient)
-                .baseUrl(Const.BASE_URL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(TmdbAPI::class.java)
-        }
-    }
 }

@@ -4,6 +4,8 @@ import android.app.Application
 import com.example.jvmori.discovermovies.di.component.AppComponent
 import com.example.jvmori.discovermovies.di.component.DaggerAppComponent
 import com.example.jvmori.discovermovies.di.module.AppModule
+import dagger.Provides
+import javax.inject.Singleton
 
 class MoviesApplication : Application() {
     lateinit var movieComponent : AppComponent
@@ -19,4 +21,5 @@ class MoviesApplication : Application() {
             .appModule(AppModule(app))
             .build()
     }
+
 }

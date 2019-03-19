@@ -24,6 +24,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_movies.*
+import javax.inject.Inject
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,7 +39,7 @@ private const val ARG_PARAM2 = "param2"
 class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
 
     private var genreId: Int? = null
-    private var moviesPresenter: MoviesPresenterInterface? = null
+    @Inject lateinit var moviesPresenter: MoviesPresenterInterface
     private var moviesAdapter: MoviesAdapter? = null
 
     override fun onCreateView(
@@ -46,12 +47,6 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        moviesPresenter = MoviesPresenter(
-            this, MoviesRepository(
-                TmdbAPI.invoke(),
-                this.requireContext()
-            )
-        )
         return inflater.inflate(R.layout.fragment_movies, container, false)
     }
 
@@ -59,7 +54,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
         super.onViewCreated(view, savedInstanceState)
         genreId = MoviesFragmentArgs.fromBundle(arguments).genre
         genreId?.let { genreId ->
-            moviesPresenter?.let {
+            moviesPresenter.let {
                 it.parameters = DiscoverQueryParam(genreId.toString(), 1)
                 it.moviesDataList.observe(this, Observer { pageList ->
                     pageList?.let {
@@ -70,7 +65,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
                 })
             }
         }
-        moviesPresenter?.moviesDataList?.observe(this, Observer {
+        moviesPresenter.moviesDataList.observe(this, Observer {
             moviesAdapter?.submitList(it)
         })
     }
@@ -101,8 +96,8 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
     }
 
     override fun displayAllItems(movieResponse: List<MovieResult>) {
-        moviesPresenter?.let {
-            moviesAdapter = MoviesAdapter(moviesPresenter!!, this)
+        moviesPresenter.let {
+            moviesAdapter = MoviesAdapter(moviesPresenter, this)
             recyclerViewMovies!!.layoutManager =
                     LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
             recyclerViewMovies!!.setHasFixedSize(true)
@@ -116,6 +111,6 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        moviesPresenter?.clear()
+        moviesPresenter.clear()
     }
 }
