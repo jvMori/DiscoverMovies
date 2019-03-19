@@ -10,13 +10,12 @@ import androidx.fragment.app.Fragment
 
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
-import com.example.jvmori.discovermovies.data.network.response.MovieDetails
+import com.example.jvmori.discovermovies.data.network.response.movie.MovieDetails
+import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.util.Const
 import com.example.jvmori.discovermovies.util.LoadImage
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.YouTubePlayerInitListener
 import kotlinx.android.synthetic.main.fragment_details.*
 import javax.inject.Inject
 
@@ -51,9 +50,13 @@ class DetailsFragment : Fragment(), DetailsView{
         super.onCreate(savedInstanceState)
         detailsPresenter.setView(this)
 
-        val movieId : Int? = getMovieId()
-        movieId?.let {
-            detailsPresenter.fetchDetails(movieId)
+        getMovieId()?.let {
+            detailsPresenter.apply {
+                fetchDetails(it)
+                fetchVideo(it)
+            }
+//            detailsPresenter.fetchDetails(movieId)
+//            detailsPresenter.fetchVideo(movieId)
         }
     }
 
@@ -64,6 +67,10 @@ class DetailsFragment : Fragment(), DetailsView{
     override fun showResults(movieDetails: MovieDetails) {
         setDetailViewUI(movieDetails)
         //setupVideoView(movieDetails.id)
+    }
+
+    override fun getVideo(video: VideoResponse) {
+        setupVideoView(video.results[0].key)
     }
 
     override fun showProgressBar() {

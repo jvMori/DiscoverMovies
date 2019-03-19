@@ -9,6 +9,7 @@ import javax.inject.Inject
 class DetailsPresenterImpl @Inject constructor(
     private var repository: MoviesRepository
 ) : DetailsPresenter {
+
     private lateinit var view: DetailsView
     private val disposable = CompositeDisposable()
 
@@ -25,14 +26,21 @@ class DetailsPresenterImpl @Inject constructor(
                 }, {
                     Log.i("Error", it.message)
                     view.displayError("Error while fetching data! Try again!")
-                },{
+                }, {
                     view.hideProgressBar()
                 })
         )
     }
 
     override fun fetchVideo(movieId: Int) {
-
+        disposable.add(
+            repository.getVideos(movieId)
+                .subscribe({
+                    view.getVideo(it)
+                }, {
+                    view.displayError("Error while fetching data! Try again!")
+                })
+        )
     }
 
     override fun onClear() {

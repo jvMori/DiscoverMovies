@@ -1,7 +1,7 @@
 package com.example.jvmori.discovermovies.util
 
 import androidx.room.TypeConverter
-import com.example.jvmori.discovermovies.data.network.response.MovieResult
+import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
 import com.google.gson.reflect.TypeToken
 import com.google.gson.Gson
 

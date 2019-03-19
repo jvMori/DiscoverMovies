@@ -1,4 +1,4 @@
-package com.example.jvmori.discovermovies.data.network.response
+package com.example.jvmori.discovermovies.data.network.response.movie
 
 import com.google.gson.annotations.SerializedName
 

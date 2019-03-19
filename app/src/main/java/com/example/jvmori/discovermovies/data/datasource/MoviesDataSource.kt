@@ -2,12 +2,10 @@ package com.example.jvmori.discovermovies.data.datasource
 
 import android.util.Log
 import androidx.paging.PageKeyedDataSource
-import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
-import com.example.jvmori.discovermovies.data.network.response.MovieResult
+import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableObserver
 
 class MoviesDataSource(
     private val repository: MoviesRepository,

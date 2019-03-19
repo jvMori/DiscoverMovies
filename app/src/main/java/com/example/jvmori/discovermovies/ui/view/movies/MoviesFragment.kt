@@ -1,7 +1,7 @@
 package com.example.jvmori.discovermovies.ui.view.movies
 
 
-import android.opengl.Visibility
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,19 +10,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.jvmori.discovermovies.R
-import com.example.jvmori.discovermovies.data.network.TmdbAPI
-import com.example.jvmori.discovermovies.data.network.response.MovieResult
-import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import com.example.jvmori.discovermovies.application.MoviesApplication
+import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
 import com.example.jvmori.discovermovies.ui.IOnClickListener
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
@@ -41,6 +36,11 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
     private var genreId: Int? = null
     @Inject lateinit var moviesPresenter: MoviesPresenterInterface
     private var moviesAdapter: MoviesAdapter? = null
+
+    override fun onAttach(context: Context) {
+        (context.applicationContext as MoviesApplication).movieComponent.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

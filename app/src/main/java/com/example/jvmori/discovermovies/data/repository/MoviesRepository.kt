@@ -6,8 +6,9 @@ import com.example.jvmori.discovermovies.data.local.database.MovieDatabase
 import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
-import com.example.jvmori.discovermovies.data.network.response.MovieDetails
-import com.example.jvmori.discovermovies.data.network.response.MovieResult
+import com.example.jvmori.discovermovies.data.network.response.movie.MovieDetails
+import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
+import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import com.example.jvmori.discovermovies.util.Const
 import io.reactivex.Maybe
@@ -18,7 +19,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MoviesRepository @Inject constructor (
-    private val tmdpApi: TmdbAPI,
+    private val tmdbApi: TmdbAPI,
     context: Context
 ) {
     private val genreDao = MovieDatabase.invoke(context.applicationContext).genreDao()
@@ -34,7 +35,7 @@ class MoviesRepository @Inject constructor (
         parameters["with_genres"] = queryParam.genresId
         parameters["year"] = queryParam.year
 
-        return tmdpApi.getMovies(parameters)
+        return tmdbApi.getMovies(parameters)
     }
 
     fun getMovies(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
@@ -58,8 +59,14 @@ class MoviesRepository @Inject constructor (
             }
     }
 
+    fun getVideos(id:Int) : Observable<VideoResponse>{
+        return tmdbApi.getVideos(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     fun getDetails(id: Int): Observable<MovieDetails> {
-        return tmdpApi.getMovieDetails(id)
+        return tmdbApi.getMovieDetails(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -89,7 +96,7 @@ class MoviesRepository @Inject constructor (
     }
 
     private fun getAllGenresRemote(): Maybe<List<Genre>> {
-        return tmdpApi.getGenres()
+        return tmdbApi.getGenres()
             .flatMap {
                 return@flatMap Maybe.just(it.genres)
             }.doAfterSuccess {

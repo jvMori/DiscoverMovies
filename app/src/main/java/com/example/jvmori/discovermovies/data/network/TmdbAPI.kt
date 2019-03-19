@@ -1,16 +1,11 @@
 package com.example.jvmori.discovermovies.data.network
 
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
-import com.example.jvmori.discovermovies.data.network.response.GenreResponse
-import com.example.jvmori.discovermovies.data.network.response.MovieDetails
-import com.example.jvmori.discovermovies.util.Const
+import com.example.jvmori.discovermovies.data.network.response.genre.GenreResponse
+import com.example.jvmori.discovermovies.data.network.response.movie.MovieDetails
+import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
 import io.reactivex.Maybe
 import io.reactivex.Observable
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.QueryMap
@@ -26,5 +21,6 @@ interface TmdbAPI
     @GET("movie/{movieId}")
     fun getMovieDetails(@Path("movieId") id: Int) : Observable<MovieDetails>
 
-
+    @GET("movie/{movie_id}/videos")
+    fun getVideos(@Path("movie_id") id: Int) : Observable<VideoResponse>
 }
