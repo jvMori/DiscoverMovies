@@ -6,6 +6,9 @@ import com.example.jvmori.discovermovies.data.local.database.MovieDatabase
 import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
+import com.example.jvmori.discovermovies.data.network.response.credits.Cast
+import com.example.jvmori.discovermovies.data.network.response.credits.CreditsResponse
+import com.example.jvmori.discovermovies.data.network.response.credits.Crew
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
 import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
@@ -15,6 +18,7 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.observables.ConnectableObservable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -24,19 +28,7 @@ class MoviesRepository @Inject constructor (
 ) {
     private val genreDao = MovieDatabase.invoke(context.applicationContext).genreDao()
     private val moviesDao = MovieDatabase.invoke(context.applicationContext).moviesDao()
-
-    private fun getMoviesToDiscover(
-        queryParam: DiscoverQueryParam
-    ): Observable<DiscoverMovieResponse> {
-        val parameters: HashMap<String, String> = HashMap()
-        parameters["sort_by"] = "popularity.desc"
-        parameters["page"] = queryParam.page.toString()
-        parameters["vote_average.gte"] = queryParam.vote.toString()
-        parameters["with_genres"] = queryParam.genresId
-        parameters["year"] = queryParam.year
-
-        return tmdbApi.getMovies(parameters)
-    }
+    private lateinit var connectableObservable: ConnectableObservable<CreditsResponse>
 
     fun getMovies(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
         return Maybe.concat(getAllMoviesLocal(queryParam), getAllMoviesRemote(queryParam))
@@ -45,18 +37,6 @@ class MoviesRepository @Inject constructor (
             }
             .take(1)
             .toObservable()
-    }
-    private fun isMovieUpToDate(movie: DiscoverMovieResponse) : Boolean {
-        return movie.timestamp != 0L && System.currentTimeMillis() - movie.timestamp < Const.STALE_MS
-    }
-
-    fun moviesObservable(queryParam: DiscoverQueryParam): Observable<List<MovieResult>> {
-        return getMoviesToDiscover(queryParam)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .flatMap {
-                return@flatMap Observable.just(it.results)
-            }
     }
 
     fun getVideos(id:Int) : Observable<VideoResponse>{
@@ -80,6 +60,49 @@ class MoviesRepository @Inject constructor (
             .toObservable()
     }
 
+    fun getGenreById(genreId: Int): Single<Genre> {
+        return genreDao.getGenre(genreId)
+    }
+
+    fun setCreditsConnectable(movieId: Int) {
+        connectableObservable = tmdbApi.getCredits(movieId)
+            .subscribeOn(Schedulers.io())
+            .replay()
+    }
+    fun connectToCredits(){
+        connectableObservable.connect()
+    }
+
+    fun getCast() : Observable<List<Cast>>{
+        return connectableObservable
+            .subscribeOn(Schedulers.io())
+            .flatMap {
+                return@flatMap Observable.just(it.cast)
+            }
+    }
+
+    fun getCrew() : Observable<List<Crew>>{
+        return connectableObservable
+            .subscribeOn(Schedulers.io())
+            .flatMap {
+                return@flatMap Observable.just(it.crew)
+            }
+    }
+    private fun getMoviesToDiscover(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
+        val parameters: HashMap<String, String> = HashMap()
+        parameters["sort_by"] = "popularity.desc"
+        parameters["page"] = queryParam.page.toString()
+        parameters["vote_average.gte"] = queryParam.vote.toString()
+        parameters["with_genres"] = queryParam.genresId
+        parameters["year"] = queryParam.year
+
+        return tmdbApi.getMovies(parameters)
+    }
+
+    private fun isMovieUpToDate(movie: DiscoverMovieResponse) : Boolean {
+        return movie.timestamp != 0L && System.currentTimeMillis() - movie.timestamp < Const.STALE_MS
+    }
+
     private fun getAllMoviesRemote(queryParam: DiscoverQueryParam): Maybe<DiscoverMovieResponse> {
         return getMoviesToDiscover(queryParam)
             .firstElement()
@@ -95,6 +118,12 @@ class MoviesRepository @Inject constructor (
             }
     }
 
+    private fun getAllMoviesLocal(queryParam: DiscoverQueryParam): Maybe<DiscoverMovieResponse> {
+        return moviesDao.getMovies(queryParam.genresId.toInt(), queryParam.page).doAfterSuccess{
+            Log.i("Movies", it.toString())
+        }
+    }
+
     private fun getAllGenresRemote(): Maybe<List<Genre>> {
         return tmdbApi.getGenres()
             .flatMap {
@@ -108,22 +137,12 @@ class MoviesRepository @Inject constructor (
             .subscribeOn(Schedulers.io())
     }
 
-    private fun saveData(data: List<Genre>) {
-        genreDao.insert(data)
-    }
-
     private fun getAllGenresLocal(): Maybe<List<Genre>> {
         return genreDao.getAllGenres()
     }
 
-    fun getGenreById(genreId: Int): Single<Genre> {
-        return genreDao.getGenre(genreId)
-    }
-
-    private fun getAllMoviesLocal(queryParam: DiscoverQueryParam): Maybe<DiscoverMovieResponse> {
-        return moviesDao.getMovies(queryParam.genresId.toInt(), queryParam.page).doAfterSuccess{
-            Log.i("Movies", it.toString())
-        }
+    private fun saveData(data: List<Genre>) {
+        genreDao.insert(data)
     }
 
 }

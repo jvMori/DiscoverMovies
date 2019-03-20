@@ -3,6 +3,7 @@ package com.example.jvmori.discovermovies.ui.view.details
 import android.annotation.SuppressLint
 import android.util.Log
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -43,7 +44,39 @@ class DetailsPresenterImpl @Inject constructor(
         )
     }
 
+    override fun fetchCast() {
+        disposable.add(
+            repository.getCast()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    view.showCast(result)
+                }, {
+                    view.displayError("Error while fetching data! Try again!")
+                })
+        )
+    }
+
+    override fun fetchCrew() {
+        disposable.add(
+            repository.getCrew()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    view.showCrew(it)
+                }, {
+                    view.displayError("Error while fetching data! Try again!")
+                })
+        )
+    }
+
+    override fun createConnectableCredits(movieId: Int) {
+        repository.setCreditsConnectable(movieId)
+    }
+
+    override fun connectToCreditsObservable() {
+        repository.connectToCredits()
+    }
+
     override fun onClear() {
-        //disposable.dispose()
+        disposable.clear()
     }
 }

@@ -54,9 +54,11 @@ class DetailsFragment : Fragment(), DetailsView{
             detailsPresenter.apply {
                 fetchDetails(it)
                 fetchVideo(it)
+                createConnectableCredits(it)
+                fetchCast()
+                fetchCrew()
+                connectToCreditsObservable()
             }
-//            detailsPresenter.fetchDetails(movieId)
-//            detailsPresenter.fetchVideo(movieId)
         }
     }
 
