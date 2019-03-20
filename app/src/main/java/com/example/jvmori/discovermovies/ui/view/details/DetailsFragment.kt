@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
@@ -14,6 +16,7 @@ import com.example.jvmori.discovermovies.data.network.response.credits.Cast
 import com.example.jvmori.discovermovies.data.network.response.credits.Crew
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
+import com.example.jvmori.discovermovies.ui.adapters.CastAdapter
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.util.Const
 import com.example.jvmori.discovermovies.util.LoadImage
@@ -73,7 +76,7 @@ class DetailsFragment : Fragment(), DetailsView{
     }
 
     override fun showCast(cast: List<Cast>) {
-
+        createCastAdapter(cast)
     }
 
     override fun showCrew(crew: List<Crew>) {
@@ -133,4 +136,12 @@ class DetailsFragment : Fragment(), DetailsView{
             })
         }, true)
     }
+
+    private fun createCastAdapter(cast: List<Cast>){
+        val adapter = CastAdapter(cast)
+        creditsRecyclerView.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.HORIZONTAL, false)
+        creditsRecyclerView.adapter = adapter
+        creditsRecyclerView.setHasFixedSize(true)
+    }
+
 }
