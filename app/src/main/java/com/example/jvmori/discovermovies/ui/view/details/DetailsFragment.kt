@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
+import com.example.jvmori.discovermovies.data.network.response.credits.Cast
+import com.example.jvmori.discovermovies.data.network.response.credits.Crew
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
@@ -68,7 +70,14 @@ class DetailsFragment : Fragment(), DetailsView{
 
     override fun showResults(movieDetails: MovieDetails) {
         setDetailViewUI(movieDetails)
-        //setupVideoView(movieDetails.id)
+    }
+
+    override fun showCast(cast: List<Cast>) {
+
+    }
+
+    override fun showCrew(crew: List<Crew>) {
+
     }
 
     override fun getVideo(video: VideoResponse) {
