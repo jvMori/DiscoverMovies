@@ -17,6 +17,7 @@ import com.example.jvmori.discovermovies.data.network.response.credits.Crew
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
 import com.example.jvmori.discovermovies.ui.adapters.CastAdapter
+import com.example.jvmori.discovermovies.ui.adapters.CrewAdapter
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.util.Const
 import com.example.jvmori.discovermovies.util.LoadImage
@@ -33,7 +34,7 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class DetailsFragment : Fragment(), DetailsView{
+class DetailsFragment : Fragment(), DetailsView {
 
     @Inject
     lateinit var detailsPresenter: DetailsPresenter
@@ -80,7 +81,7 @@ class DetailsFragment : Fragment(), DetailsView{
     }
 
     override fun showCrew(crew: List<Crew>) {
-
+        createCrewAdapter(crew)
     }
 
     override fun getVideo(video: VideoResponse) {
@@ -137,11 +138,16 @@ class DetailsFragment : Fragment(), DetailsView{
         }, true)
     }
 
-    private fun createCastAdapter(cast: List<Cast>){
+    private fun createCastAdapter(cast: List<Cast>) {
         val adapter = CastAdapter(cast)
         creditsRecyclerView.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.HORIZONTAL, false)
         creditsRecyclerView.adapter = adapter
         creditsRecyclerView.setHasFixedSize(true)
     }
 
+    private fun createCrewAdapter(crew: List<Crew>) {
+        crewRecyclerView.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.HORIZONTAL, false)
+        crewRecyclerView.setHasFixedSize(true)
+        crewRecyclerView.adapter = CrewAdapter(crew)
+    }
 }
