@@ -1,6 +1,5 @@
 package com.example.jvmori.discovermovies.ui.view.details
 
-import android.annotation.SuppressLint
 import android.util.Log
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
