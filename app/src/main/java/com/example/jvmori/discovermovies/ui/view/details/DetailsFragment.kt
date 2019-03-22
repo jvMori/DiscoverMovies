@@ -148,6 +148,8 @@ class DetailsFragment : Fragment(), DetailsView {
     private fun createCrewAdapter(crew: List<Crew>) {
         crewRecyclerView.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.HORIZONTAL, false)
         crewRecyclerView.setHasFixedSize(true)
-        crewRecyclerView.adapter = CrewAdapter(crew)
+        val adapter = CrewAdapter()
+        adapter.setItems(crew)
+        crewRecyclerView.adapter = adapter
     }
 }
