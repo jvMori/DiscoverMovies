@@ -88,6 +88,15 @@ class MoviesRepository @Inject constructor (
                 return@flatMap Observable.just(it.crew)
             }
     }
+    fun getRecommendations(movieId: Int) : Observable<List<MovieResult>>{
+        return tmdbApi.getRecommendations(movieId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .flatMap {
+                return@flatMap Observable.just(it.results)
+            }
+    }
+
     private fun getMoviesToDiscover(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
         val parameters: HashMap<String, String> = HashMap()
         parameters["sort_by"] = "popularity.desc"
