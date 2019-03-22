@@ -139,7 +139,8 @@ class DetailsFragment : Fragment(), DetailsView {
     }
 
     private fun createCastAdapter(cast: List<Cast>) {
-        val adapter = CastAdapter(cast)
+        val adapter = CastAdapter()
+        adapter.setItems(cast)
         creditsRecyclerView.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.HORIZONTAL, false)
         creditsRecyclerView.adapter = adapter
         creditsRecyclerView.setHasFixedSize(true)

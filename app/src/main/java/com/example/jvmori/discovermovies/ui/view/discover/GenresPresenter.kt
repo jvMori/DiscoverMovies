@@ -29,7 +29,6 @@ class GenresPresenter @Inject constructor (
         return repository.getGenres()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-        //.doOnSubscribe { genresViewInterface.showProgressBar() }
     }
 
     private fun getObserver(): DisposableObserver<List<Genre>> {
