@@ -4,6 +4,7 @@ import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.network.response.credits.CreditsResponse
 import com.example.jvmori.discovermovies.data.network.response.genre.GenreResponse
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieDetails
+import com.example.jvmori.discovermovies.data.network.response.recommendations.RecommendationsResponse
 import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -28,5 +29,6 @@ interface TmdbAPI
     @GET("movie/{movie_id}/credits")
     fun getCredits(@Path("movie_id") id: Int) : Observable<CreditsResponse>
 
-
+    @GET("movie/{movie_id}/recommendations")
+    fun getRecommendations(@Path("movie_id") id: Int) : Observable<RecommendationsResponse>
 }
