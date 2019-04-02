@@ -20,6 +20,7 @@ import com.example.jvmori.discovermovies.data.network.response.video.VideoRespon
 import com.example.jvmori.discovermovies.ui.adapters.CastAdapter
 import com.example.jvmori.discovermovies.ui.adapters.CrewAdapter
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
+import com.example.jvmori.discovermovies.ui.adapters.SimilarMoviesAdapter
 import com.example.jvmori.discovermovies.util.Const
 import com.example.jvmori.discovermovies.util.LoadImage
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener
@@ -163,7 +164,8 @@ class DetailsFragment : Fragment(), DetailsView {
     private fun createRecommendationsAdapter(movies: List<MovieResult>){
         similarRecyclerView.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.HORIZONTAL, false)
         similarRecyclerView.setHasFixedSize(true)
-
-
+        val adapter = SimilarMoviesAdapter()
+        adapter.setItems(movies)
+        similarRecyclerView.adapter = adapter
     }
 }

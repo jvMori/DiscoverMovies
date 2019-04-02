@@ -59,13 +59,13 @@ class MoviesAdapter(
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = getItem(position)
         currentItem?.let {
-            holder.bind(it, presenter = moviesPresenter)
+            holder.bindView(it)
             holder.itemView.setOnClickListener { onClickListener?.onMovieItemClicked(currentItem.id) }
         }
     }
 
-    class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(movieResult: MovieResult, presenter: MoviesPresenterInterface) {
+     class MovieViewHolder(itemView: View) : BaseAdapter.BaseViewHolder<MovieResult>(itemView) {
+        override fun bindView(movieResult: MovieResult) {
             itemView.titleItem.text = movieResult.title
             itemView.yearItem.text = movieResult.releaseDate
             itemView.ratingItem.text = movieResult.voteAverage.toString()
@@ -73,11 +73,11 @@ class MoviesAdapter(
             itemView.iconItem.clipToOutline = true
             itemView.categoryItem.text = ""
             movieResult.genreIds.forEachIndexed { index, item ->
-                presenter.fetchGenreById(item).subscribe { response ->
-                    itemView.categoryItem.append(response.name)
-                    if (index != movieResult.genreIds.lastIndex)
-                        itemView.categoryItem.append(" | ")
-                }
+//                presenter.fetchGenreById(item).subscribe { response ->
+//                    itemView.categoryItem.append(response.name)
+//                    if (index != movieResult.genreIds.lastIndex)
+//                        itemView.categoryItem.append(" | ")
+//                }
             }
             LoadImage.loadImage(itemView.context, itemView.iconItem, Const.base_poster_url + movieResult.posterPath)
             MoviesAdapter.setStars(movieResult.voteAverage * 10, itemView.layoutStars)
