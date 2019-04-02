@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
+import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
 import com.example.jvmori.discovermovies.ui.IOnClickListener
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
+import kotlinx.android.synthetic.main.fragment_details.view.*
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
@@ -31,7 +33,12 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
+class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener, MoviesAdapter.IFetchGenres{
+
+    lateinit var genre : Genre
+    override fun displayGenres(genres: Genre) {
+
+    }
 
     private var genreId: Int? = null
     @Inject lateinit var moviesPresenter: MoviesPresenterInterface
@@ -52,6 +59,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        moviesPresenter.setView(this)
         genreId = MoviesFragmentArgs.fromBundle(arguments).genre
         genreId?.let { genreId ->
             moviesPresenter.let {
@@ -97,12 +105,20 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
 
     override fun displayAllItems(movieResponse: List<MovieResult>) {
         moviesPresenter.let {
-            moviesAdapter = MoviesAdapter(moviesPresenter, this)
+            moviesAdapter = MoviesAdapter(this, this)
             recyclerViewMovies!!.layoutManager =
                     LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
             recyclerViewMovies!!.setHasFixedSize(true)
             recyclerViewMovies!!.adapter = moviesAdapter
         }
+    }
+
+    override fun fetchGenreById(index: Int, itemId: Int, lastIndex : Int, itemView : View) {
+//        moviesPresenter?.fetchGenreById(itemId).subscribe { response ->
+//            itemView.categoryItem.append(response.name)
+//            if (index != lastIndex)
+//                itemView.categoryItem.append(" | ")
+//        }
     }
 
     override fun displayError(s: String) {

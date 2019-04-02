@@ -9,6 +9,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jvmori.discovermovies.R
+import com.example.jvmori.discovermovies.R.id.itemView
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
 import com.example.jvmori.discovermovies.ui.IOnClickListener
 import com.example.jvmori.discovermovies.ui.view.movies.MoviesPresenterInterface
@@ -17,7 +18,7 @@ import com.example.jvmori.discovermovies.util.LoadImage
 import kotlinx.android.synthetic.main.movie_item.view.*
 
 class MoviesAdapter(
-    private var moviesPresenter: MoviesPresenterInterface,
+    private var fetchGenreImpl: IFetchGenres?,
     private var onClickListener: IOnClickListener?
 ) : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolder>(MovieDiffCallback) {
 
@@ -59,28 +60,29 @@ class MoviesAdapter(
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = getItem(position)
         currentItem?.let {
-            holder.bindView(it)
+            holder.bindView(it, fetchGenreImpl)
             holder.itemView.setOnClickListener { onClickListener?.onMovieItemClicked(currentItem.id) }
         }
     }
 
-     class MovieViewHolder(itemView: View) : BaseAdapter.BaseViewHolder<MovieResult>(itemView) {
-        override fun bindView(movieResult: MovieResult) {
+     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+         fun bindView(movieResult: MovieResult, genresInterface: IFetchGenres?) {
             itemView.titleItem.text = movieResult.title
             itemView.yearItem.text = movieResult.releaseDate
             itemView.ratingItem.text = movieResult.voteAverage.toString()
             itemView.reviewItem.text = movieResult.voteCount.toString()
             itemView.iconItem.clipToOutline = true
             itemView.categoryItem.text = ""
+
             movieResult.genreIds.forEachIndexed { index, item ->
-//                presenter.fetchGenreById(item).subscribe { response ->
-//                    itemView.categoryItem.append(response.name)
-//                    if (index != movieResult.genreIds.lastIndex)
-//                        itemView.categoryItem.append(" | ")
-//                }
+                genresInterface?.fetchGenreById(index, item, movieResult.genreIds.lastIndex, itemView)
             }
             LoadImage.loadImage(itemView.context, itemView.iconItem, Const.base_poster_url + movieResult.posterPath)
             MoviesAdapter.setStars(movieResult.voteAverage * 10, itemView.layoutStars)
         }
+    }
+
+    public interface IFetchGenres{
+        fun fetchGenreById(index : Int, itemId : Int, lastIndex: Int, itemView: View)
     }
 }
