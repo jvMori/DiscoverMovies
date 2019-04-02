@@ -7,6 +7,7 @@ interface DetailsPresenter {
     fun connectToCreditsObservable()
     fun fetchCast()
     fun fetchCrew()
+    fun fetchRecommendations(movieId: Int)
     fun setView(view : DetailsView)
     fun onClear()
 }

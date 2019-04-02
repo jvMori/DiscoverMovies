@@ -67,6 +67,17 @@ class DetailsPresenterImpl @Inject constructor(
         )
     }
 
+    override fun fetchRecommendations(movieId: Int) {
+        disposable.add(
+            repository.getRecommendations(movieId)
+                .subscribe({
+                    view.showRecommendations(it)
+                }, {
+                    view.displayError("Error while downloading similar movies")
+                })
+        )
+    }
+
     override fun createConnectableCredits(movieId: Int) {
         repository.setCreditsConnectable(movieId)
     }

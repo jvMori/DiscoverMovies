@@ -88,6 +88,7 @@ class MoviesRepository @Inject constructor (
                 return@flatMap Observable.just(it.crew)
             }
     }
+
     fun getRecommendations(movieId: Int) : Observable<List<MovieResult>>{
         return tmdbApi.getRecommendations(movieId)
             .subscribeOn(Schedulers.io())

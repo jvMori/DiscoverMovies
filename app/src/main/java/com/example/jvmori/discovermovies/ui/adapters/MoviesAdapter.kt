@@ -83,5 +83,4 @@ class MoviesAdapter(
             MoviesAdapter.setStars(movieResult.voteAverage * 10, itemView.layoutStars)
         }
     }
-
 }

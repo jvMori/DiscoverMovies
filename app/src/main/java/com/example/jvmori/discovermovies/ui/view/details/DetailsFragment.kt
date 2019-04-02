@@ -15,6 +15,7 @@ import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.network.response.credits.Cast
 import com.example.jvmori.discovermovies.data.network.response.credits.Crew
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieDetails
+import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
 import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
 import com.example.jvmori.discovermovies.ui.adapters.CastAdapter
 import com.example.jvmori.discovermovies.ui.adapters.CrewAdapter
@@ -63,6 +64,7 @@ class DetailsFragment : Fragment(), DetailsView {
                 createConnectableCredits(it)
                 fetchCast()
                 fetchCrew()
+                fetchRecommendations(it)
                 connectToCreditsObservable()
             }
         }
@@ -82,6 +84,10 @@ class DetailsFragment : Fragment(), DetailsView {
 
     override fun showCrew(crew: List<Crew>) {
         createCrewAdapter(crew)
+    }
+
+    override fun showRecommendations(recommendations: List<MovieResult>) {
+        createRecommendationsAdapter(recommendations)
     }
 
     override fun getVideo(video: VideoResponse) {
@@ -152,5 +158,12 @@ class DetailsFragment : Fragment(), DetailsView {
         val adapter = CrewAdapter()
         adapter.setItems(crew)
         crewRecyclerView.adapter = adapter
+    }
+
+    private fun createRecommendationsAdapter(movies: List<MovieResult>){
+        similarRecyclerView.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.HORIZONTAL, false)
+        similarRecyclerView.setHasFixedSize(true)
+
+
     }
 }
