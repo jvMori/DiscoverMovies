@@ -73,20 +73,26 @@ class MoviesRepository @Inject constructor (
         connectableObservable.connect()
     }
 
-    fun getCast() : Observable<List<Cast>>{
+    fun getCast() : Single<List<Cast>>{
         return connectableObservable
             .subscribeOn(Schedulers.io())
             .flatMap {
                 return@flatMap Observable.just(it.cast)
             }
+            .flatMapIterable { item -> item }
+            .filter{it -> it.profilePath != null}
+            .toList()
     }
 
-    fun getCrew() : Observable<List<Crew>>{
+    fun getCrew() : Single<List<Crew>>{
         return connectableObservable
             .subscribeOn(Schedulers.io())
             .flatMap {
                 return@flatMap Observable.just(it.crew)
             }
+            .flatMapIterable { item -> item }
+            .filter{it -> it.profilePath != null}
+            .toList()
     }
 
     fun getRecommendations(movieId: Int) : Observable<List<MovieResult>>{

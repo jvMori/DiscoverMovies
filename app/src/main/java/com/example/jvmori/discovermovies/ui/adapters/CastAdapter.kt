@@ -9,18 +9,20 @@ import com.example.jvmori.discovermovies.util.Const
 import com.example.jvmori.discovermovies.util.LoadImage
 import kotlinx.android.synthetic.main.crew_item.view.*
 
-class CastAdapter: BaseAdapter<Cast>() {
+class CastAdapter : BaseAdapter<Cast>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : BaseViewHolder<Cast>{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Cast> {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.crew_item, parent, false)
         return CastViewHolder(view)
     }
 
-    class CastViewHolder(itemView: View) : BaseViewHolder<Cast>(itemView){
-        override fun bindView(item: Cast){
-            itemView.titleCrew.text = item.name
-            itemView.crewMember.text = item.character
-            LoadImage.loadImage(itemView.context, itemView.profile_image, Const.base_poster_url + item.profilePath)
+    class CastViewHolder(itemView: View) : BaseViewHolder<Cast>(itemView) {
+        override fun bindView(item: Cast) {
+            itemView.apply {
+                titleCrew.text = item.name
+                crewMember.text = item.character
+                LoadImage.loadImage(context, profile_image, Const.base_poster_url + item.profilePath)
+            }
         }
     }
 }

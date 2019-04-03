@@ -14,5 +14,5 @@ data class Crew(
     @SerializedName("name")
     val name: String,
     @SerializedName("profile_path")
-    val profilePath: Any
+    val profilePath: String?
 )
