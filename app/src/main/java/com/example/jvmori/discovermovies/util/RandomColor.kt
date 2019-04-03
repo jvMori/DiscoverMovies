@@ -7,14 +7,17 @@ class RandomColor
 {
     companion object {
         val colors = mutableListOf(
-            "#E3170A", "#e5ab3a", "#01295F",
-            "#7CB518", "#F34213", "#00A5CF",
+             "#01295F",
+            "#7CB518", "#00A5CF","#d63ed3",
             "#5603AD")
 
+        private var currentIndex = -1
         fun generateColor() : Int {
-            val randomColor = Random()
-            val index = randomColor.nextInt(colors.size)
-            return Color.parseColor(colors[index])
+            if (currentIndex < colors.size - 1)
+                ++currentIndex
+            else
+                currentIndex = 0
+            return Color.parseColor(colors[currentIndex])
         }
     }
 }
