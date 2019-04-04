@@ -26,6 +26,8 @@ import com.example.jvmori.discovermovies.util.LoadImage
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener
 import kotlinx.android.synthetic.main.fragment_details.*
 import javax.inject.Inject
+import com.google.android.material.appbar.AppBarLayout
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,6 +54,11 @@ class DetailsFragment : Fragment(), DetailsView {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_details, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        handleAppBarCollapsing()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,7 +120,18 @@ class DetailsFragment : Fragment(), DetailsView {
         detailsPresenter.onClear()
     }
 
+    private fun handleAppBarCollapsing() {
+        appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (Math.abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
+                backdropImg.visibility = View.INVISIBLE
+            } else {
+                backdropImg.visibility = View.VISIBLE
+            }
+        })
+    }
+
     private fun setDetailViewUI(movieDetails: MovieDetails) {
+        collapsingToolbar.title = movieDetails.title;
         LoadImage.loadImage(this.requireContext(), backdropImg, Const.base_backdrop_url + movieDetails.backdropPath)
         LoadImage.loadImage(this.requireContext(), posterImg, Const.base_poster_url + movieDetails.posterPath)
         titleTextView.text = movieDetails.title
@@ -161,7 +179,7 @@ class DetailsFragment : Fragment(), DetailsView {
         crewRecyclerView.adapter = adapter
     }
 
-    private fun createRecommendationsAdapter(movies: List<MovieResult>){
+    private fun createRecommendationsAdapter(movies: List<MovieResult>) {
         similarRecyclerView.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.HORIZONTAL, false)
         similarRecyclerView.setHasFixedSize(true)
         val adapter = SimilarMoviesAdapter()
