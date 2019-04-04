@@ -153,7 +153,7 @@ class MoviesRepository @Inject constructor (
             .subscribeOn(Schedulers.io())
     }
 
-    private fun getAllGenresLocal(): Maybe<List<Genre>> {
+    public fun getAllGenresLocal(): Maybe<List<Genre>> {
         return genreDao.getAllGenres()
     }
 
