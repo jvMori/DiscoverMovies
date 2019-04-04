@@ -58,6 +58,7 @@ class DetailsFragment : Fragment(), DetailsView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        progressBar.visibility = View.VISIBLE
         handleAppBarCollapsing()
     }
 
@@ -103,7 +104,7 @@ class DetailsFragment : Fragment(), DetailsView {
     }
 
     override fun showProgressBar() {
-        //progressBar.visibility = View.VISIBLE
+
     }
 
     override fun hideProgressBar() {
