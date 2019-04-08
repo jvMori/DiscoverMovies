@@ -11,4 +11,6 @@
     <string name="text_home">Home</string>
     <string name="collection">Collection</string>
     <string name="search">Search</string>
+    <string name="no_results_yet">No results yet</string>
+    <string name="search_for_movies_tv_shows_or_people">Search for movies, tv shows or people...</string>
 </resources>

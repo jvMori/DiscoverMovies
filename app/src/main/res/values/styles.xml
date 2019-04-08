@@ -6,6 +6,17 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/redAccent</item>
+        <item name="android:textColorHint">@color/textGrayed</item>
+        <item name="searchViewStyle">@style/SearchViewStyle</item>
+    </style>
+
+    <!--SearchViewStyle -->
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="searchIcon">@drawable/ic_search</item>
+        <item name="voiceIcon">@drawable/ic_search_close</item>
+        <item name="closeIcon">@drawable/ic_search_close</item>
+        <item name="searchHintIcon">@drawable/ic_search_grayed</item>
     </style>
 
     <style name="collapsingToolbarLayoutTitleColor" parent="@android:style/TextAppearance.Medium">
