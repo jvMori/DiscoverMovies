@@ -16,7 +16,6 @@
         <item name="searchIcon">@drawable/ic_search</item>
         <item name="voiceIcon">@drawable/ic_search_close</item>
         <item name="closeIcon">@drawable/ic_search_close</item>
-        <item name="searchHintIcon">@drawable/ic_search_grayed</item>
     </style>
 
     <style name="collapsingToolbarLayoutTitleColor" parent="@android:style/TextAppearance.Medium">

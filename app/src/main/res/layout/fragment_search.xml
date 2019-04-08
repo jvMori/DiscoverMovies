@@ -30,7 +30,6 @@
                                           android:background="@drawable/rectangle"
                                           android:layout_margin="8dp"
                                           android:layout_gravity="center"
-                                          app:queryHint="Search for movie's title..."
     />
   </LinearLayout>
   <LinearLayout
