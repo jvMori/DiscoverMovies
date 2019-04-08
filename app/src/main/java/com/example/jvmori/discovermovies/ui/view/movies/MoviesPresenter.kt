@@ -41,9 +41,9 @@ class MoviesPresenter @Inject constructor(
         LivePagedListBuilder<Int, MovieResult>(sourceFactory, config).build()
     }
 
-    override fun fetchGenreById(id: Int) {
+    override fun fetchGenres() {
         disposable.add(
-            repository.getGenreById(id)
+            repository.getAllGenresLocal()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
