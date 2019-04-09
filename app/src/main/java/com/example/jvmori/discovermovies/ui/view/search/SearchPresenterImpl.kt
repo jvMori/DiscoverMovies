@@ -9,6 +9,7 @@ import io.reactivex.observers.DisposableObserver
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import com.jakewharton.rxbinding3.widget.queryTextChangeEvents
 
 class SearchPresenterImpl @Inject constructor  (
     private val repository: MoviesRepository
@@ -35,7 +36,7 @@ class SearchPresenterImpl @Inject constructor  (
     }
 
     override fun searchViewQueryChanged(searchView: SearchView) {
-
+      
     }
 
     private fun getSearchObserver() : DisposableObserver<List<MovieResult>>{

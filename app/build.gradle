@@ -85,4 +85,9 @@ dependencies {
 
     //CircleImageView
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    //RxBinding
+    implementation 'com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0-alpha2'
+    implementation 'com.jakewharton.rxbinding3:rxbinding-material:3.0.0-alpha2'
 }
