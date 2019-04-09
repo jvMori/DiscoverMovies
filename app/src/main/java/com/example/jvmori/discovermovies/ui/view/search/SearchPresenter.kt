@@ -4,7 +4,7 @@ import androidx.appcompat.widget.SearchView
 
 interface SearchPresenter
 {
-    fun searchItems(query: String)
-    fun searchViewQueryChanged(searchView: SearchView)
+    fun searchItems()
+    fun onSearchViewQueryChanged(searchView: SearchView)
     fun clear()
 }

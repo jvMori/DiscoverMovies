@@ -28,18 +28,18 @@ class SearchPresenterImpl @Inject constructor(
         disposable.clear()
     }
 
-    override fun searchItems(query: String) {
+    override fun searchItems() {
         disposable.add(
             publishSubject.debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .switchMapSingle {
-                    return@switchMapSingle repository.getSearchedItems(query)
+                    return@switchMapSingle repository.getSearchedItems(it)
                 }
                 .subscribeWith(searchObserver)
         )
     }
 
-    override fun searchViewQueryChanged(searchView: SearchView) {
+    override fun onSearchViewQueryChanged(searchView: SearchView) {
         disposable.add(
             searchView.queryTextChangeEvents()
                 .skipInitialValue()
