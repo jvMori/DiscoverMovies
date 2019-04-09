@@ -104,6 +104,15 @@ class MoviesRepository @Inject constructor (
             }
     }
 
+    fun getSearchedItems() : Single<List<MovieResult>> {
+        return tmdbApi.getSearchedItems()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .flatMap { 
+                return@flatMap Single.just(it.results)
+            }
+    }
+
     private fun getMoviesToDiscover(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
         val parameters: HashMap<String, String> = HashMap()
         parameters["sort_by"] = "popularity.desc"

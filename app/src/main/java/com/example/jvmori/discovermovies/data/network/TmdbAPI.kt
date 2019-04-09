@@ -5,9 +5,11 @@ import com.example.jvmori.discovermovies.data.network.response.credits.CreditsRe
 import com.example.jvmori.discovermovies.data.network.response.genre.GenreResponse
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.recommendations.RecommendationsResponse
+import com.example.jvmori.discovermovies.data.network.response.search.SearchResponse
 import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.QueryMap
@@ -31,4 +33,7 @@ interface TmdbAPI
 
     @GET("movie/{movie_id}/recommendations")
     fun getRecommendations(@Path("movie_id") id: Int) : Observable<RecommendationsResponse>
+
+    @GET("search/multi")
+    fun getSearchedItems(): Single<SearchResponse>
 }
