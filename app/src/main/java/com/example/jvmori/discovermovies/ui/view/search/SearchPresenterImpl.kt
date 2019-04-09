@@ -35,13 +35,16 @@ class SearchPresenterImpl @Inject constructor(
                 .switchMapSingle {
                     return@switchMapSingle repository.getSearchedItems(it)
                 }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(searchObserver)
         )
     }
 
     override fun onSearchViewQueryChanged(searchView: SearchView) {
         disposable.add(
-            searchView.queryTextChangeEvents()
+            searchView
+                .queryTextChangeEvents()
                 .skipInitialValue()
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
@@ -78,7 +81,7 @@ class SearchPresenterImpl @Inject constructor(
             }
 
             override fun onError(e: Throwable) {
-
+                Log.e(TAG, "onError: " + e.message)
             }
 
         }

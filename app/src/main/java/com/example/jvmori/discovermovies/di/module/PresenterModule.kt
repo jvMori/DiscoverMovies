@@ -7,6 +7,8 @@ import com.example.jvmori.discovermovies.ui.view.discover.GenresPresenter
 import com.example.jvmori.discovermovies.ui.view.discover.GenresPresenterInterface
 import com.example.jvmori.discovermovies.ui.view.movies.MoviesPresenter
 import com.example.jvmori.discovermovies.ui.view.movies.MoviesPresenterInterface
+import com.example.jvmori.discovermovies.ui.view.search.SearchPresenter
+import com.example.jvmori.discovermovies.ui.view.search.SearchPresenterImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -23,4 +25,8 @@ class PresenterModule {
 
     @Provides
     fun provideMoviesPresenter(repository: MoviesRepository) : MoviesPresenterInterface = MoviesPresenter(repository)
+
+    @Provides
+    @Singleton
+    fun provideSearchPresenter(repository: MoviesRepository) :SearchPresenter = SearchPresenterImpl(repository)
 }
