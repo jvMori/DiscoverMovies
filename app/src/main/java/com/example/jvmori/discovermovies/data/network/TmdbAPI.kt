@@ -12,6 +12,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 interface TmdbAPI
@@ -35,5 +36,5 @@ interface TmdbAPI
     fun getRecommendations(@Path("movie_id") id: Int) : Observable<RecommendationsResponse>
 
     @GET("search/multi")
-    fun getSearchedItems(): Single<SearchResponse>
+    fun getSearchedItems(@Query("query") query: String): Single<SearchResponse>
 }

@@ -104,11 +104,11 @@ class MoviesRepository @Inject constructor (
             }
     }
 
-    fun getSearchedItems() : Single<List<MovieResult>> {
-        return tmdbApi.getSearchedItems()
+    fun getSearchedItems(q : String) : Single<List<MovieResult>> {
+        return tmdbApi.getSearchedItems(q)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .flatMap { 
+            .flatMap {
                 return@flatMap Single.just(it.results)
             }
     }
