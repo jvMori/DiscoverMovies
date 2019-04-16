@@ -8,10 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
+import com.example.jvmori.discovermovies.ui.adapters.SearchResultsAdapter
 import kotlinx.android.synthetic.main.fragment_search.*
 import javax.inject.Inject
 
@@ -58,6 +61,10 @@ class SearchFragment : Fragment(), SearchViewInterface {
     override fun displayResults(results: List<MovieResult>) {
         noResultsLayout.visibility = View.GONE
         searchResults.visibility = View.VISIBLE
+        val adapter = SearchResultsAdapter()
+        adapter.setItems(results)
+        searchResults.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
+        searchResults.adapter = adapter
     }
 
     override fun displayError(s: String) {

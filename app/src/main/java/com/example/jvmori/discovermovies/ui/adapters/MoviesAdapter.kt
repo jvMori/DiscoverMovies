@@ -7,13 +7,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import com.example.jvmori.discovermovies.R
-import com.example.jvmori.discovermovies.R.id.itemView
-import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
 import com.example.jvmori.discovermovies.ui.IOnClickListener
-import com.example.jvmori.discovermovies.ui.view.movies.MoviesPresenterInterface
 import com.example.jvmori.discovermovies.util.Const
 import com.example.jvmori.discovermovies.util.LoadImage
 import kotlinx.android.synthetic.main.movie_item.view.*
@@ -67,16 +63,16 @@ class MoviesAdapter(
         }
     }
 
-     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-         fun bindView(movieResult: MovieResult) {
-            itemView.titleItem.text = movieResult.title
-            itemView.yearItem.text = movieResult.releaseDate
-            itemView.ratingItem.text = movieResult.voteAverage.toString()
-            itemView.reviewItem.text = movieResult.voteCount.toString()
-            itemView.iconItem.clipToOutline = true
-            itemView.categoryItem.text = ""
-            LoadImage.loadImage(itemView.context, itemView.iconItem, Const.base_poster_url + movieResult.posterPath)
-            MoviesAdapter.setStars(movieResult.voteAverage * 10, itemView.layoutStars)
+     class MovieViewHolder(itemView: View) : BaseAdapter.BaseViewHolder<MovieResult>(itemView) {
+         override fun bindView(item: MovieResult) {
+            this.itemView.titleItem.text = item.title
+            this.itemView.yearItem.text = item.releaseDate
+            this.itemView.ratingItem.text = item.voteAverage.toString()
+            this.itemView.reviewItem.text = item.voteCount.toString()
+            this.itemView.iconItem.clipToOutline = true
+            this.itemView.categoryItem.text = ""
+            LoadImage.loadImage(this.itemView.context, this.itemView.iconItem, Const.base_poster_url + item.posterPath)
+            MoviesAdapter.setStars(item.voteAverage * 10, this.itemView.layoutStars)
         }
 
          fun bindGenres(movieResult: MovieResult, genres: Map<Int, String>){

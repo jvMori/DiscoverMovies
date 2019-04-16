@@ -28,7 +28,7 @@ class SearchPresenterImpl @Inject constructor(
     private lateinit var  view : SearchViewInterface
 
     override fun clear() {
-        //disposable.clear()
+        disposable.clear()
     }
 
     override fun setView(view: SearchViewInterface) {
@@ -37,7 +37,7 @@ class SearchPresenterImpl @Inject constructor(
 
     override fun searchItems() {
         disposable.add(
-            publishSubject.debounce(500, TimeUnit.MILLISECONDS)
+            publishSubject.debounce(300, TimeUnit.MILLISECONDS)
                 .distinctUntilChanged()
                 .observeOn(Schedulers.io())
                 .switchMapSingle {
@@ -90,6 +90,7 @@ class SearchPresenterImpl @Inject constructor(
 
             override fun onNext(t: List<MovieResult>) {
                 Log.i(TAG, t.toString())
+                view.displayResults(t)
             }
 
             override fun onError(e: Throwable) {
