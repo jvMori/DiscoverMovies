@@ -7,6 +7,7 @@ import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.util.Const
 import com.jakewharton.rxbinding3.appcompat.queryTextChangeEvents
 import com.jakewharton.rxbinding3.appcompat.SearchViewQueryTextEvent
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
@@ -37,23 +38,20 @@ class SearchPresenterImpl @Inject constructor(
     override fun searchItems() {
         disposable.add(
             publishSubject.debounce(500, TimeUnit.MILLISECONDS)
-                //.distinctUntilChanged()
+                .distinctUntilChanged()
                 .observeOn(Schedulers.io())
                 .switchMapSingle {
                     return@switchMapSingle repository.getSearchedItems(it)
+                }
+                .map{
+                    it.filter{movie ->
+                        return@filter movie.media_type == Const.MOVIE
+                    }
                 }
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(searchObserver)
         )
     }
-
-    private fun showOnlyMovies(results: List<MovieResult>) : Boolean{
-        results.forEach {
-            return it.media_type == Const.MOVIE
-        }
-        return false
-    }
-
 
     override fun onSearchViewQueryChanged(searchView: SearchView) {
         disposable.add(
