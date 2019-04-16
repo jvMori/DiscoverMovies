@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
+import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
 import kotlinx.android.synthetic.main.fragment_search.*
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), SearchViewInterface {
 
     @Inject
     lateinit var searchPresenter: SearchPresenter
@@ -44,6 +45,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        searchPresenter.setView(this)
         searchPresenter.onSearchViewQueryChanged(searchView)
         searchPresenter.searchItems()
     }
@@ -52,4 +54,22 @@ class SearchFragment : Fragment() {
         super.onDestroy()
         searchPresenter.clear()
     }
+
+    override fun displayResults(results: List<MovieResult>) {
+        noResultsLayout.visibility = View.GONE
+        searchResults.visibility = View.VISIBLE
+    }
+
+    override fun displayError(s: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showProgressBar() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun hideProgressBar() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
+

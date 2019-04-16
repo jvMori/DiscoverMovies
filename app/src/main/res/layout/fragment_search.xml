@@ -33,10 +33,13 @@
                                           android:layout_gravity="center"
     />
   </LinearLayout>
+  <androidx.recyclerview.widget.RecyclerView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" android:id="@+id/searchResults" android:visibility="gone"/>
   <LinearLayout
           android:id="@+id/noResultsLayout"
           android:orientation="vertical"
-          android:layout_width="match_parent" android:layout_height="match_parent">
+          android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="visible">
     <ImageView
             android:src="@drawable/ic_search_gray"
             android:layout_gravity="center"

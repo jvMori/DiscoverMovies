@@ -6,6 +6,7 @@ data class MovieResult(
     @SerializedName("id")
     val id: Int,
     val adult: Boolean,
+    val media_type : String,
     @SerializedName("backdrop_path")
     val backdropPath: String,
     @SerializedName("genre_ids")
@@ -20,7 +21,7 @@ data class MovieResult(
     val posterPath: String,
     @SerializedName("release_date")
     val releaseDate: String,
-    val title: String,
+    val title: String?,
     val video: Boolean,
     @SerializedName("vote_average")
     val voteAverage: Double,
