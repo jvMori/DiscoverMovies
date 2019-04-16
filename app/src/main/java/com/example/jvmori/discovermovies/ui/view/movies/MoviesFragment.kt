@@ -34,11 +34,13 @@ private const val ARG_PARAM2 = "param2"
  */
 class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener{
 
-    private var genresMap = mutableMapOf<Int, String>()
-
+    companion object {
+        var genresMap = mutableMapOf<Int, String>()
+    }
+    
     override fun displayGenres(genres: List<Genre>) {
         genres.forEach {
-            this.genresMap[it.idGenre] =it.name
+            genresMap[it.idGenre] =it.name
         }
     }
 
