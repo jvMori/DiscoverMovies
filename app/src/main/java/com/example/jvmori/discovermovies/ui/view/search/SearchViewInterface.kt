@@ -6,5 +6,4 @@ import com.example.jvmori.discovermovies.ui.view.BaseViewInterface
 interface SearchViewInterface : BaseViewInterface
 {
     fun displayResults(results: List<MovieResult>)
-    fun onQuerySubmit()
 }

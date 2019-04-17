@@ -53,10 +53,15 @@ class SearchFragment : Fragment(), SearchViewInterface {
         searchPresenter.setView(this)
         searchPresenter.onSearchViewQueryChanged(searchView)
         searchPresenter.searchItems()
-    }
-
-    override fun onQuerySubmit() {
-        searchView.clearFocus()
+        searchView.setOnCloseListener(object : SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                searchView.clearFocus()
+                searchView.setIconifiedByDefault(true)
+                noResultsLayout.visibility = View.VISIBLE
+                searchResults.visibility = View.GONE
+                return false
+            }
+        })
     }
 
     override fun onDestroy() {

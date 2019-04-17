@@ -6,6 +6,7 @@ import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.util.Const
 import com.jakewharton.rxbinding3.appcompat.queryTextChangeEvents
 import com.jakewharton.rxbinding3.appcompat.SearchViewQueryTextEvent
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
@@ -75,7 +76,6 @@ class SearchPresenterImpl @Inject constructor(
                 Log.d(TAG, "Search query: " + searchViewQueryTextEvent.queryText)
                 publishSubject.onNext(searchViewQueryTextEvent.queryText.toString())
                 if (searchViewQueryTextEvent.isSubmitted) {
-                    //view.onQuerySubmit()
                     publishSubject.onComplete()
                 }
             }
