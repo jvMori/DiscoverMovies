@@ -74,6 +74,10 @@ class SearchPresenterImpl @Inject constructor(
             override fun onNext(searchViewQueryTextEvent: SearchViewQueryTextEvent) {
                 Log.d(TAG, "Search query: " + searchViewQueryTextEvent.queryText)
                 publishSubject.onNext(searchViewQueryTextEvent.queryText.toString())
+                if (searchViewQueryTextEvent.isSubmitted) {
+                    //view.onQuerySubmit()
+                    publishSubject.onComplete()
+                }
             }
 
             override fun onError(e: Throwable) {
@@ -81,8 +85,7 @@ class SearchPresenterImpl @Inject constructor(
             }
 
             override fun onComplete() {
-                Log.d(TAG, "Search query: completed")
-                publishSubject.onComplete()
+
             }
         }
     }

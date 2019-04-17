@@ -8,7 +8,7 @@ import android.os.ParcelFileDescriptor
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -53,6 +53,10 @@ class SearchFragment : Fragment(), SearchViewInterface {
         searchPresenter.setView(this)
         searchPresenter.onSearchViewQueryChanged(searchView)
         searchPresenter.searchItems()
+    }
+
+    override fun onQuerySubmit() {
+        searchView.clearFocus()
     }
 
     override fun onDestroy() {
