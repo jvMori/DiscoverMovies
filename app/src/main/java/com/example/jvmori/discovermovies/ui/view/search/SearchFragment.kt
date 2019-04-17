@@ -76,6 +76,8 @@ class SearchFragment : Fragment(), SearchViewInterface {
     }
 
     override fun onQuerySubmit() {
+        searchView.setQuery("", false)
+        searchView.setIconifiedByDefault(true)
         searchView.clearFocus()
     }
 

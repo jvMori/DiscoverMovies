@@ -52,6 +52,7 @@ class SearchPresenterImpl @Inject constructor(
                 }, {
                     Log.e(TAG, "onError: " + it.message)
                     view.displayError("onError: " + it.message)
+                    view.hideProgressBar()
                 }, {
                     Log.i(TAG, "completed")
                 })
@@ -61,9 +62,7 @@ class SearchPresenterImpl @Inject constructor(
     override fun onSearchViewQueryChanged(searchView: SearchView) {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchView.setQuery("", false)
-                searchView.setIconifiedByDefault(true)
-                searchView.clearFocus()
+                view.onQuerySubmit()
                 return true
             }
 
