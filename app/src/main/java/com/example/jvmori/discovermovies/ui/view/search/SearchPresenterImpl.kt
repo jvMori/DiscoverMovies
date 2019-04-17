@@ -25,7 +25,7 @@ class SearchPresenterImpl @Inject constructor(
     private val disposable = CompositeDisposable()
     private val publishSubject: PublishSubject<String> = PublishSubject.create()
     private val searchObserver: DisposableObserver<List<MovieResult>> = getSearchObserver()
-    private lateinit var  view : SearchViewInterface
+    private lateinit var view: SearchViewInterface
 
     override fun clear() {
         disposable.clear()
@@ -36,40 +36,37 @@ class SearchPresenterImpl @Inject constructor(
     }
 
     override fun searchItems() {
-        disposable.add(
-            publishSubject.debounce(300, TimeUnit.MILLISECONDS)
-                .distinctUntilChanged()
-                .observeOn(Schedulers.io())
-                .switchMapSingle {
-                    return@switchMapSingle repository.getSearchedItems(it)
+        publishSubject.debounce(300, TimeUnit.MILLISECONDS)
+            .filter { return@filter !it.isEmpty() }
+            .distinctUntilChanged()
+            .observeOn(Schedulers.io())
+            .switchMapSingle {
+                return@switchMapSingle repository.getSearchedItems(it)
+            }
+            .map {
+                it.filter { movie ->
+                    return@filter movie.media_type == Const.MOVIE
                 }
-                .map{
-                    it.filter{movie ->
-                        return@filter movie.media_type == Const.MOVIE
-                    }
-                }
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(searchObserver)
-        )
+            }
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe(searchObserver)
     }
 
     override fun onSearchViewQueryChanged(searchView: SearchView) {
-        disposable.add(
-            searchView
-                .queryTextChangeEvents()
-                .skipInitialValue()
-                .observeOn(Schedulers.io())
-                .debounce(300, TimeUnit.MILLISECONDS)
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(searchContactsTextWatcher())
-        )
+        searchView
+            .queryTextChangeEvents()
+            .skipInitialValue()
+            .observeOn(Schedulers.io())
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe(searchContactsTextWatcher())
     }
 
     private fun searchContactsTextWatcher(): DisposableObserver<SearchViewQueryTextEvent> {
         return object : DisposableObserver<SearchViewQueryTextEvent>() {
             override fun onNext(searchViewQueryTextEvent: SearchViewQueryTextEvent) {
                 Log.d(TAG, "Search query: " + searchViewQueryTextEvent.queryText)
-                 publishSubject.onNext(searchViewQueryTextEvent.queryText.toString())
+                publishSubject.onNext(searchViewQueryTextEvent.queryText.toString())
             }
 
             override fun onError(e: Throwable) {
@@ -77,7 +74,8 @@ class SearchPresenterImpl @Inject constructor(
             }
 
             override fun onComplete() {
-
+                Log.d(TAG, "Search query: completed")
+                publishSubject.onComplete()
             }
         }
     }
@@ -85,7 +83,7 @@ class SearchPresenterImpl @Inject constructor(
     private fun getSearchObserver(): DisposableObserver<List<MovieResult>> {
         return object : DisposableObserver<List<MovieResult>>() {
             override fun onComplete() {
-
+                Log.i(TAG, "completed")
             }
 
             override fun onNext(t: List<MovieResult>) {
