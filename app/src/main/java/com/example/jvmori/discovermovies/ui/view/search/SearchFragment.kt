@@ -17,6 +17,8 @@ import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
 import com.example.jvmori.discovermovies.ui.adapters.SearchResultsAdapter
+import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import javax.inject.Inject
 
@@ -60,6 +62,17 @@ class SearchFragment : Fragment(), SearchViewInterface {
                 noResultsLayout.visibility = View.VISIBLE
                 searchResults.visibility = View.GONE
                 return false
+            }
+        })
+        handleAppBarCollapsing()
+    }
+
+    private fun handleAppBarCollapsing() {
+        appBarSearch.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if (Math.abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
+                searchView.setBackgroundResource(R.color.transparent)
+            } else {
+                searchView.setBackgroundResource(R.drawable.rectangle)
             }
         })
     }

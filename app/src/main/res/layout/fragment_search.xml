@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -8,59 +8,92 @@
               tools:context=".ui.view.search.SearchFragment"
               android:background="@color/colorPrimaryDark"
 >
-  <LinearLayout android:layout_width="match_parent" android:layout_height="190dp"
-                android:orientation="vertical"
-                android:background="@drawable/gradient_no_round"
+  <com.google.android.material.appbar.AppBarLayout android:layout_width="match_parent"
+                                                   android:layout_height="200dp"
+                                                   style="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                                                   android:id="@+id/appBarSearch"
   >
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/search"
-            android:textColor="@color/textGrayed"
-            android:textSize="38sp"
-            android:textStyle="bold"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="8dp"
-            android:textAlignment="center"
-            android:layout_gravity="center"
-    />
-    <androidx.appcompat.widget.SearchView android:layout_width="match_parent"
-                                          android:layout_height="60dp"
-                                          android:id="@+id/searchView"
-                                          app:searchIcon="@drawable/ic_search"
-                                          android:background="@drawable/rectangle"
-                                          android:layout_margin="8dp"
-                                          android:layout_gravity="center"
-    />
-  </LinearLayout>
+    <com.google.android.material.appbar.CollapsingToolbarLayout android:layout_width="match_parent"
+                                                                android:layout_height="match_parent"
+                                                                android:id="@+id/searchCollapsing"
+                                                                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                                                                app:contentScrim="?attr/colorPrimary"
+                                                                app:title="Search"
+                                                                app:expandedTitleMarginStart="10dp"
+                                                                app:expandedTitleMarginTop="195dp"
+                                                                app:expandedTitleGravity="start"
+                                                                app:expandedTitleTextAppearance="@style/collapsingToolbarLayoutTitleColor"
+                                                                app:collapsedTitleTextAppearance="@style/collapsingLayoutTitleColor"
+                                                                android:background="@drawable/gradient_no_round"
+    >
+      <androidx.appcompat.widget.Toolbar android:layout_width="match_parent"
+                                         android:id="@+id/searchToolbar"
+                                         app:layout_collapseMode="pin"
+                                         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                                         android:layout_height="?attr/actionBarSize">
+
+      </androidx.appcompat.widget.Toolbar>
+        <androidx.appcompat.widget.SearchView android:layout_width="match_parent"
+                                              android:layout_height="55dp"
+                                              android:id="@+id/searchView"
+                                              android:layout_marginLeft="8dp"
+                                              android:layout_marginRight="8dp"
+                                              android:layout_marginTop="48dp"
+                                              app:searchIcon="@drawable/ic_search"
+                                              android:background="@drawable/rectangle"
+                                              app:layout_collapseMode="pin"
+                                              android:layout_gravity="center"
+        />
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/search"
+                android:textColor="@color/textGrayed"
+                android:textSize="38sp"
+                android:textStyle="bold"
+                android:layout_marginTop="48dp"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+        />
+
+      </LinearLayout>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+  </com.google.android.material.appbar.AppBarLayout>
+  <androidx.core.widget.NestedScrollView
+          android:id="@+id/noResultsLayout"
+          app:layout_behavior="@string/appbar_scrolling_view_behavior"
+          android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="visible">
+      <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+          <ImageView
+                  android:src="@drawable/ic_search_gray"
+                  android:layout_gravity="center"
+                  android:layout_marginTop="50dp"
+                  android:layout_width="match_parent" android:layout_height="100dp"/>
+          <TextView android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_results_yet"
+                    android:textColor="@color/grayAccent"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:padding="10dp"
+          />
+          <TextView android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_for_movies_tv_shows_or_people"
+                    android:textColor="@color/grayAccent"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:padding="10dp"
+          />
+      </LinearLayout>
+  </androidx.core.widget.NestedScrollView>
   <androidx.recyclerview.widget.RecyclerView
           android:layout_width="match_parent"
-          android:layout_height="match_parent" android:id="@+id/searchResults" android:visibility="gone"/>
-  <LinearLayout
-          android:id="@+id/noResultsLayout"
-          android:orientation="vertical"
-          android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="visible">
-    <ImageView
-            android:src="@drawable/ic_search_gray"
-            android:layout_gravity="center"
-            android:layout_marginTop="50dp"
-            android:layout_width="match_parent" android:layout_height="100dp"/>
-    <TextView android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:text="@string/no_results_yet"
-              android:textColor="@color/grayAccent"
-              android:textAlignment="center"
-              android:textSize="18sp"
-              android:padding="10dp"
-    />
-    <TextView android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:text="@string/search_for_movies_tv_shows_or_people"
-              android:textColor="@color/grayAccent"
-              android:textAlignment="center"
-              android:textSize="18sp"
-              android:padding="10dp"
-    />
-  </LinearLayout>
+          android:layout_height="match_parent"
+          android:id="@+id/searchResults"
+          app:layout_behavior="@string/appbar_scrolling_view_behavior"
+          android:visibility="gone"
+  />
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
