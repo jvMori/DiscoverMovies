@@ -3,8 +3,6 @@ package com.example.jvmori.discovermovies.ui.view.search
 
 import android.content.Context
 import android.os.Bundle
-import android.os.ParcelFileDescriptor
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +10,11 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
 import com.example.jvmori.discovermovies.ui.adapters.SearchResultsAdapter
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.fragment_details.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import javax.inject.Inject
 
@@ -61,9 +57,11 @@ class SearchFragment : Fragment(), SearchViewInterface {
                 searchView.setIconifiedByDefault(true)
                 noResultsLayout.visibility = View.VISIBLE
                 searchResults.visibility = View.GONE
+                progressSearch.visibility = View.GONE
                 return false
             }
         })
+        progressSearch.visibility = View.GONE
         handleAppBarCollapsing()
     }
 
@@ -75,6 +73,10 @@ class SearchFragment : Fragment(), SearchViewInterface {
                 searchView.setBackgroundResource(R.drawable.rectangle)
             }
         })
+    }
+
+    override fun onQuerySubmit() {
+        searchView.clearFocus()
     }
 
     override fun onDestroy() {
@@ -92,15 +94,15 @@ class SearchFragment : Fragment(), SearchViewInterface {
     }
 
     override fun displayError(s: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun showProgressBar() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        progressSearch.visibility = View.VISIBLE
     }
 
     override fun hideProgressBar() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        progressSearch.visibility = View.GONE
     }
 }
 

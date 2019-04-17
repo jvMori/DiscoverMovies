@@ -4,12 +4,8 @@ import android.util.Log
 import androidx.appcompat.widget.SearchView
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.util.Const
-import com.jakewharton.rxbinding3.appcompat.queryTextChangeEvents
-import com.jakewharton.rxbinding3.appcompat.SearchViewQueryTextEvent
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
@@ -52,8 +48,10 @@ class SearchPresenterImpl @Inject constructor(
                 .subscribe({
                     Log.i(TAG, it.toString())
                     view.displayResults(it)
+                    view.hideProgressBar()
                 }, {
                     Log.e(TAG, "onError: " + it.message)
+                    view.displayError("onError: " + it.message)
                 }, {
                     Log.i(TAG, "completed")
                 })
@@ -61,29 +59,20 @@ class SearchPresenterImpl @Inject constructor(
     }
 
     override fun onSearchViewQueryChanged(searchView: SearchView) {
-        searchView
-            .queryTextChangeEvents()
-            .skipInitialValue()
-            .observeOn(Schedulers.io())
-            .debounce(300, TimeUnit.MILLISECONDS)
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .subscribe(searchContactsTextWatcher())
-    }
-
-    private fun searchContactsTextWatcher(): DisposableObserver<SearchViewQueryTextEvent> {
-        return object : DisposableObserver<SearchViewQueryTextEvent>() {
-            override fun onNext(searchViewQueryTextEvent: SearchViewQueryTextEvent) {
-                Log.i(TAG, "Search query: " + searchViewQueryTextEvent.queryText)
-                publishSubject.onNext(searchViewQueryTextEvent.queryText.toString())
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.setQuery("", false)
+                searchView.setIconifiedByDefault(true)
+                searchView.clearFocus()
+                return true
             }
 
-            override fun onError(e: Throwable) {
-                Log.e(TAG, "onError: " + e.message)
+            override fun onQueryTextChange(newText: String?): Boolean {
+                Log.i(TAG, "Search query: $newText")
+                publishSubject.onNext(newText!!.toLowerCase().trim())
+                view.showProgressBar()
+                return true
             }
-
-            override fun onComplete() {
-
-            }
-        }
+        })
     }
 }
