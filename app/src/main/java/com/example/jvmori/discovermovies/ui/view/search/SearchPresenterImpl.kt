@@ -2,12 +2,10 @@ package com.example.jvmori.discovermovies.ui.view.search
 
 import android.util.Log
 import androidx.appcompat.widget.SearchView
-import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.util.Const
 import com.jakewharton.rxbinding3.appcompat.queryTextChangeEvents
 import com.jakewharton.rxbinding3.appcompat.SearchViewQueryTextEvent
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
@@ -24,7 +22,6 @@ class SearchPresenterImpl @Inject constructor(
     val TAG = "DISCOVER_MOVIES"
     private val disposable = CompositeDisposable()
     private val publishSubject: PublishSubject<String> = PublishSubject.create()
-    private val searchObserver: DisposableObserver<List<MovieResult>> = getSearchObserver()
     private lateinit var view: SearchViewInterface
 
     override fun clear() {
@@ -36,20 +33,30 @@ class SearchPresenterImpl @Inject constructor(
     }
 
     override fun searchItems() {
-        publishSubject.debounce(300, TimeUnit.MILLISECONDS)
-            .filter { return@filter !it.isEmpty() }
-            .distinctUntilChanged()
-            .observeOn(Schedulers.io())
-            .switchMapSingle {
-                return@switchMapSingle repository.getSearchedItems(it)
-            }
-            .map {
-                it.filter { movie ->
-                    return@filter movie.media_type == Const.MOVIE
+        disposable.add(
+            publishSubject
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .filter { return@filter !it.isEmpty() }
+                .distinctUntilChanged()
+                .observeOn(Schedulers.io())
+                .switchMapSingle {
+                    return@switchMapSingle repository.getSearchedItems(it)
                 }
-            }
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .subscribe(searchObserver)
+                .map {
+                    it.filter { movie ->
+                        return@filter movie.media_type == Const.MOVIE
+                    }
+                }
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Log.i(TAG, it.toString())
+                    view.displayResults(it)
+                }, {
+                    Log.e(TAG, "onError: " + it.message)
+                }, {
+                    Log.i(TAG, "completed")
+                })
+        )
     }
 
     override fun onSearchViewQueryChanged(searchView: SearchView) {
@@ -77,24 +84,6 @@ class SearchPresenterImpl @Inject constructor(
                 Log.d(TAG, "Search query: completed")
                 publishSubject.onComplete()
             }
-        }
-    }
-
-    private fun getSearchObserver(): DisposableObserver<List<MovieResult>> {
-        return object : DisposableObserver<List<MovieResult>>() {
-            override fun onComplete() {
-                Log.i(TAG, "completed")
-            }
-
-            override fun onNext(t: List<MovieResult>) {
-                Log.i(TAG, t.toString())
-                view.displayResults(t)
-            }
-
-            override fun onError(e: Throwable) {
-                Log.e(TAG, "onError: " + e.message)
-            }
-
         }
     }
 }
