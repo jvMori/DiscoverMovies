@@ -11,6 +11,15 @@
         <item name="searchViewStyle">@style/SearchViewStyle</item>
     </style>
 
+    <style name="ToolTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
+        <item name="android:navigationBarColor">@color/redAccent</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <!--SearchViewStyle -->
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="searchIcon">@drawable/ic_search</item>
