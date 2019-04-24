@@ -65,7 +65,7 @@ class DetailsFragment : Fragment(), DetailsView {
         handleAppBarCollapsing()
         toolbarId.setNavigationOnClickListener{
             View.OnClickListener {
-                NavHostFragment.findNavController(this).navigateUp()
+                NavHostFragment.findNavController(this).popBackStack()
             }
         }
     }
