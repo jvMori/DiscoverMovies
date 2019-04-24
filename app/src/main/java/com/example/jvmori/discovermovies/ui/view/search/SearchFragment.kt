@@ -51,16 +51,14 @@ class SearchFragment : Fragment(), SearchViewInterface {
         searchPresenter.setView(this)
         searchPresenter.onSearchViewQueryChanged(searchView)
         searchPresenter.searchItems()
-        searchView.setOnCloseListener(object : SearchView.OnCloseListener {
-            override fun onClose(): Boolean {
-                searchView.clearFocus()
-                searchView.setIconifiedByDefault(true)
-                noResultsLayout.visibility = View.VISIBLE
-                searchResults.visibility = View.GONE
-                progressSearch.visibility = View.GONE
-                return false
-            }
-        })
+        searchView.setOnCloseListener {
+            searchView.clearFocus()
+            searchView.setIconifiedByDefault(true)
+            noResultsLayout.visibility = View.VISIBLE
+            searchResults.visibility = View.GONE
+            progressSearch.visibility = View.GONE
+            false
+        }
         progressSearch.visibility = View.GONE
         handleAppBarCollapsing()
     }
