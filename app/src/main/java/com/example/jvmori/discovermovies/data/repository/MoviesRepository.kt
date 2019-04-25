@@ -14,6 +14,7 @@ import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import com.example.jvmori.discovermovies.util.Const
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -22,12 +23,13 @@ import io.reactivex.observables.ConnectableObservable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class MoviesRepository @Inject constructor (
+class MoviesRepository @Inject constructor(
     private val tmdbApi: TmdbAPI,
     context: Context
 ) {
     private val genreDao = MovieDatabase.invoke(context.applicationContext).genreDao()
     private val moviesDao = MovieDatabase.invoke(context.applicationContext).moviesDao()
+    private val savedMovieDao = MovieDatabase.invoke(context.applicationContext).savedMovieDao()
     private lateinit var connectableObservable: ConnectableObservable<CreditsResponse>
 
     fun getMovies(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
@@ -39,7 +41,7 @@ class MoviesRepository @Inject constructor (
             .toObservable()
     }
 
-    fun getVideos(id:Int) : Observable<VideoResponse>{
+    fun getVideos(id: Int): Observable<VideoResponse> {
         return tmdbApi.getVideos(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -69,33 +71,34 @@ class MoviesRepository @Inject constructor (
             .subscribeOn(Schedulers.io())
             .replay()
     }
-    fun connectToCredits(){
+
+    fun connectToCredits() {
         connectableObservable.connect()
     }
 
-    fun getCast() : Single<List<Cast>>{
+    fun getCast(): Single<List<Cast>> {
         return connectableObservable
             .subscribeOn(Schedulers.io())
             .flatMap {
                 return@flatMap Observable.just(it.cast)
             }
             .flatMapIterable { item -> item }
-            .filter{it -> it.profilePath != null}
+            .filter { it -> it.profilePath != null }
             .toList()
     }
 
-    fun getCrew() : Single<List<Crew>>{
+    fun getCrew(): Single<List<Crew>> {
         return connectableObservable
             .subscribeOn(Schedulers.io())
             .flatMap {
                 return@flatMap Observable.just(it.crew)
             }
             .flatMapIterable { item -> item }
-            .filter{it -> it.profilePath != null}
+            .filter { it -> it.profilePath != null }
             .toList()
     }
 
-    fun getRecommendations(movieId: Int) : Observable<List<MovieResult>>{
+    fun getRecommendations(movieId: Int): Observable<List<MovieResult>> {
         return tmdbApi.getRecommendations(movieId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -104,13 +107,20 @@ class MoviesRepository @Inject constructor (
             }
     }
 
-    fun getSearchedItems(q : String) : Single<List<MovieResult>> {
+    fun getSearchedItems(q: String): Single<List<MovieResult>> {
         return tmdbApi.getSearchedItems(q)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 return@flatMap Single.just(it.results)
             }
+    }
+
+    fun saveMovie(movie: MovieResult) {
+        Completable.fromAction { savedMovieDao.insert(movie) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe()
     }
 
     private fun getMoviesToDiscover(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
@@ -124,7 +134,7 @@ class MoviesRepository @Inject constructor (
         return tmdbApi.getMovies(parameters)
     }
 
-    private fun isMovieUpToDate(movie: DiscoverMovieResponse) : Boolean {
+    private fun isMovieUpToDate(movie: DiscoverMovieResponse): Boolean {
         return movie.timestamp != 0L && System.currentTimeMillis() - movie.timestamp < Const.STALE_MS
     }
 
@@ -134,7 +144,7 @@ class MoviesRepository @Inject constructor (
             .flatMap {
                 it.genreId = queryParam.genresId.toInt()
                 it.timestamp = System.currentTimeMillis()
-               return@flatMap Maybe.just(it)
+                return@flatMap Maybe.just(it)
             }
             .doAfterSuccess {
                 moviesDao.updateData(it)
@@ -144,7 +154,7 @@ class MoviesRepository @Inject constructor (
     }
 
     private fun getAllMoviesLocal(queryParam: DiscoverQueryParam): Maybe<DiscoverMovieResponse> {
-        return moviesDao.getMovies(queryParam.genresId.toInt(), queryParam.page).doAfterSuccess{
+        return moviesDao.getMovies(queryParam.genresId.toInt(), queryParam.page).doAfterSuccess {
             Log.i("Movies", it.toString())
         }
     }
@@ -167,7 +177,11 @@ class MoviesRepository @Inject constructor (
     }
 
     private fun saveData(data: List<Genre>) {
-        genreDao.insert(data)
+        Completable.fromAction {
+            genreDao.insert(data)
+        }.subscribeOn(Schedulers.io())
+            .subscribe()
+
     }
 
 }
