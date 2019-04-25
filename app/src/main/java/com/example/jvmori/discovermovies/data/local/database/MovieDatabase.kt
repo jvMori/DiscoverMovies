@@ -9,10 +9,10 @@ import com.example.jvmori.discovermovies.data.local.GenreDao
 import com.example.jvmori.discovermovies.data.local.MovieDao
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.local.entity.Genre
-import com.example.jvmori.discovermovies.util.MoviesListTypeConverter
+import com.example.jvmori.discovermovies.util.Converters
 
 @Database(entities = [Genre::class, DiscoverMovieResponse::class], version = 3, exportSchema = false)
-@TypeConverters(MoviesListTypeConverter::class)
+@TypeConverters(Converters::class)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun genreDao(): GenreDao
     abstract fun moviesDao(): MovieDao

@@ -1,11 +1,13 @@
 package com.example.jvmori.discovermovies.data.local.entity
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "saved_movies")
 data class MovieResult(
     @SerializedName("id")
+    @PrimaryKey(autoGenerate = false)
     val id: Int,
     val adult: Boolean,
     val media_type : String,
