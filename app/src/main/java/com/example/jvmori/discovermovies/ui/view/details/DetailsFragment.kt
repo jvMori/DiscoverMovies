@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +16,7 @@ import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.network.response.credits.Cast
 import com.example.jvmori.discovermovies.data.network.response.credits.Crew
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieDetails
-import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
+import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
 import com.example.jvmori.discovermovies.ui.adapters.CastAdapter
 import com.example.jvmori.discovermovies.ui.adapters.CrewAdapter

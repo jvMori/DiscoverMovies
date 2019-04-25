@@ -1,7 +1,9 @@
-package com.example.jvmori.discovermovies.data.network.response.movie
+package com.example.jvmori.discovermovies.data.local.entity
 
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "saved_movies")
 data class MovieResult(
     @SerializedName("id")
     val id: Int,

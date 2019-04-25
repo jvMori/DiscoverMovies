@@ -1,6 +1,6 @@
 package com.example.jvmori.discovermovies.data.network.response.recommendations
 
-import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
+import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.google.gson.annotations.SerializedName
 
 data class RecommendationsResponse(

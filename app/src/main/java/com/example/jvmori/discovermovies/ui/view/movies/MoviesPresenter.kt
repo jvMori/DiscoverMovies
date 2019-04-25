@@ -5,11 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.jvmori.discovermovies.MainActivity.Companion.TAG
-import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
+import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.data.datasource.MovieDataSourceFactory
-import com.example.jvmori.discovermovies.data.local.entity.Genre
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

@@ -19,8 +19,7 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class CollectionFragment : Fragment() {
-
+class CollectionFragment : Fragment(), CollectionView{
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,5 +28,8 @@ class CollectionFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_collection, container, false)
     }
 
+    override fun displaySaved() {
+
+    }
 
 }

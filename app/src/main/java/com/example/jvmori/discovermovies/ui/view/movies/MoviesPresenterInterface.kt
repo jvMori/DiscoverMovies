@@ -3,9 +3,7 @@ package com.example.jvmori.discovermovies.ui.view.movies
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import com.example.jvmori.discovermovies.data.local.entity.Genre
-import com.example.jvmori.discovermovies.data.network.response.movie.MovieResult
-import io.reactivex.Single
+import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 
 
 interface MoviesPresenterInterface {
