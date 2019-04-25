@@ -2,6 +2,8 @@ package com.example.jvmori.discovermovies.data.repository
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
 import com.example.jvmori.discovermovies.data.local.database.MovieDatabase
 import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
@@ -121,6 +123,13 @@ class MoviesRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe()
+    }
+
+    fun displayAllSaved() : LiveData<List<MovieResult>>{
+        return LiveDataReactiveStreams.fromPublisher {
+            savedMovieDao.getAllSaved()
+                .subscribeOn(Schedulers.io())
+        }
     }
 
     private fun getMoviesToDiscover(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
