@@ -119,6 +119,7 @@ class MoviesRepository @Inject constructor(
     }
 
     fun saveMovie(movie: MovieResult) {
+        movie.mediaType = "" //can't be null in sql database
         Completable.fromAction { savedMovieDao.insert(movie) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())

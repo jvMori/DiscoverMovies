@@ -1,5 +1,6 @@
 package com.example.jvmori.discovermovies.util
 
+import android.graphics.Movie
 import androidx.room.TypeConverter
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.google.gson.reflect.TypeToken
@@ -11,11 +12,19 @@ class Converters {
     companion object {
         @JvmStatic
         var gson = Gson()
+        var gsonForGenres = Gson()
 
         @TypeConverter
         @JvmStatic
         fun stringToMovie(data: String?): List<MovieResult> {
-           return genericToList(data)
+            if (data == null) {
+                mutableListOf<MovieResult>()
+            }
+
+            val listType = object : TypeToken<List<MovieResult>>() {
+
+            }.type
+            return gson.fromJson(data, listType)
         }
 
         @TypeConverter
@@ -27,16 +36,23 @@ class Converters {
         @TypeConverter
         @JvmStatic
         fun stringToList(data: String?): List<Int> {
-           return genericToList<Int>(data)
+            if (data == null) {
+                mutableListOf<Int>()
+            }
+
+            val listType = object : TypeToken<List<Int>>() {
+
+            }.type
+            return gson.fromJson(data, listType)
         }
 
         @TypeConverter
         @JvmStatic
         fun listToString(movie: List<Int>): String {
-            return gson.toJson(movie)
+            return gsonForGenres.toJson(movie)
         }
 
-        fun <T> genericToList(data: String?): List<T> {
+        fun <T> genericToList(data: String?, gson: Gson): List<T> {
             if (data == null) {
                 mutableListOf<T>()
             }
@@ -47,5 +63,4 @@ class Converters {
             return gson.fromJson(data, listType)
         }
     }
-
 }
