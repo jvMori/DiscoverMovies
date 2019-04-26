@@ -10,7 +10,8 @@ data class MovieResult(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
     val adult: Boolean,
-    val media_type : String,
+    @SerializedName("mediaType")
+    val mediaType : String,
     @SerializedName("backdrop_path")
     val backdropPath: String,
     @SerializedName("genre_ids")

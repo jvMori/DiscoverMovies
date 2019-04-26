@@ -8,6 +8,7 @@ import com.example.jvmori.discovermovies.MainActivity.Companion.TAG
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.data.datasource.MovieDataSourceFactory
+import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -16,9 +17,9 @@ import javax.inject.Inject
 
 class MoviesPresenter @Inject constructor(
     private val repository: MoviesRepository
-) : MoviesPresenterInterface {
+) : MoviesPresenterInterface, MoviesAdapter.OnFavIconClickListener {
 
-    private lateinit var view : MoviesViewInterface
+    private lateinit var view: MoviesViewInterface
 
     override fun setView(view: MoviesViewInterface) {
         this.view = view
@@ -45,14 +46,20 @@ class MoviesPresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                    {
-                       success -> view.displayGenres(success)
+                    { success ->
+                        view.displayGenres(success)
                     },
                     {
                         Log.i(TAG, "Error while fetching genres")
                     }
                 )
         )
+    }
+
+    override fun onFavClicked(movieResult: MovieResult) {
+        repository.saveMovie(movieResult)
+        view.onMovieSaved()
+
     }
 
     override fun clear() {

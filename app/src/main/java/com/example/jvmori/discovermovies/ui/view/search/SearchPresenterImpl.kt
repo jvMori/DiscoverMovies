@@ -41,7 +41,7 @@ class SearchPresenterImpl @Inject constructor(
                 }
                 .map {
                     it.filter { movie ->
-                        return@filter movie.media_type == Const.MOVIE
+                        return@filter movie.mediaType == Const.MOVIE
                     }
                 }
                 .subscribeOn(AndroidSchedulers.mainThread())

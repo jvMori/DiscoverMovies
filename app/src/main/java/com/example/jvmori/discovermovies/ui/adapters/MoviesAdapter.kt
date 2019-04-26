@@ -19,6 +19,11 @@ class MoviesAdapter(
 ) : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolder>(MovieDiffCallback) {
 
     private var genres : Map<Int, String> = mutableMapOf<Int, String>()
+    private lateinit var onFavIconClickListener: OnFavIconClickListener
+
+    fun setOnFavClickListener(onFavIconClickListener: OnFavIconClickListener){
+        this.onFavIconClickListener = onFavIconClickListener
+    }
 
     companion object {
         val MovieDiffCallback = object : DiffUtil.ItemCallback<MovieResult>() {
@@ -60,6 +65,7 @@ class MoviesAdapter(
             holder.bindView(it)
             holder.bindGenres(it,genres)
             holder.itemView.setOnClickListener { onClickListener?.onMovieItemClicked(currentItem.id) }
+            holder.setOnFavClickListener(onFavIconClickListener, it)
         }
     }
 
@@ -75,6 +81,12 @@ class MoviesAdapter(
             MoviesAdapter.setStars(item.voteAverage * 10, this.itemView.layoutStars)
         }
 
+         fun setOnFavClickListener(onFavIconClickListener: OnFavIconClickListener?, item: MovieResult){
+             this.itemView.heart.setOnClickListener {
+                 onFavIconClickListener?.onFavClicked(item)
+             }
+         }
+
          fun bindGenres(movieResult: MovieResult, genres: Map<Int, String>){
              movieResult.genreIds.forEachIndexed { index, item ->
                  itemView.categoryItem.append(genres[item])
@@ -86,5 +98,9 @@ class MoviesAdapter(
 
     fun setGenres(genres : Map<Int, String>){
         this.genres = genres
+    }
+
+    public interface OnFavIconClickListener{
+        fun onFavClicked(movieResult: MovieResult)
     }
 }

@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
@@ -32,20 +33,21 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener{
+class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
 
     companion object {
         var genresMap = mutableMapOf<Int, String>()
     }
-    
+
     override fun displayGenres(genres: List<Genre>) {
         genres.forEach {
-            genresMap[it.idGenre] =it.name
+            genresMap[it.idGenre] = it.name
         }
     }
 
     private var genreId: Int? = null
-    @Inject lateinit var moviesPresenter: MoviesPresenterInterface
+    @Inject
+    lateinit var moviesPresenter: MoviesPresenterInterface
     private var moviesAdapter: MoviesAdapter? = null
 
     override fun onAttach(context: Context) {
@@ -84,10 +86,14 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener{
     }
 
     override fun onMovieItemClicked(movieId: Int) {
-       navigateToDetails(movieId)
+        navigateToDetails(movieId)
     }
 
-    private fun navigateToDetails(movieId: Int){
+    override fun onMovieSaved() {
+        Toast.makeText(this.requireContext(), "Saved!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun navigateToDetails(movieId: Int) {
         val action =
             MoviesFragmentDirections.action_moviesFragment_to_detailsFragment().setMovieId(movieId)
         NavHostFragment.findNavController(this).navigate(action)
@@ -106,6 +112,8 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener{
     override fun displayAllItems(movieResponse: List<MovieResult>) {
         moviesPresenter.let {
             moviesAdapter = MoviesAdapter(this)
+            if (it is MoviesAdapter.OnFavIconClickListener)
+                moviesAdapter?.setOnFavClickListener(it as MoviesAdapter.OnFavIconClickListener)
             moviesAdapter?.setGenres(genresMap)
             recyclerViewMovies!!.layoutManager =
                     LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
