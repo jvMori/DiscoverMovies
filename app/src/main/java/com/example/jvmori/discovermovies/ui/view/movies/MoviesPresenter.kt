@@ -67,7 +67,6 @@ class MoviesPresenter @Inject constructor(
                     view.displaySavedIcon()
                 })
         )
-        view.onMovieSaved()
     }
 
     override fun clear() {

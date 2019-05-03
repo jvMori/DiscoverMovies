@@ -11,5 +11,4 @@ interface MoviesViewInterface : BaseViewInterface
     fun displaySavedIcon()
     fun displayDeletedIcon()
     fun displayGenres(genres: List<Genre>)
-    fun onMovieSaved()
 }
