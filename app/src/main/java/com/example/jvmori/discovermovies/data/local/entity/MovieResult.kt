@@ -9,10 +9,10 @@ data class MovieResult(
     @SerializedName("id")
     @PrimaryKey(autoGenerate = false)
     val id: Int,
-    var isSaved : Boolean,
+    var isSaved: Boolean,
     val adult: Boolean,
     @SerializedName("media_type")
-    var mediaType : String,
+    var mediaType: String,
     @SerializedName("backdrop_path")
     val backdropPath: String,
     @SerializedName("genre_ids")
@@ -33,4 +33,13 @@ data class MovieResult(
     val voteAverage: Double,
     @SerializedName("vote_count")
     val voteCount: Int
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (other == this)
+            return true
+        if (other !is MovieResult)
+            return false
+        val movie = other as MovieResult
+        return movie.id == id && movie.originalTitle == originalTitle
+    }
+}
