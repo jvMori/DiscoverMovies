@@ -1,15 +1,12 @@
 package com.example.jvmori.discovermovies.data.local
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import io.reactivex.Observable
 
 @Dao
 interface SavedMovieDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movie: MovieResult)
 
     @Delete
