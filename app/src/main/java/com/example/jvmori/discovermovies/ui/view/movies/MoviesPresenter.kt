@@ -57,7 +57,16 @@ class MoviesPresenter @Inject constructor(
     }
 
     override fun onFavClicked(movieResult: MovieResult) {
-        repository.handleFavClick(movieResult)
+        disposable.add(
+            repository.handleFavClick(movieResult)
+                .subscribe({ success ->
+                    repository.deleteMovie(movieResult)
+                    view.displayDeletedIcon()
+                }, { error ->
+                    repository.saveMovie(movieResult)
+                    view.displaySavedIcon()
+                })
+        )
         view.onMovieSaved()
     }
 

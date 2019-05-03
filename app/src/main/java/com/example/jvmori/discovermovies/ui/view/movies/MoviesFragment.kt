@@ -90,6 +90,14 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
     }
 
     override fun onMovieSaved() {
+
+    }
+
+    override fun displayDeletedIcon() {
+        Toast.makeText(this.requireContext(), "Deleted!", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun displaySavedIcon() {
         Toast.makeText(this.requireContext(), "Saved!", Toast.LENGTH_SHORT).show()
     }
 

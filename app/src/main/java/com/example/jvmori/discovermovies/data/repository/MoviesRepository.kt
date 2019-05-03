@@ -21,6 +21,7 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observables.ConnectableObservable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -118,23 +119,17 @@ class MoviesRepository @Inject constructor(
             }
     }
 
-    fun handleFavClick(movie: MovieResult) {
-        var isSaved = false
-        savedMovieDao.getMovie(movie.id)
+    fun handleFavClick(movie: MovieResult) : Single<MovieResult>{
+        return savedMovieDao.getMovie(movie.id)
             .observeOn(AndroidSchedulers.mainThread())
-            .map{
-                isSaved = true
-            }
             .subscribeOn(Schedulers.io())
-            .subscribe()
-        if (isSaved) deleteMovie(movie) else saveMovie(movie)
     }
 
-    private fun deleteMovie(movie: MovieResult){
+    fun deleteMovie(movie: MovieResult) {
 
     }
 
-    private fun saveMovie(movie: MovieResult) {
+    fun saveMovie(movie: MovieResult) {
         movie.mediaType = "" //can't be null in sql database
         movie.isSaved = true
         Completable.fromAction { savedMovieDao.insert(movie) }

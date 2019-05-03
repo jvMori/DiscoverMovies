@@ -18,5 +18,5 @@ interface SavedMovieDao {
     fun getAllSaved() : Observable<List<MovieResult>>
 
     @Query("Select * from saved_movies where id like :movieId")
-    fun getMovie(movieId: Int) : Maybe<MovieResult>
+    fun getMovie(movieId: Int) : Single<MovieResult>
 }
