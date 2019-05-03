@@ -119,8 +119,15 @@ class MoviesRepository @Inject constructor(
     }
 
     fun handleFavClick(movie: MovieResult) {
-        movie.isSaved = !movie.isSaved
-        if (movie.isSaved) deleteMovie(movie) else saveMovie(movie)
+        var isSaved = false
+        savedMovieDao.getMovie(movie.id)
+            .observeOn(AndroidSchedulers.mainThread())
+            .map{
+                isSaved = true
+            }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
+        if (isSaved) deleteMovie(movie) else saveMovie(movie)
     }
 
     private fun deleteMovie(movie: MovieResult){
