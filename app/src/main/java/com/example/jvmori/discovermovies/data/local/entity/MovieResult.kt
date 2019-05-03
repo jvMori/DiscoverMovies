@@ -9,7 +9,6 @@ data class MovieResult(
     @SerializedName("id")
     @PrimaryKey(autoGenerate = false)
     val id: Int,
-    var isSaved: Boolean,
     val adult: Boolean,
     @SerializedName("media_type")
     var mediaType: String,

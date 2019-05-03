@@ -126,12 +126,14 @@ class MoviesRepository @Inject constructor(
     }
 
     fun deleteMovie(movie: MovieResult) {
-
+        Completable.fromAction { savedMovieDao.delete(movie) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe()
     }
 
     fun saveMovie(movie: MovieResult) {
         movie.mediaType = "" //can't be null in sql database
-        movie.isSaved = true
         Completable.fromAction { savedMovieDao.insert(movie) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
