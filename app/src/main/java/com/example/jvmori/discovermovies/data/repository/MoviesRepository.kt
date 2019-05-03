@@ -118,15 +118,25 @@ class MoviesRepository @Inject constructor(
             }
     }
 
-    fun saveMovie(movie: MovieResult) {
+    fun handleFavClick(movie: MovieResult) {
+        movie.isSaved = !movie.isSaved
+        if (movie.isSaved) deleteMovie(movie) else saveMovie(movie)
+    }
+
+    private fun deleteMovie(movie: MovieResult){
+
+    }
+
+    private fun saveMovie(movie: MovieResult) {
         movie.mediaType = "" //can't be null in sql database
+        movie.isSaved = true
         Completable.fromAction { savedMovieDao.insert(movie) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe()
     }
 
-    fun displayAllSaved() : LiveData<List<MovieResult>>{
+    fun displayAllSaved(): LiveData<List<MovieResult>> {
         return LiveDataReactiveStreams.fromPublisher {
             savedMovieDao.getAllSaved()
                 .subscribeOn(Schedulers.io())

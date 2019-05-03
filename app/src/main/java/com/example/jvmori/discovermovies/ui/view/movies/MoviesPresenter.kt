@@ -57,7 +57,7 @@ class MoviesPresenter @Inject constructor(
     }
 
     override fun onFavClicked(movieResult: MovieResult) {
-        repository.saveMovie(movieResult)
+        repository.handleFavClick(movieResult)
         view.onMovieSaved()
     }
 
