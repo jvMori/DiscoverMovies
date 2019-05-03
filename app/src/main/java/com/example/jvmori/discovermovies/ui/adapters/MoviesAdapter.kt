@@ -18,10 +18,10 @@ class MoviesAdapter(
     private var onClickListener: IOnClickListener?
 ) : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolder>(MovieDiffCallback) {
 
-    private var genres : Map<Int, String> = mutableMapOf<Int, String>()
+    private var genres: Map<Int, String> = mutableMapOf<Int, String>()
     private lateinit var onFavIconClickListener: OnFavIconClickListener
 
-    fun setOnFavClickListener(onFavIconClickListener: OnFavIconClickListener){
+    fun setOnFavClickListener(onFavIconClickListener: OnFavIconClickListener) {
         this.onFavIconClickListener = onFavIconClickListener
     }
 
@@ -63,14 +63,14 @@ class MoviesAdapter(
         val currentItem = getItem(position)
         currentItem?.let {
             holder.bindView(it)
-            holder.bindGenres(it,genres)
+            holder.bindGenres(it, genres)
             holder.itemView.setOnClickListener { onClickListener?.onMovieItemClicked(currentItem.id) }
             holder.setOnFavClickListener(onFavIconClickListener, it)
         }
     }
 
-     class MovieViewHolder(itemView: View) : BaseAdapter.BaseViewHolder<MovieResult>(itemView) {
-         override fun bindView(item: MovieResult) {
+    class MovieViewHolder(itemView: View) : BaseAdapter.BaseViewHolder<MovieResult>(itemView) {
+        override fun bindView(item: MovieResult) {
             this.itemView.titleItem.text = item.title
             this.itemView.yearItem.text = item.releaseDate
             this.itemView.ratingItem.text = item.voteAverage.toString()
@@ -81,26 +81,26 @@ class MoviesAdapter(
             MoviesAdapter.setStars(item.voteAverage * 10, this.itemView.layoutStars)
         }
 
-         fun setOnFavClickListener(onFavIconClickListener: OnFavIconClickListener?, item: MovieResult){
-             this.itemView.heart.setOnClickListener {
-                 onFavIconClickListener?.onFavClicked(item)
-             }
-         }
+        fun setOnFavClickListener(onFavIconClickListener: OnFavIconClickListener?, item: MovieResult) {
+            this.itemView.heart.setOnClickListener {
+                onFavIconClickListener?.onFavClicked(item)
+            }
+        }
 
-         fun bindGenres(movieResult: MovieResult, genres: Map<Int, String>){
-             movieResult.genreIds.forEachIndexed { index, item ->
-                 itemView.categoryItem.append(genres[item])
-                 if (index != movieResult.genreIds.lastIndex)
-                     itemView.categoryItem.append(" | ")
-             }
-         }
+        fun bindGenres(movieResult: MovieResult, genres: Map<Int, String>) {
+            movieResult.genreIds.forEachIndexed { index, item ->
+                itemView.categoryItem.append(genres[item])
+                if (index != movieResult.genreIds.lastIndex)
+                    itemView.categoryItem.append(" | ")
+            }
+        }
     }
 
-    fun setGenres(genres : Map<Int, String>){
+    fun setGenres(genres: Map<Int, String>) {
         this.genres = genres
     }
 
-    public interface OnFavIconClickListener{
+    interface OnFavIconClickListener {
         fun onFavClicked(movieResult: MovieResult)
     }
 }
