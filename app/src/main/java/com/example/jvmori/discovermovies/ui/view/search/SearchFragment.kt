@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,11 +16,14 @@ import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
+import com.example.jvmori.discovermovies.ui.IOnClickListener
 import com.example.jvmori.discovermovies.ui.adapters.GenreAdapter
+import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SearchResultsAdapter
 import com.example.jvmori.discovermovies.ui.view.discover.DiscoverFragmentDirections
 import com.example.jvmori.discovermovies.ui.view.discover.GenresPresenterInterface
 import com.example.jvmori.discovermovies.ui.view.discover.GenresViewInterface
+import com.example.jvmori.discovermovies.ui.view.movies.MoviesFragment
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlinx.android.synthetic.main.fragment_search.*
@@ -34,12 +38,18 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class SearchFragment : Fragment(), SearchViewInterface, GenresViewInterface, GenreAdapter.IOnGenreClick{
+class SearchFragment : Fragment(), SearchViewInterface,
+    GenresViewInterface,
+    GenreAdapter.IOnGenreClick,
+    IOnClickListener,
+    MoviesAdapter.OnFavIconClickListener {
 
     @Inject
     lateinit var searchPresenter: SearchPresenter
     @Inject
-    lateinit var genrePresenter : GenresPresenterInterface
+    lateinit var genrePresenter: GenresPresenterInterface
+
+    private var genres : Map<Int, String> = mutableMapOf()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -98,10 +108,14 @@ class SearchFragment : Fragment(), SearchViewInterface, GenresViewInterface, Gen
     override fun displayResults(results: List<MovieResult>) {
         noResultsLayout.visibility = View.GONE
         searchResults.visibility = View.VISIBLE
-        val adapter = SearchResultsAdapter()
+        val adapter = SearchResultsAdapter(this, this, genres)
         adapter.setItems(results)
         searchResults.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
         searchResults.adapter = adapter
+    }
+
+    override fun onMovieItemClicked(movieId: Int) {
+        Toast.makeText(this.requireContext(), "Click", Toast.LENGTH_SHORT).show()
     }
 
     override fun displayGenres(genreResponse: List<Genre>) {
@@ -125,6 +139,10 @@ class SearchFragment : Fragment(), SearchViewInterface, GenresViewInterface, Gen
         val action = SearchFragmentDirections.specifyGenre().setGenre(id)
         val nav = NavHostFragment.findNavController(this)
         nav.navigate(action)
+    }
+
+    override fun onFavClicked(movieResult: MovieResult) {
+
     }
 
     override fun displayError(s: String) {

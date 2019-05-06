@@ -56,20 +56,21 @@ class MoviesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
-        return MovieViewHolder(view)
+        return MovieViewHolder(view, onClickListener, onFavIconClickListener, genres)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentItem = getItem(position)
         currentItem?.let {
             holder.bindView(it)
-            holder.bindGenres(it, genres)
-            holder.itemView.setOnClickListener { onClickListener?.onMovieItemClicked(currentItem.id) }
-            holder.setOnFavClickListener(onFavIconClickListener, it)
         }
     }
 
-    class MovieViewHolder(itemView: View) : BaseAdapter.BaseViewHolder<MovieResult>(itemView) {
+    class MovieViewHolder(itemView: View,
+                          private var onClickListener: IOnClickListener?,
+                          private var onFavIconClickListener: OnFavIconClickListener?,
+                          private var genres: Map<Int, String> = mutableMapOf()
+                          ) : BaseAdapter.BaseViewHolder<MovieResult>(itemView) {
         override fun bindView(item: MovieResult) {
             this.itemView.titleItem.text = item.title
             this.itemView.yearItem.text = item.releaseDate
@@ -79,15 +80,22 @@ class MoviesAdapter(
             this.itemView.categoryItem.text = ""
             LoadImage.loadImage(this.itemView.context, this.itemView.iconItem, Const.base_poster_url + item.posterPath)
             MoviesAdapter.setStars(item.voteAverage * 10, this.itemView.layoutStars)
+            setOnItemClickListener(item)
+            setOnFavClickListener(onFavIconClickListener, item)
+            bindGenres(item,genres)
         }
 
-        fun setOnFavClickListener(onFavIconClickListener: OnFavIconClickListener?, item: MovieResult) {
+        private fun setOnItemClickListener(item: MovieResult){
+            itemView.setOnClickListener { onClickListener?.onMovieItemClicked(item.id) }
+        }
+
+        private fun setOnFavClickListener(onFavIconClickListener: OnFavIconClickListener?, item: MovieResult) {
             this.itemView.heart.setOnClickListener {
                 onFavIconClickListener?.onFavClicked(item)
             }
         }
 
-        fun bindGenres(movieResult: MovieResult, genres: Map<Int, String>) {
+        private fun bindGenres(movieResult: MovieResult, genres: Map<Int, String>) {
             movieResult.genreIds.forEachIndexed { index, item ->
                 itemView.categoryItem.append(genres[item])
                 if (index != movieResult.genreIds.lastIndex)
