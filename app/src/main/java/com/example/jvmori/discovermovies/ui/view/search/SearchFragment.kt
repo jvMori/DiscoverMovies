@@ -20,10 +20,10 @@ import com.example.jvmori.discovermovies.ui.IOnClickListener
 import com.example.jvmori.discovermovies.ui.adapters.GenreAdapter
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SearchResultsAdapter
-import com.example.jvmori.discovermovies.ui.view.discover.DiscoverFragmentDirections
-import com.example.jvmori.discovermovies.ui.view.discover.GenresPresenterInterface
-import com.example.jvmori.discovermovies.ui.view.discover.GenresViewInterface
-import com.example.jvmori.discovermovies.ui.view.movies.MoviesFragment
+import com.example.jvmori.discovermovies.ui.presenter.genres.GenresPresenterInterface
+import com.example.jvmori.discovermovies.ui.presenter.genres.GenresViewInterface
+import com.example.jvmori.discovermovies.ui.presenter.search.SearchPresenter
+import com.example.jvmori.discovermovies.ui.presenter.search.SearchViewInterface
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlinx.android.synthetic.main.fragment_search.*

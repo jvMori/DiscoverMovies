@@ -22,6 +22,8 @@ import com.example.jvmori.discovermovies.ui.adapters.CastAdapter
 import com.example.jvmori.discovermovies.ui.adapters.CrewAdapter
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SimilarMoviesAdapter
+import com.example.jvmori.discovermovies.ui.presenter.details.DetailsPresenter
+import com.example.jvmori.discovermovies.ui.presenter.details.DetailsView
 import com.example.jvmori.discovermovies.util.Const
 import com.example.jvmori.discovermovies.util.LoadImage
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener
