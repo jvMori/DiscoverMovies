@@ -25,10 +25,7 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class DiscoverFragment : Fragment(), GenresViewInterface {
-
-    @Inject
-    lateinit var genrePresenter : GenresPresenterInterface
+class DiscoverFragment : Fragment(){
 
     override fun onAttach(context: Context) {
         (context.applicationContext as MoviesApplication).movieComponent.inject(this)
@@ -39,37 +36,19 @@ class DiscoverFragment : Fragment(), GenresViewInterface {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        genrePresenter.setView(this)
         return inflater.inflate(R.layout.fragment_discover, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        genrePresenter.getGenres()
     }
 
-    override fun showProgressBar() {
-        progress_circular.visibility = View.VISIBLE
-    }
+//    override fun showProgressBar() {
+//        progress_circular.visibility = View.VISIBLE
+//    }
+//
+//    override fun hideProgressBar() {
+//        progress_circular.visibility = View.GONE
+//    }
 
-    override fun hideProgressBar() {
-        progress_circular.visibility = View.GONE
-    }
-
-    override fun displayGenres(genreResponse: List<Genre>) {
-        Log.i("result", genreResponse.toString())
-        createAdapter(genreResponse)
-    }
-
-    override fun displayError(s: String) {
-        Log.i("result", s)
-    }
-
-    private fun createAdapter(genres: List<Genre>) {
-        val adapter = GenreAdapter(this)
-        adapter.setItems(genres)
-        genresRv.layoutManager = GridLayoutManager(this.context, 2, RecyclerView.VERTICAL, false)
-        genresRv.setHasFixedSize(true)
-        genresRv.adapter = adapter
-    }
 }

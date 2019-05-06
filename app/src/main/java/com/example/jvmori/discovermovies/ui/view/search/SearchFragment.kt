@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.ui.adapters.GenreAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SearchResultsAdapter
+import com.example.jvmori.discovermovies.ui.view.discover.DiscoverFragmentDirections
 import com.example.jvmori.discovermovies.ui.view.discover.GenresPresenterInterface
 import com.example.jvmori.discovermovies.ui.view.discover.GenresViewInterface
 import com.google.android.material.appbar.AppBarLayout
@@ -32,7 +34,7 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class SearchFragment : Fragment(), SearchViewInterface, GenresViewInterface{
+class SearchFragment : Fragment(), SearchViewInterface, GenresViewInterface, GenreAdapter.IOnGenreClick{
 
     @Inject
     lateinit var searchPresenter: SearchPresenter
@@ -112,6 +114,17 @@ class SearchFragment : Fragment(), SearchViewInterface, GenresViewInterface{
         genresRv.layoutManager = GridLayoutManager(this.context, 2, RecyclerView.VERTICAL, false)
         genresRv.setHasFixedSize(true)
         genresRv.adapter = adapter
+    }
+
+    override fun onGenreClicked(item: Genre) {
+        navigateToMovieList(item)
+    }
+
+    private fun navigateToMovieList(item: Genre) {
+        val id = item.idGenre
+        val action = SearchFragmentDirections.specifyGenre().setGenre(id)
+        val nav = NavHostFragment.findNavController(this)
+        nav.navigate(action)
     }
 
     override fun displayError(s: String) {

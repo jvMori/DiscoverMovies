@@ -12,28 +12,25 @@ import com.example.jvmori.discovermovies.util.RandomColor
 import kotlinx.android.synthetic.main.genre_item.view.*
 
 class GenreAdapter(
-    val fragment : Fragment
+    private val onClickListener: IOnGenreClick?
 ) : BaseAdapter<Genre>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.genre_item, parent, false)
-        return GenreViewHolder(view, fragment)
+        return GenreViewHolder(view, onClickListener)
     }
 
-    class GenreViewHolder(itemView: View, fragment: Fragment) : BaseViewHolder<Genre>(itemView){
-        private val _fragment = fragment
+    class GenreViewHolder(itemView: View, private val onClickListener: IOnGenreClick?) : BaseViewHolder<Genre>(itemView) {
         override fun bindView(item: Genre) {
             itemView.itemName.text = item.name
             itemView.cardView2.setCardBackgroundColor(RandomColor.generateColor())
             itemView.setOnClickListener {
-                navigateToMovieList(item, fragment = _fragment )
+                onClickListener?.onGenreClicked(item)
             }
         }
-        private fun navigateToMovieList(item: Genre, fragment: Fragment){
-            val id = item.idGenre
-            val action = DiscoverFragmentDirections.specifyGenreId().setGenre(id)
-            val nav =  NavHostFragment.findNavController(fragment)
-            nav.navigate(action)
-        }
+    }
+
+    interface IOnGenreClick {
+        fun onGenreClicked(item: Genre)
     }
 }
