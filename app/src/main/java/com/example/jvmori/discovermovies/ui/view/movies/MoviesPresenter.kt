@@ -40,22 +40,6 @@ class MoviesPresenter @Inject constructor(
         LivePagedListBuilder<Int, MovieResult>(sourceFactory, config).build()
     }
 
-    override fun fetchGenres() {
-        disposable.add(
-            repository.getAllGenresLocal()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(
-                    { success ->
-                        view.displayGenres(success)
-                    },
-                    {
-                        Log.i(TAG, "Error while fetching genres")
-                    }
-                )
-        )
-    }
-
     override fun onFavClicked(movieResult: MovieResult) {
         disposable.add(
             repository.handleFavClick(movieResult)

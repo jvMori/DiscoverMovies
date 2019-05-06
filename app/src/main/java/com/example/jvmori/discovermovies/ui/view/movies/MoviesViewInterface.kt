@@ -10,5 +10,4 @@ interface MoviesViewInterface : BaseViewInterface
     fun displayAllItems(movieResponse: List<MovieResult>)
     fun displaySavedIcon()
     fun displayDeletedIcon()
-    fun displayGenres(genres: List<Genre>)
 }

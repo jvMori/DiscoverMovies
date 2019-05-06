@@ -49,7 +49,9 @@ class SearchFragment : Fragment(), SearchViewInterface,
     @Inject
     lateinit var genrePresenter: GenresPresenterInterface
 
-    private var genres : Map<Int, String> = mutableMapOf()
+    companion object {
+        var genresMap = mutableMapOf<Int, String>()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -108,7 +110,7 @@ class SearchFragment : Fragment(), SearchViewInterface,
     override fun displayResults(results: List<MovieResult>) {
         noResultsLayout.visibility = View.GONE
         searchResults.visibility = View.VISIBLE
-        val adapter = SearchResultsAdapter(this, this, genres)
+        val adapter = SearchResultsAdapter(this, this, genresMap)
         adapter.setItems(results)
         searchResults.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
         searchResults.adapter = adapter
@@ -120,6 +122,9 @@ class SearchFragment : Fragment(), SearchViewInterface,
 
     override fun displayGenres(genreResponse: List<Genre>) {
         createAdapter(genreResponse)
+        genreResponse.forEach {
+            genresMap[it.idGenre] = it.name
+        }
     }
 
     private fun createAdapter(genres: List<Genre>) {

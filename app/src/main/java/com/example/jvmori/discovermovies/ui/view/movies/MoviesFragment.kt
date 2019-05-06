@@ -20,6 +20,7 @@ import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.ui.IOnClickListener
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
+import com.example.jvmori.discovermovies.ui.view.search.SearchFragment
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
@@ -34,16 +35,6 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
-
-    companion object {
-        var genresMap = mutableMapOf<Int, String>()
-    }
-
-    override fun displayGenres(genres: List<Genre>) {
-        genres.forEach {
-            genresMap[it.idGenre] = it.name
-        }
-    }
 
     private var genreId: Int? = null
     @Inject
@@ -69,7 +60,6 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
         genreId = MoviesFragmentArgs.fromBundle(arguments).genre
         genreId?.let { genreId ->
             moviesPresenter.let {
-                it.fetchGenres()
                 it.parameters = DiscoverQueryParam(genreId.toString(), 1)
                 it.moviesDataList.observe(this, Observer { pageList ->
                     pageList?.let {
@@ -118,7 +108,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
             moviesAdapter = MoviesAdapter(this)
             if (it is MoviesAdapter.OnFavIconClickListener)
                 moviesAdapter?.setOnFavClickListener(it as MoviesAdapter.OnFavIconClickListener)
-            moviesAdapter?.setGenres(genresMap)
+            moviesAdapter?.setGenres(SearchFragment.genresMap)
             recyclerViewMovies!!.layoutManager =
                     LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
             recyclerViewMovies!!.setHasFixedSize(true)
