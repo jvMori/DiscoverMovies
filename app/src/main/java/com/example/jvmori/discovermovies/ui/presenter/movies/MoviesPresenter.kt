@@ -1,17 +1,14 @@
-package com.example.jvmori.discovermovies.ui.view.movies
+package com.example.jvmori.discovermovies.ui.presenter.movies
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.example.jvmori.discovermovies.MainActivity.Companion.TAG
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.data.datasource.MovieDataSourceFactory
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 

@@ -1,4 +1,4 @@
-package com.example.jvmori.discovermovies.ui.view.details
+package com.example.jvmori.discovermovies.ui.presenter.details
 
 import android.util.Log
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository

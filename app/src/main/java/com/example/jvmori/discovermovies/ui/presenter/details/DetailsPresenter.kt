@@ -1,4 +1,4 @@
-package com.example.jvmori.discovermovies.ui.view.details
+package com.example.jvmori.discovermovies.ui.presenter.details
 
 interface DetailsPresenter {
     fun fetchDetails(id : Int)

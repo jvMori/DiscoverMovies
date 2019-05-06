@@ -1,4 +1,4 @@
-package com.example.jvmori.discovermovies.ui.view.collections
+package com.example.jvmori.discovermovies.ui.presenter.collections
 
 interface CollectionPresenter {
     fun fetchSaved()

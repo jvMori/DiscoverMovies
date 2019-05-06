@@ -1,4 +1,4 @@
-package com.example.jvmori.discovermovies.ui.view.search
+package com.example.jvmori.discovermovies.ui.presenter.search
 
 import android.util.Log
 import androidx.appcompat.widget.SearchView

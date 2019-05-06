@@ -1,4 +1,4 @@
-package com.example.jvmori.discovermovies.ui.view.details
+package com.example.jvmori.discovermovies.ui.presenter.details
 
 import com.example.jvmori.discovermovies.data.network.response.credits.Cast
 import com.example.jvmori.discovermovies.data.network.response.credits.Crew
