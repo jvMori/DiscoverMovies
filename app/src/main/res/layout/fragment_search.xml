@@ -68,28 +68,11 @@
                       android:layout_height="wrap_content">
             <ProgressBar android:id="@+id/progressSearch" android:layout_width="match_parent"
                          android:layout_height="wrap_content" android:layout_marginTop="16dp"/>
-            <!--<ImageView-->
-                    <!--android:src="@drawable/ic_search_gray"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:layout_marginTop="30dp"-->
-                    <!--android:layout_width="match_parent" android:layout_height="100dp"/>-->
-            <!--<TextView android:layout_width="match_parent"-->
-                      <!--android:layout_height="wrap_content"-->
-                      <!--android:text="@string/no_results_yet"-->
-                      <!--android:textColor="@color/grayAccent"-->
-                      <!--android:textAlignment="center"-->
-                      <!--android:textSize="18sp"-->
-                      <!--android:padding="10dp"-->
-            <!--/>-->
-            <!--<TextView android:layout_width="match_parent"-->
-                      <!--android:layout_height="wrap_content"-->
-                      <!--android:text="@string/search_for_movies_tv_shows_or_people"-->
-                      <!--android:textColor="@color/grayAccent"-->
-                      <!--android:textAlignment="center"-->
-                      <!--android:textSize="18sp"-->
-                      <!--android:padding="10dp"-->
-            <!--/>-->
-            <include layout="@layout/fragment_discover"/>
+
+          <androidx.recyclerview.widget.RecyclerView
+                  android:id="@+id/genresRv"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
     <androidx.recyclerview.widget.RecyclerView

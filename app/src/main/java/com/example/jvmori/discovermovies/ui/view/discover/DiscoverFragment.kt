@@ -43,12 +43,5 @@ class DiscoverFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
     }
 
-//    override fun showProgressBar() {
-//        progress_circular.visibility = View.VISIBLE
-//    }
-//
-//    override fun hideProgressBar() {
-//        progress_circular.visibility = View.GONE
-//    }
 
 }
