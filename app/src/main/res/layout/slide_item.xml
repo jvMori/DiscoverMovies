@@ -15,10 +15,9 @@
                app:layout_constraintTop_toTopOf="parent"
                app:layout_constraintDimensionRatio="h,16:9"
                android:scaleType="fitCenter"
-               app:layout_constraintBottom_toBottomOf="parent"
                android:layout_marginTop="1dp"
                android:contentDescription="@string/poster" app:layout_constraintHorizontal_bias="0.0"
-               app:layout_constraintVertical_bias="1.0"/>
+    />
     <TextView
             android:text="Avengers: Endgame"
             android:layout_width="0dp"

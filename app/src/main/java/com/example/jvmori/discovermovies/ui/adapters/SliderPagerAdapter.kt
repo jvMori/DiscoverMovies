@@ -15,7 +15,7 @@ class SliderPagerAdapter(
     private var movies : List<MovieResult> = mutableListOf(),
     private var genres : Map<Int, String> = mutableMapOf()
 ) : PagerAdapter(){
-    
+
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
        return view == `object`
     }
@@ -25,12 +25,16 @@ class SliderPagerAdapter(
         val slideLayout = inflater.inflate(R.layout.slide_item, null)
 
         slideLayout.slideTitle.text = movies[position].title
-        SetupGenres.setup(movies[position].genreIds, slideLayout.slideGenre, genres, 1)
+        SetupGenres.setup(movies[position].genreIds, slideLayout.slideGenre, genres, movies[position].genreIds.size -1)
 
         container.addView(slideLayout)
         return slideLayout
     }
     override fun getCount(): Int {
         return movies.size
+    }
+
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        container.removeView(`object` as View)
     }
 }

@@ -44,7 +44,7 @@ class SearchPresenterImpl @Inject constructor(
                         return@filter movie.mediaType == Const.MOVIE
                     }
                 }
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe({
                     Log.i(TAG, it.toString())
                     view.displayResults(it)
