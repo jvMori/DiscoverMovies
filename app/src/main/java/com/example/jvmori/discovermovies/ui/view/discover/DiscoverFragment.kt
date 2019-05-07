@@ -69,6 +69,7 @@ class DiscoverFragment : Fragment(), GenresViewInterface{
         }
         val adapter = SliderPagerAdapter(this.requireContext(), movies, genresMap)
         slider_pager.adapter = adapter
+        worm_dots_indicator.setViewPager(slider_pager)
     }
     override fun showProgressBar() {
 

@@ -91,4 +91,7 @@ dependencies {
     implementation 'com.jakewharton.rxbinding3:rxbinding-appcompat:3.0.0-alpha2'
     implementation 'com.jakewharton.rxbinding3:rxbinding-material:3.0.0-alpha2'
     implementation "android.arch.lifecycle:reactivestreams:1.1.1"
+
+    //Material View Pager Dots Indicator
+    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:3.0.3'
 }
