@@ -13,4 +13,5 @@
     <string name="search">Search</string>
     <string name="no_results_yet">No results yet</string>
     <string name="search_for_movies_tv_shows_or_people">Search for movie\'s title...</string>
+    <string name="poster">poster</string>
 </resources>
