@@ -1,6 +1,7 @@
 package com.example.jvmori.discovermovies.ui.view.discover
 
 import android.content.Context
+import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import com.example.jvmori.discovermovies.ui.adapters.GenreAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SliderPagerAdapter
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresPresenterInterface
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresViewInterface
+import com.example.jvmori.discovermovies.ui.presenter.trending.TrendingContract
 import kotlinx.android.synthetic.main.fragment_discover.*
 import java.util.*
 import javax.inject.Inject
@@ -32,12 +34,14 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class DiscoverFragment : Fragment(), GenresViewInterface {
+class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.TrendingView {
 
     @Inject
     lateinit var genresPresenter: GenresPresenterInterface
+    @Inject
+    lateinit var trendingPresenter: TrendingContract.TrendingPresenter
+
     private var genresMap = mutableMapOf<Int, String>()
-    val movies = mutableListOf<MovieResult>()
     private lateinit var contextActivity: Context
 
     override fun onAttach(context: Context) {
@@ -50,27 +54,8 @@ class DiscoverFragment : Fragment(), GenresViewInterface {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        movies.add(
-            0, MovieResult(
-                0, false, "", "/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg",
-                mutableListOf(28, 12, 878), "pl", "pl", "", 1.4, "", "", "Avengers: Endgame",
-                false, 23.4, 123
-            )
-        )
-        movies.add(
-            1, MovieResult(
-                0, false, "", "/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg",
-                mutableListOf(28, 12, 878), "pl", "pl", "", 1.4, "", "", "Avengers: Endgame",
-                false, 23.4, 123
-            )
-        )
-        movies.add(
-            2, MovieResult(
-                0, false, "", "/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg",
-                mutableListOf(28, 12, 878), "pl", "pl", "", 1.4, "", "", "Avengers: Endgame",
-                false, 23.4, 123
-            )
-        )
+        trendingPresenter.setView(this)
+        trendingPresenter.fetchTrending("week", 3)
         return inflater.inflate(R.layout.fragment_discover, container, false)
     }
 
@@ -78,17 +63,29 @@ class DiscoverFragment : Fragment(), GenresViewInterface {
         super.onViewCreated(view, savedInstanceState)
         genresPresenter.setView(this)
         genresPresenter.getGenres()
-        val timer = Timer()
-        timer.scheduleAtFixedRate(SliderTimer(contextActivity, slider_pager, movies),4000,6000)
+
     }
 
     override fun displayGenres(genreResponse: List<Genre>) {
         genreResponse.forEach {
             genresMap[it.idGenre] = it.name
         }
+    }
+
+    override fun showResults(movies: List<MovieResult>) {
+        setupSliderAdapter(movies)
+        setupSliderTimer(movies)
+    }
+
+    private fun setupSliderAdapter(movies: List<MovieResult>) {
         val adapter = SliderPagerAdapter(this.requireContext(), movies, genresMap)
         slider_pager.adapter = adapter
         worm_dots_indicator.setViewPager(slider_pager)
+    }
+
+    private fun setupSliderTimer(movies: List<MovieResult>) {
+        val timer = Timer()
+        timer.scheduleAtFixedRate(SliderTimer(contextActivity, slider_pager, movies), 4000, 6000)
     }
 
     override fun showProgressBar() {
@@ -100,10 +97,10 @@ class DiscoverFragment : Fragment(), GenresViewInterface {
     }
 
     override fun displayError(s: String) {
-
+        Log.i(MainActivity.TAG, "error")
     }
 
-    class SliderTimer (
+    class SliderTimer(
         private var context: Context,
         private var sliderPager: ViewPager,
         private val movies: List<MovieResult>

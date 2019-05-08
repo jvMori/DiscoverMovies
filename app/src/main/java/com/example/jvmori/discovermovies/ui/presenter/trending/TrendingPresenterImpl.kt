@@ -3,25 +3,39 @@ package com.example.jvmori.discovermovies.ui.presenter.trending
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MediatorLiveData
+import com.example.jvmori.discovermovies.MainActivity
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class TrendingPresenterImpl @Inject constructor(
     private val repository: MoviesRepository
-): TrendingPresenter {
+) : TrendingContract.TrendingPresenter {
 
-    private val trending = MediatorLiveData<List<MovieResult>>()
+    private val disposable = CompositeDisposable()
 
-    override fun fetchTrending(period: String, count: Long) {
-        val source  = LiveDataReactiveStreams.fromPublisher(
-            repository.getTrendingMovies("week", 3)
-        )
-        trending.addSource(source) {
-            trending.postValue(it)
-            trending.removeSource(source)
-        }
+    override fun dispose() {
+        disposable.clear()
     }
 
-    override fun getTrending(): LiveData<List<MovieResult>> = trending
+    private lateinit var view: TrendingContract.TrendingView
+
+    override fun <T> setView(view: T) {
+        this.view = view as TrendingContract.TrendingView
+    }
+
+    override fun fetchTrending(period: String, count: Long) {
+        view.showProgressBar()
+        disposable.add(
+            repository.getTrendingMovies("week", 3)
+                .subscribe({
+                    view.showResults(it)
+                    view.hideProgressBar()
+                }, {
+                    view.displayError("Error while loading data")
+                    view.hideProgressBar()
+                })
+        )
+    }
 }

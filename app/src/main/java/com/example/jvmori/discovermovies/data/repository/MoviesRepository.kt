@@ -146,7 +146,11 @@ class MoviesRepository @Inject constructor(
 
     fun getTrendingMovies(period: String, count : Long) : Flowable<List<MovieResult>>{
         return tmdbApi.getTrendingMovies(period)
+            .flatMap {
+                return@flatMap Flowable.just(it.results)
+            }
             .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .take(count)
     }
 
