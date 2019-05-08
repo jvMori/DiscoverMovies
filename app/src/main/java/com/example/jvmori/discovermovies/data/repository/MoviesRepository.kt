@@ -16,10 +16,7 @@ import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import com.example.jvmori.discovermovies.util.Const
-import io.reactivex.Completable
-import io.reactivex.Maybe
-import io.reactivex.Observable
-import io.reactivex.Single
+import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observables.ConnectableObservable
@@ -145,6 +142,12 @@ class MoviesRepository @Inject constructor(
             savedMovieDao.getAllSaved()
                 .subscribeOn(Schedulers.io())
         }
+    }
+
+    fun getTrendingMovies(period: String, count : Long) : Flowable<List<MovieResult>>{
+        return tmdbApi.getTrendingMovies(period)
+            .subscribeOn(Schedulers.io())
+            .take(count)
     }
 
     private fun getMoviesToDiscover(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {

@@ -1,12 +1,14 @@
 package com.example.jvmori.discovermovies.data.network
 
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
+import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.response.credits.CreditsResponse
 import com.example.jvmori.discovermovies.data.network.response.genre.GenreResponse
 import com.example.jvmori.discovermovies.data.network.response.movie.MovieDetails
 import com.example.jvmori.discovermovies.data.network.response.recommendations.RecommendationsResponse
 import com.example.jvmori.discovermovies.data.network.response.search.SearchResponse
 import com.example.jvmori.discovermovies.data.network.response.video.VideoResponse
+import io.reactivex.Flowable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -37,4 +39,7 @@ interface TmdbAPI
 
     @GET("search/multi")
     fun getSearchedItems(@Query("query") query: String): Single<SearchResponse>
+
+    @GET("trending/movie/{period}")
+    fun getTrendingMovies(@Query("period") period: String) : Flowable<List<MovieResult>>
 }
