@@ -22,6 +22,7 @@ import com.example.jvmori.discovermovies.ui.presenter.genres.GenresPresenterInte
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresViewInterface
 import com.example.jvmori.discovermovies.ui.presenter.trending.TrendingContract
 import kotlinx.android.synthetic.main.fragment_discover.*
+import kotlinx.android.synthetic.main.loading.*
 import java.util.*
 import javax.inject.Inject
 
@@ -64,6 +65,7 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showProgressBar()
         genresPresenter.setView(this)
         genresPresenter.getGenres()
         //TODO: databinding
@@ -72,16 +74,19 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
 
             }
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                timer?.cancel()
-                movies?.let {
-                    timer = Timer()
-                    timer?.schedule(SliderTimer(contextActivity, slider_pager, it), 4000, 6000)
-                }
+               restartTimer()
             }
             override fun onPageSelected(position: Int) {
 
             }
         })
+    }
+    private fun restartTimer(){
+        timer?.cancel()
+        movies?.let {
+            timer = Timer()
+            timer?.schedule(SliderTimer(contextActivity, slider_pager, it), 4000, 6000)
+        }
     }
 
     override fun displayGenres(genreResponse: List<Genre>) {
@@ -109,11 +114,13 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
     }
 
     override fun showProgressBar() {
-
+        loadingIncluded.visibility = View.VISIBLE
+        content.visibility = View.GONE
     }
 
     override fun hideProgressBar() {
-
+        loadingIncluded.visibility = View.GONE
+        content.visibility = View.VISIBLE
     }
 
     override fun displayError(s: String) {

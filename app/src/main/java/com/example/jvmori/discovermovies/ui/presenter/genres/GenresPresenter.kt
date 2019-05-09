@@ -36,7 +36,7 @@ class GenresPresenter @Inject constructor (
 
             override fun onNext(response: List<Genre>) {
                 genresViewInterface.displayGenres(response)
-                genresViewInterface.hideProgressBar()
+                //genresViewInterface.hideProgressBar()
             }
 
             override fun onError(e: Throwable) {
@@ -46,7 +46,7 @@ class GenresPresenter @Inject constructor (
 
             override fun onComplete() {
                 Log.d("Succes", "Completed")
-                genresViewInterface.hideProgressBar()
+                //genresViewInterface.hideProgressBar()
             }
         }
     }

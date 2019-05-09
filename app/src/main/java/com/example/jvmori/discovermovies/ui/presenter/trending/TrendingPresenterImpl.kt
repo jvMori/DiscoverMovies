@@ -24,7 +24,6 @@ class TrendingPresenterImpl @Inject constructor(
     }
 
     override fun fetchTrending(period: String, count: Int) {
-        view.showProgressBar()
         disposable.add(
             repository.getTrendingMovies("week", 3)
                 .flatMap{ result ->
