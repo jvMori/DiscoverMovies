@@ -6,7 +6,7 @@ import com.example.jvmori.discovermovies.ui.view.BaseViewInterface
 
 interface TrendingContract {
     interface TrendingPresenter : BasePresenter {
-        fun fetchTrending(period: String, count : Long)
+        fun fetchTrending(period: String, count : Int)
     }
     interface TrendingView : BaseViewInterface {
         fun showResults(movies : List<MovieResult>)

@@ -1,13 +1,11 @@
 package com.example.jvmori.discovermovies.ui.presenter.trending
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
-import androidx.lifecycle.MediatorLiveData
-import com.example.jvmori.discovermovies.MainActivity
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
+import kotlin.random.Random
 
 class TrendingPresenterImpl @Inject constructor(
     private val repository: MoviesRepository
@@ -25,10 +23,13 @@ class TrendingPresenterImpl @Inject constructor(
         this.view = view as TrendingContract.TrendingView
     }
 
-    override fun fetchTrending(period: String, count: Long) {
+    override fun fetchTrending(period: String, count: Int) {
         view.showProgressBar()
         disposable.add(
             repository.getTrendingMovies("week", 3)
+                .flatMap{ result ->
+                    return@flatMap Flowable.just(chooseRandomMovies(count, result))
+                }
                 .subscribe({
                     view.showResults(it)
                     view.hideProgressBar()
@@ -37,5 +38,13 @@ class TrendingPresenterImpl @Inject constructor(
                     view.hideProgressBar()
                 })
         )
+    }
+    private fun chooseRandomMovies(count: Int, movies : List<MovieResult>) : List<MovieResult>{
+        val newList = mutableListOf<MovieResult>()
+        for (x in 0..count) {
+            val random = Random.nextInt(movies.size)
+            newList.add(movies[random])
+        }
+        return newList
     }
 }

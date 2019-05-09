@@ -44,7 +44,8 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
     //TODO: dagger inject
     private var genresMap = mutableMapOf<Int, String>()
     private lateinit var contextActivity: Context
-    private var timer : Timer? = null
+    private var timer: Timer? = null
+    private var movies : List<MovieResult>? = null
 
     override fun onAttach(context: Context) {
         (context.applicationContext as MoviesApplication).movieComponent.inject(this)
@@ -58,23 +59,6 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
     ): View? {
         trendingPresenter.setView(this)
         trendingPresenter.fetchTrending("week", 3)
-
-        //TODO: databinding
-        slider_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
-            override fun onPageScrollStateChanged(state: Int) {
-
-            }
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                timer?.cancel()
-            }
-
-            override fun onPageSelected(position: Int) {
-
-            }
-        }
-
-        )
         return inflater.inflate(R.layout.fragment_discover, container, false)
     }
 
@@ -82,7 +66,22 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
         super.onViewCreated(view, savedInstanceState)
         genresPresenter.setView(this)
         genresPresenter.getGenres()
+        //TODO: databinding
+        slider_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
 
+            }
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                timer?.cancel()
+                movies?.let {
+                    timer = Timer()
+                    timer?.schedule(SliderTimer(contextActivity, slider_pager, it), 4000, 6000)
+                }
+            }
+            override fun onPageSelected(position: Int) {
+
+            }
+        })
     }
 
     override fun displayGenres(genreResponse: List<Genre>) {
@@ -92,6 +91,8 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
     }
 
     override fun showResults(movies: List<MovieResult>) {
+        this.movies = mutableListOf()
+        this.movies = movies
         setupSliderAdapter(movies)
         setupSliderTimer(movies)
     }
