@@ -41,6 +41,7 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
     @Inject
     lateinit var trendingPresenter: TrendingContract.TrendingPresenter
 
+    //TODO: dagger inject
     private var genresMap = mutableMapOf<Int, String>()
     private lateinit var contextActivity: Context
     private var timer : Timer? = null
@@ -57,6 +58,8 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
     ): View? {
         trendingPresenter.setView(this)
         trendingPresenter.fetchTrending("week", 3)
+
+        //TODO: databinding
         slider_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {
 
