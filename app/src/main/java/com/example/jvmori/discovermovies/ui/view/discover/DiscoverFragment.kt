@@ -43,6 +43,7 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
 
     private var genresMap = mutableMapOf<Int, String>()
     private lateinit var contextActivity: Context
+    private var timer : Timer? = null
 
     override fun onAttach(context: Context) {
         (context.applicationContext as MoviesApplication).movieComponent.inject(this)
@@ -56,6 +57,21 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
     ): View? {
         trendingPresenter.setView(this)
         trendingPresenter.fetchTrending("week", 3)
+        slider_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                timer?.cancel()
+            }
+
+            override fun onPageSelected(position: Int) {
+
+            }
+        }
+
+        )
         return inflater.inflate(R.layout.fragment_discover, container, false)
     }
 
@@ -84,8 +100,8 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
     }
 
     private fun setupSliderTimer(movies: List<MovieResult>) {
-        val timer = Timer()
-        timer.scheduleAtFixedRate(SliderTimer(contextActivity, slider_pager, movies), 4000, 6000)
+        timer = Timer()
+        timer?.schedule(SliderTimer(contextActivity, slider_pager, movies), 4000, 6000)
     }
 
     override fun showProgressBar() {
