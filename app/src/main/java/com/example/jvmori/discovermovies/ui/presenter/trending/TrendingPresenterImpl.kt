@@ -25,7 +25,7 @@ class TrendingPresenterImpl @Inject constructor(
 
     override fun fetchTrending(period: String, count: Int) {
         disposable.add(
-            repository.getTrendingMovies("week", 3)
+            repository.getTrendingMovies("week")
                 .flatMap{ result ->
                     return@flatMap Flowable.just(chooseRandomMovies(count, result))
                 }

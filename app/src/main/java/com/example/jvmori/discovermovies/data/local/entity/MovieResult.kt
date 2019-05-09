@@ -3,6 +3,7 @@ package com.example.jvmori.discovermovies.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.sql.Timestamp
 
 @Entity(tableName = "saved_movies")
 data class MovieResult(
@@ -10,6 +11,7 @@ data class MovieResult(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
     val adult: Boolean,
+    var isTrending : Boolean,
     @SerializedName("media_type")
     var mediaType: String,
     @SerializedName("backdrop_path")
@@ -31,7 +33,8 @@ data class MovieResult(
     @SerializedName("vote_average")
     val voteAverage: Double,
     @SerializedName("vote_count")
-    val voteCount: Int
+    val voteCount: Int,
+    var timestamp: Long
 ) {
     override fun equals(other: Any?): Boolean {
         if (other == this)

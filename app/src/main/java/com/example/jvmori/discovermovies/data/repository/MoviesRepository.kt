@@ -41,6 +41,7 @@ class MoviesRepository @Inject constructor(
             .toObservable()
     }
 
+
     fun getVideos(id: Int): Observable<VideoResponse> {
         return tmdbApi.getVideos(id)
             .subscribeOn(Schedulers.io())
@@ -144,7 +145,7 @@ class MoviesRepository @Inject constructor(
         }
     }
 
-    fun getTrendingMovies(period: String, count : Long) : Flowable<List<MovieResult>>{
+    fun getTrendingMovies(period: String) : Flowable<List<MovieResult>>{
         return tmdbApi.getTrendingMovies(period)
             .flatMap {
                 return@flatMap Flowable.just(it.results)
@@ -165,6 +166,10 @@ class MoviesRepository @Inject constructor(
     }
 
     private fun isMovieUpToDate(movie: DiscoverMovieResponse): Boolean {
+        return movie.timestamp != 0L && System.currentTimeMillis() - movie.timestamp < Const.STALE_MS
+    }
+
+    private fun isTrendingMovieUpToDate(movie: MovieResult): Boolean {
         return movie.timestamp != 0L && System.currentTimeMillis() - movie.timestamp < Const.STALE_MS
     }
 
@@ -211,7 +216,16 @@ class MoviesRepository @Inject constructor(
             genreDao.insert(data)
         }.subscribeOn(Schedulers.io())
             .subscribe()
-
     }
 
+    private fun saveTrendingMovies(data: List<MovieResult>){
+        data.forEach {
+            it.isTrending = true
+            it.timestamp = System.currentTimeMillis()
+        }
+        Completable.fromAction {
+            savedMovieDao.insertAll(data)
+        }.subscribeOn(Schedulers.io())
+            .subscribe()
+    }
 }
