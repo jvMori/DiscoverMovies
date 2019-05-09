@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
+import com.example.jvmori.discovermovies.MainActivity
 import com.example.jvmori.discovermovies.data.local.database.MovieDatabase
 import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
@@ -41,9 +42,9 @@ class MoviesRepository @Inject constructor(
             .toObservable()
     }
 
-    fun getTrending(period: String) : Flowable<List<MovieResult>>{
+    fun getTrending(period: String): Flowable<List<MovieResult>> {
         return Maybe.concat(getTrendingMoviesLocal(period), getTrendingMoviesRemote(period))
-            .filter{response ->
+            .filter { response ->
                 response.isNotEmpty() && isTrendingMovieUpToDate(response[0])
             }
             .take(1)
@@ -125,7 +126,7 @@ class MoviesRepository @Inject constructor(
             }
     }
 
-    fun handleFavClick(movie: MovieResult) : Single<MovieResult>{
+    fun handleFavClick(movie: MovieResult): Single<MovieResult> {
         return savedMovieDao.getMovie(movie.id)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
@@ -153,18 +154,19 @@ class MoviesRepository @Inject constructor(
         }
     }
 
-    fun getTrendingMoviesRemote(period: String) : Maybe<List<MovieResult>>{
+    fun getTrendingMoviesRemote(period: String): Maybe<List<MovieResult>> {
         return tmdbApi.getTrendingMovies(period)
             .flatMap {
                 return@flatMap Maybe.just(it.results)
             }
-            .doAfterSuccess{
+            .doAfterSuccess {
                 saveTrendingMovies(it)
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
-    private fun getTrendingMoviesLocal(period: String) : Maybe<List<MovieResult>>{
+
+    private fun getTrendingMoviesLocal(period: String): Maybe<List<MovieResult>> {
         return savedMovieDao.getAllTrending(period)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -234,14 +236,18 @@ class MoviesRepository @Inject constructor(
             .subscribe()
     }
 
-    private fun saveTrendingMovies(data: List<MovieResult>){
+    private fun saveTrendingMovies(data: List<MovieResult>) {
         data.forEach {
             it.isTrending = true
             it.timestamp = System.currentTimeMillis()
+            it.mediaType = Const.MOVIE
         }
         Completable.fromAction {
             savedMovieDao.insertAll(data)
         }.subscribeOn(Schedulers.io())
+            .doOnError {
+                Log.i(MainActivity.TAG, "error while saving trending movies")
+            }
             .subscribe()
     }
 }

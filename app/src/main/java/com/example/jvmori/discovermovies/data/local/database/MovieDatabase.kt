@@ -13,7 +13,7 @@ import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.util.Converters
 
-@Database(entities = [Genre::class, DiscoverMovieResponse::class, MovieResult::class], version = 5, exportSchema = false)
+@Database(entities = [Genre::class, DiscoverMovieResponse::class, MovieResult::class], version = 6, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun genreDao(): GenreDao
@@ -34,6 +34,7 @@ abstract class MovieDatabase : RoomDatabase() {
                 context,
                 MovieDatabase::class.java, "movies.db"
             )
+                .fallbackToDestructiveMigration()
                 .build()
     }
 }

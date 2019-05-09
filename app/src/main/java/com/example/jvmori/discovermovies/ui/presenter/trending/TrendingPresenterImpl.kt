@@ -30,8 +30,10 @@ class TrendingPresenterImpl @Inject constructor(
                     return@flatMap Flowable.just(chooseRandomMovies(count, result))
                 }
                 .subscribe({
-                    view.showResults(it)
-                    view.hideProgressBar()
+                    if (it.isNotEmpty()){
+                        view.showResults(it)
+                        view.hideProgressBar()
+                    }
                 }, {
                     view.displayError("Error while loading data")
                     view.hideProgressBar()
