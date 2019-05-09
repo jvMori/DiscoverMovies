@@ -11,7 +11,6 @@ data class MovieResult(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
     val adult: Boolean,
-    var isTrending : Boolean,
     @SerializedName("media_type")
     var mediaType: String,
     @SerializedName("backdrop_path")
@@ -34,7 +33,9 @@ data class MovieResult(
     val voteAverage: Double,
     @SerializedName("vote_count")
     val voteCount: Int,
-    var timestamp: Long
+    var timestamp: Long,
+    var isTrending : Boolean,
+    var period : Int
 ) {
     override fun equals(other: Any?): Boolean {
         if (other == this)

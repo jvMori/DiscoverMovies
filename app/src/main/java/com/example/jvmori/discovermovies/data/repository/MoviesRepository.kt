@@ -41,6 +41,14 @@ class MoviesRepository @Inject constructor(
             .toObservable()
     }
 
+    fun getTrending(period: String) : Flowable<List<MovieResult>>{
+        return Maybe.concat(getTrendingMoviesLocal(period), getTrendingMoviesRemote(period))
+            .filter{response ->
+                response.isNotEmpty() && isTrendingMovieUpToDate(response[0])
+            }
+            .take(1)
+    }
+
 
     fun getVideos(id: Int): Observable<VideoResponse> {
         return tmdbApi.getVideos(id)
@@ -145,11 +153,19 @@ class MoviesRepository @Inject constructor(
         }
     }
 
-    fun getTrendingMovies(period: String) : Flowable<List<MovieResult>>{
+    fun getTrendingMoviesRemote(period: String) : Maybe<List<MovieResult>>{
         return tmdbApi.getTrendingMovies(period)
             .flatMap {
-                return@flatMap Flowable.just(it.results)
+                return@flatMap Maybe.just(it.results)
             }
+            .doAfterSuccess{
+                saveTrendingMovies(it)
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+    private fun getTrendingMoviesLocal(period: String) : Maybe<List<MovieResult>>{
+        return savedMovieDao.getAllTrending(period)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
