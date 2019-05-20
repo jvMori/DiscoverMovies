@@ -12,21 +12,28 @@ import android.content.res.TypedArray
 
 class MoviesSectionView(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
 
-    private lateinit var mTitle : TextView
+    private lateinit var mTitleTextView : TextView
+    private var mTitle : String?
     init {
         val inflater : LayoutInflater = context.applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.movie_section, this)
 
-        val a = context.obtainStyledAttributes(
+        context.theme.obtainStyledAttributes(
             attrs,
-            R.styleable.MoviesSectionView, 0, 0
-        )
-        
-        a.recycle()
+            R.styleable.MoviesSectionView,
+            0,
+            0
+        ).apply {
+            try{
+                mTitle = getString(R.styleable.MoviesSectionView_titleText)
+            }finally {
+                recycle()
+            }
+        }
     }
 
     fun setTitleText(title : String){
-        mTitle.text = title
+        mTitleTextView.text = title
     }
 
 }
