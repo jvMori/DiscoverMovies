@@ -26,11 +26,11 @@ class TrendingPresenterImpl @Inject constructor(
     override fun fetchRandomTrending(period: String, count: Int) {
         disposable.add(
             repository.getTrending(period)
-                .flatMap{ result ->
+                .flatMap { result ->
                     return@flatMap Flowable.just(chooseRandomMovies(count, result))
                 }
                 .subscribe({
-                    if (it.isNotEmpty()){
+                    if (it.isNotEmpty()) {
                         view.showRandomTrending(it)
                         view.hideProgressBar()
                     }
@@ -45,7 +45,7 @@ class TrendingPresenterImpl @Inject constructor(
         disposable.add(
             repository.getTrending(period)
                 .subscribe({
-                    if (it.isNotEmpty()){
+                    if (it.isNotEmpty()) {
                         view.showAllTrending(it)
                         view.hideProgressBar()
                     }
@@ -55,12 +55,27 @@ class TrendingPresenterImpl @Inject constructor(
                 })
         )
     }
-    private fun chooseRandomMovies(count: Int, movies : List<MovieResult>) : List<MovieResult>{
+
+    private fun chooseRandomMovies(count: Int, movies: List<MovieResult>): List<MovieResult> {
         val newList = mutableListOf<MovieResult>()
+        val randoms = mutableListOf<Int>()
         for (x in 0..count) {
-            val random = Random.nextInt(movies.size)
-            newList.add(movies[random])
+            chooseRandomInt(randoms, movies, newList)
         }
         return newList
     }
+
+    private fun chooseRandomInt(
+        randoms: MutableList<Int>,
+        movies: List<MovieResult>,
+        movieList : MutableList<MovieResult>
+    ) {
+        val random = Random.nextInt(movies.size)
+        if (!randoms.contains(random)) {
+            randoms.add(random)
+            movieList.add(movies[random])
+        }
+        else chooseRandomInt(randoms, movies, movieList)
+    }
+
 }
