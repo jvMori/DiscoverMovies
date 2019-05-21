@@ -42,4 +42,7 @@ interface TmdbAPI
 
     @GET("trending/movie/{period}")
     fun getTrendingMovies(@Path("period") period: String) : Maybe<DiscoverMovieResponse>
+
+    @GET("movie/now_playing")
+    fun getNowPlaying() : Observable<DiscoverMovieResponse>
 }

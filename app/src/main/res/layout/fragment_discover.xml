@@ -35,6 +35,17 @@
             app:icon="@drawable/ic_live_tv"
             app:layout_constraintTop_toBottomOf="@+id/worm_dots_indicator"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.example.jvmori.discovermovies.ui.customViews.MoviesSectionView
+            android:id="@+id/nowPlayingMoviesSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleText="Now Playing"
+            app:icon="@drawable/ic_movie"
+            app:layout_constraintTop_toBottomOf="@+id/popularMoviesSection"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"/>
+
     <include layout="@layout/loading" android:visibility="gone" android:id="@+id/loadingIncluded"/>
     <androidx.constraintlayout.widget.Group android:layout_width="wrap_content" android:layout_height="wrap_content"
                                             android:id="@+id/content"

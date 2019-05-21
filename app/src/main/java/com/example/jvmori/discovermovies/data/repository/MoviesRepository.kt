@@ -117,6 +117,15 @@ class MoviesRepository @Inject constructor(
             }
     }
 
+    fun getNowPlaying() : Observable<List<MovieResult>>{
+        return tmdbApi.getNowPlaying()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .flatMap {
+                return@flatMap Observable.just(it.results)
+            }
+    }
+
     fun getSearchedItems(q: String): Single<List<MovieResult>> {
         return tmdbApi.getSearchedItems(q)
             .subscribeOn(Schedulers.io())
@@ -154,7 +163,7 @@ class MoviesRepository @Inject constructor(
         }
     }
 
-    fun getTrendingMoviesRemote(period: String): Maybe<List<MovieResult>> {
+    private fun getTrendingMoviesRemote(period: String): Maybe<List<MovieResult>> {
         return tmdbApi.getTrendingMovies(period)
             .flatMap {
                 return@flatMap Maybe.just(it.results)

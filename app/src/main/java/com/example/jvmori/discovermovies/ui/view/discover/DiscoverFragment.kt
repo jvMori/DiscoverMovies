@@ -20,6 +20,7 @@ import com.example.jvmori.discovermovies.ui.adapters.GenreAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SliderPagerAdapter
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresPresenterInterface
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresViewInterface
+import com.example.jvmori.discovermovies.ui.presenter.nowPlaying.NowPlayingContract
 import com.example.jvmori.discovermovies.ui.presenter.trending.TrendingContract
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlinx.android.synthetic.main.loading.*
@@ -35,12 +36,14 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.TrendingView {
+class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.TrendingView, NowPlayingContract.NowPlayingView{
 
     @Inject
     lateinit var genresPresenter: GenresPresenterInterface
     @Inject
     lateinit var trendingPresenter: TrendingContract.TrendingPresenter
+    @Inject
+    lateinit var nowPlayingPresenter : NowPlayingContract.NowPlayingPresenter
 
     //TODO: dagger inject
     private var genresMap = mutableMapOf<Int, String>()
@@ -59,8 +62,10 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
         savedInstanceState: Bundle?
     ): View? {
         trendingPresenter.setView(this)
+        nowPlayingPresenter.setView(this)
         trendingPresenter.fetchRandomTrending("week", 3)
         trendingPresenter.fetchAllTrending("week")
+        nowPlayingPresenter.fetchNowPlaying()
         return inflater.inflate(R.layout.fragment_discover, container, false)
     }
 
@@ -105,6 +110,10 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
 
     override fun showAllTrending(movies: List<MovieResult>) {
         popularMoviesSection.setRecyclerView(this.requireContext(), movies)
+    }
+
+    override fun showNowPlaying(movies: List<MovieResult>) {
+        nowPlayingMoviesSection.setRecyclerView(this.requireContext(), movies)
     }
 
     private fun setupSliderAdapter(movies: List<MovieResult>) {

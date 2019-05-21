@@ -12,7 +12,19 @@ class NowPlayingPresenterImpl @Inject constructor(
     private lateinit var view: NowPlayingContract.NowPlayingView
 
     override fun fetchNowPlaying() {
-
+        disposable.add(
+            repository.getNowPlaying()
+                .subscribe(
+                    {
+                        view.hideProgressBar()
+                        view.showNowPlaying(it)
+                    },
+                    {
+                        view.hideProgressBar()
+                        view.displayError("Error while loading now playing movies")
+                    }
+                )
+        )
     }
 
     override fun <T> setView(view: T) {
