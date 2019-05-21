@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent">
 
+    <ImageView
+            android:layout_width="32dp"
+            android:layout_height="27dp" app:srcCompat="@drawable/ic_live_tv"
+            android:id="@+id/iconIv"
+            app:layout_constraintDimensionRatio="w,1:1"
+            app:layout_constraintStart_toEndOf="@+id/guideline4"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/guideline5"
+            android:tint="@color/colorAccent"/>
     <TextView
-            android:text="TextView"
+            android:text="Popular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/titleTextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp" android:textSize="30sp" android:layout_marginEnd="3dp"/>
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iconIv" app:layout_constraintTop_toTopOf="@+id/iconIv"
+            app:layout_constraintStart_toEndOf="@+id/iconIv" android:layout_marginStart="16dp"
+            android:textColor="@color/textPrimary"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
+            android:layout_marginTop="11dp" app:layout_constraintTop_toTopOf="@+id/guideline5"
+            android:id="@+id/rvMovies">
+    </androidx.recyclerview.widget.RecyclerView>
+    <ImageView
+            android:layout_width="31dp"
+            android:layout_height="29dp" app:srcCompat="@drawable/ic_more_horiz"
+            android:id="@+id/moreBtn"
+            app:layout_constraintDimensionRatio="w,1:1"
+            app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
+            app:layout_constraintTop_toTopOf="@+id/titleTextView" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp" android:clickable="true"/>
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                                android:id="@+id/guideline4" app:layout_constraintGuide_begin="20dp"
+                                                android:orientation="vertical"/>
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                                android:id="@+id/guideline5" app:layout_constraintGuide_begin="52dp"
+                                                android:orientation="horizontal"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
