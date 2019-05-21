@@ -23,15 +23,30 @@ class TrendingPresenterImpl @Inject constructor(
         this.view = view as TrendingContract.TrendingView
     }
 
-    override fun fetchTrending(period: String, count: Int) {
+    override fun fetchRandomTrending(period: String, count: Int) {
         disposable.add(
-            repository.getTrending("week")
+            repository.getTrending(period)
                 .flatMap{ result ->
                     return@flatMap Flowable.just(chooseRandomMovies(count, result))
                 }
                 .subscribe({
                     if (it.isNotEmpty()){
-                        view.showResults(it)
+                        view.showRandomTrending(it)
+                        view.hideProgressBar()
+                    }
+                }, {
+                    view.displayError("Error while loading data")
+                    view.hideProgressBar()
+                })
+        )
+    }
+
+    override fun fetchAllTrending(period: String) {
+        disposable.add(
+            repository.getTrending(period)
+                .subscribe({
+                    if (it.isNotEmpty()){
+                        view.showAllTrending(it)
                         view.hideProgressBar()
                     }
                 }, {

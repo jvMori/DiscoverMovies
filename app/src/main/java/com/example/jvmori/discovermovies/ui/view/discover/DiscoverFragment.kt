@@ -59,7 +59,8 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
         savedInstanceState: Bundle?
     ): View? {
         trendingPresenter.setView(this)
-        trendingPresenter.fetchTrending("week", 3)
+        trendingPresenter.fetchRandomTrending("week", 3)
+        trendingPresenter.fetchAllTrending("week")
         return inflater.inflate(R.layout.fragment_discover, container, false)
     }
 
@@ -95,11 +96,15 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
         }
     }
 
-    override fun showResults(movies: List<MovieResult>) {
+    override fun showRandomTrending(movies: List<MovieResult>) {
         this.movies = mutableListOf()
         this.movies = movies
         setupSliderAdapter(movies)
         setupSliderTimer(movies)
+    }
+
+    override fun showAllTrending(movies: List<MovieResult>) {
+        popularMoviesSection.setRecyclerView(this.requireContext(), movies)
     }
 
     private fun setupSliderAdapter(movies: List<MovieResult>) {

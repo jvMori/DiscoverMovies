@@ -2,7 +2,7 @@
 <resources>
     <declare-styleable name="MoviesSectionView">
         <attr name="titleText" format="string" localization="suggested" />
-        <attr name="titleColor" format="color"/>
+        <attr name="icon" format="reference"/>
     </declare-styleable>
 
 </resources>
