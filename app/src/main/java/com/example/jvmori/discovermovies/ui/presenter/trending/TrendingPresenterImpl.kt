@@ -1,8 +1,12 @@
 package com.example.jvmori.discovermovies.ui.presenter.trending
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
+import androidx.lifecycle.MutableLiveData
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 import kotlin.random.Random
@@ -12,6 +16,8 @@ class TrendingPresenterImpl @Inject constructor(
 ) : TrendingContract.TrendingPresenter {
 
     private val disposable = CompositeDisposable()
+    private val _trending = MutableLiveData<List<MovieResult>>()
+    val trending : LiveData<List<MovieResult>> = _trending
 
     override fun dispose() {
         disposable.clear()
@@ -23,22 +29,21 @@ class TrendingPresenterImpl @Inject constructor(
         this.view = view as TrendingContract.TrendingView
     }
 
-    override fun fetchRandomTrending(period: String, count: Int) {
+    override fun fetchRandomTrending(period: String, count: Int)  {
         disposable.add(
             repository.getTrending(period)
                 .flatMap { result ->
-                    return@flatMap Flowable.just(chooseRandomMovies(count, result))
+                    return@flatMap Observable.just(chooseRandomMovies(count, result))
                 }
                 .subscribe({
-                    if (it.isNotEmpty()) {
-                        view.showRandomTrending(it)
-                        view.hideProgressBar()
-                    }
+                    view.showRandomTrending(it)
+                    view.hideProgressBar()
                 }, {
                     view.displayError("Error while loading data")
                     view.hideProgressBar()
                 })
         )
+
     }
 
     override fun fetchAllTrending(period: String) {
@@ -59,8 +64,10 @@ class TrendingPresenterImpl @Inject constructor(
     private fun chooseRandomMovies(count: Int, movies: List<MovieResult>): List<MovieResult> {
         val newList = mutableListOf<MovieResult>()
         val randoms = mutableListOf<Int>()
-        for (x in 0..count) {
-            chooseRandomInt(randoms, movies, newList)
+        if(movies.isNotEmpty()){
+            for (x in 0..count) {
+                chooseRandomInt(randoms, movies, newList)
+            }
         }
         return newList
     }

@@ -41,8 +41,8 @@ interface TmdbAPI
     fun getSearchedItems(@Query("query") query: String): Single<SearchResponse>
 
     @GET("trending/movie/{period}")
-    fun getTrendingMovies(@Path("period") period: String) : Maybe<DiscoverMovieResponse>
+    fun getTrendingMovies(@Path("period") period: String) : Observable<DiscoverMovieResponse>
 
     @GET("movie/now_playing")
-    fun getNowPlaying() : Observable<DiscoverMovieResponse>
+    fun getNowPlaying() : Flowable<DiscoverMovieResponse>
 }
