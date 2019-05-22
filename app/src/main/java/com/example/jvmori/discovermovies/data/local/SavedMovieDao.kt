@@ -24,7 +24,7 @@ interface SavedMovieDao {
     fun getMovie(movieId: Int): Single<MovieResult>
 
     @Query("Select * from saved_movies where isTrending AND period like:periodTime")
-    fun getAllTrending(periodTime: String): Flowable<List<MovieResult>>
+    fun getAllTrending(periodTime: String): Single<List<MovieResult>>
 
     @Query("Delete from saved_movies where isTrending AND period like:periodTime")
     fun deleteTrending(periodTime: String)

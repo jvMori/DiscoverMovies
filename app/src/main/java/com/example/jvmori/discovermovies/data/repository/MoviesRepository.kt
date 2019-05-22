@@ -154,22 +154,25 @@ class MoviesRepository @Inject constructor(
     }
 
     fun getTrending(period: String) : Observable<List<MovieResult>>{
-        return fetchTrendingMoviesRemote(period)
+        return Single.mergeDelayError(
+            fetchTrendingLocal(period),
+            fetchTrendingMoviesRemote(period)
+        ).toObservable()
     }
 
-    private fun fetchTrendingMoviesRemote(period: String): Observable<List<MovieResult>> {
+    private fun fetchTrendingMoviesRemote(period: String): Single<List<MovieResult>> {
         return tmdbApi.getTrendingMovies(period)
             .flatMap {
-                return@flatMap Observable.just(it.results)
+                return@flatMap Single.just(it.results)
             }
-            .doOnNext {
+            .doAfterSuccess {
                 saveTrendingMovies(period, it)
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-     private fun fetchTrendingLocal(period: String) : Flowable<List<MovieResult>> {
+     private fun fetchTrendingLocal(period: String) : Single<List<MovieResult>> {
         return savedMovieDao.getAllTrending(period)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
