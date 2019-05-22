@@ -68,7 +68,7 @@ class MoviesRepository @Inject constructor(
             .filter { list ->
                 list.isNotEmpty()
             }
-            .take(1)
+            //.take(1)
             .toObservable()
     }
 
@@ -250,13 +250,13 @@ class MoviesRepository @Inject constructor(
             it.isTrending = true
             it.timestamp = System.currentTimeMillis()
             it.mediaType = Const.MOVIE
+            Completable.fromAction{
+                savedMovieDao.insert(it)
+            }.subscribeOn(Schedulers.io())
+                .doOnError {
+                    Log.i(MainActivity.TAG, "error while saving trending movies")
+                }
+                .subscribe()
         }
-        Completable.fromAction {
-            savedMovieDao.insertAll(data)
-        }.subscribeOn(Schedulers.io())
-            .doOnError {
-                Log.i(MainActivity.TAG, "error while saving trending movies")
-            }
-            .subscribe()
     }
 }
