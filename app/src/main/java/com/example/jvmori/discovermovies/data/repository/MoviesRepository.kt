@@ -154,10 +154,11 @@ class MoviesRepository @Inject constructor(
     }
 
     fun getTrending(period: String) : Observable<List<MovieResult>>{
-        return Single.mergeDelayError(
-            fetchTrendingLocal(period),
-            fetchTrendingMoviesRemote(period)
-        ).toObservable()
+//        return Single.mergeDelayError(
+//            fetchTrendingLocal(period),
+//            fetchTrendingMoviesRemote(period)
+//        ).toObservable()
+        return  fetchTrendingMoviesRemote(period).toObservable()
     }
 
     private fun fetchTrendingMoviesRemote(period: String): Single<List<MovieResult>> {
