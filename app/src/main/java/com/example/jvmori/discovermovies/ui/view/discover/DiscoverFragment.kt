@@ -63,8 +63,7 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
     ): View? {
         trendingPresenter.setView(this)
         nowPlayingPresenter.setView(this)
-        //trendingPresenter.fetchRandomTrending("week", 3)
-        trendingPresenter.fetchAllTrending("week")
+        trendingPresenter.getTrending("week",3)
         nowPlayingPresenter.fetchNowPlaying()
         return inflater.inflate(R.layout.fragment_discover, container, false)
     }
@@ -110,7 +109,7 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
 
     override fun showAllTrending(movies: List<MovieResult>) {
         popularMoviesSection.setRecyclerView(this.requireContext(), movies)
-    }
+}
 
     override fun showNowPlaying(movies: List<MovieResult>) {
         nowPlayingMoviesSection.setRecyclerView(this.requireContext(), movies)

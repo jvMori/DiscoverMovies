@@ -28,11 +28,22 @@ class TrendingPresenterImpl @Inject constructor(
         this.view = view as TrendingContract.TrendingView
     }
 
-    override fun fetchRandomTrending(period: String, count: Int)  {
+    override fun getTrending(period: String, count: Int) {
+        setConnectableTrending(period)
+        fetchAllTrending(period)
+        fetchRandomTrending(period, count)
+        repository.connectTrending()
+    }
+
+    private fun setConnectableTrending(period: String) {
+        repository.setConnectableTrendings(period)
+    }
+
+    private fun fetchRandomTrending(period: String, count: Int)  {
         disposable.add(
             repository.fetchTrendingMoviesRemote(period)
                 .flatMap { result ->
-                    return@flatMap Single.just(chooseRandomMovies(count, result))
+                    return@flatMap Observable.just(chooseRandomMovies(count, result))
                 }
                 .subscribe({
                     view.showRandomTrending(it)
@@ -42,10 +53,9 @@ class TrendingPresenterImpl @Inject constructor(
                     view.hideProgressBar()
                 })
         )
-
     }
 
-    override fun fetchAllTrending(period: String) {
+    private fun fetchAllTrending(period: String) {
         disposable.add(
             repository.fetchTrendingLocal(period)
                 .subscribe({

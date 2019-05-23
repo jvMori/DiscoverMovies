@@ -31,6 +31,7 @@ class MoviesRepository @Inject constructor(
     private val moviesDao = MovieDatabase.invoke(context.applicationContext).moviesDao()
     private val savedMovieDao = MovieDatabase.invoke(context.applicationContext).savedMovieDao()
     private lateinit var connectableObservable: ConnectableObservable<CreditsResponse>
+    private lateinit var connectableObservableTrending : ConnectableObservable<DiscoverMovieResponse>
 
     fun getMovies(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
         return Maybe.concat(getAllMoviesLocal(queryParam), getAllMoviesRemote(queryParam))
@@ -152,13 +153,24 @@ class MoviesRepository @Inject constructor(
                 .subscribeOn(Schedulers.io())
         }
     }
+    fun setConnectableTrendings(period: String){
+        connectableObservableTrending =
+                tmdbApi.getTrendingMovies(period)
+                    .toObservable()
+                    .subscribeOn(Schedulers.io())
+                    .replay()
+    }
 
-    fun fetchTrendingMoviesRemote(period: String): Single<List<MovieResult>> {
-        return tmdbApi.getTrendingMovies(period)
+    fun connectTrending(){
+        connectableObservableTrending.connect()
+    }
+
+    fun fetchTrendingMoviesRemote(period: String): Observable<List<MovieResult>> {
+        return connectableObservableTrending
             .flatMap {
-                return@flatMap Single.just(it.results)
+                return@flatMap Observable.just(it.results)
             }
-            .doAfterSuccess {
+            .doOnNext {
                 saveTrendingMovies(period, it)
             }
             .subscribeOn(Schedulers.io())
