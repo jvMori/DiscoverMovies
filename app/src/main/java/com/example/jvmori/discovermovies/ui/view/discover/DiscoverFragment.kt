@@ -63,7 +63,7 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
     ): View? {
         trendingPresenter.setView(this)
         nowPlayingPresenter.setView(this)
-        trendingPresenter.fetchRandomTrending("week", 3)
+        //trendingPresenter.fetchRandomTrending("week", 3)
         trendingPresenter.fetchAllTrending("week")
         nowPlayingPresenter.fetchNowPlaying()
         return inflater.inflate(R.layout.fragment_discover, container, false)

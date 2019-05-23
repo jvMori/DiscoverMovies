@@ -35,7 +35,7 @@ data class MovieResult(
     val voteCount: Int,
     var timestamp: Long,
     var isTrending : Boolean,
-    var period : Int
+    var period : String
 ) {
     override fun equals(other: Any?): Boolean {
         if (other == this)
