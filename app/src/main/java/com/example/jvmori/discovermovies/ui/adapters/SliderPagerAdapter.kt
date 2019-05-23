@@ -30,7 +30,8 @@ class SliderPagerAdapter(
         slideLayout.slideTitle.text = movieItem.title
         slideLayout.review.text = movieItem.voteAverage.toString()
         LoadImage.loadImage(context, slideLayout.posterSlide, Const.base_backdrop_url + movieItem.backdropPath)
-        SetupGenres.setup(movieItem.genreIds, slideLayout.slideGenre, genres, movies[position].genreIds.size -1)
+        if (movies.isNotEmpty())
+            SetupGenres.setup(movieItem.genreIds, slideLayout.slideGenre, genres, movies[position].genreIds.size -1)
 
         container.addView(slideLayout)
         return slideLayout

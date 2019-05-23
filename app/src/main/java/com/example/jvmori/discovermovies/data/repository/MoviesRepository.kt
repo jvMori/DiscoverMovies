@@ -165,6 +165,14 @@ class MoviesRepository @Inject constructor(
         connectableObservableTrending.connect()
     }
 
+    fun getTrending(period: String) : Observable<List<MovieResult>>{
+        return Observable.concat(
+            fetchTrendingLocal(period).toObservable(),
+            fetchTrendingMoviesRemote(period))
+            .takeWhile { data -> data.isNotEmpty() && isTrendingMovieUpToDate(data[0]) }
+            .take(1)
+    }
+
     fun fetchTrendingMoviesRemote(period: String): Observable<List<MovieResult>> {
         return connectableObservableTrending
             .flatMap {

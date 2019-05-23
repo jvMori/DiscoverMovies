@@ -6,7 +6,9 @@ import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -16,7 +18,7 @@ class TrendingPresenterImpl @Inject constructor(
 
     private val disposable = CompositeDisposable()
     private val _trending = MutableLiveData<List<MovieResult>>()
-    val trending : LiveData<List<MovieResult>> = _trending
+    val trending: LiveData<List<MovieResult>> = _trending
 
     override fun dispose() {
         disposable.clear()
@@ -31,28 +33,11 @@ class TrendingPresenterImpl @Inject constructor(
     override fun getTrending(period: String, count: Int) {
         setConnectableTrending(period)
         fetchAllTrending(period)
-        fetchRandomTrending(period, count)
         repository.connectTrending()
     }
 
     private fun setConnectableTrending(period: String) {
         repository.setConnectableTrendings(period)
-    }
-
-    private fun fetchRandomTrending(period: String, count: Int)  {
-        disposable.add(
-            repository.fetchTrendingMoviesRemote(period)
-                .flatMap { result ->
-                    return@flatMap Observable.just(chooseRandomMovies(count, result))
-                }
-                .subscribe({
-                    view.showRandomTrending(it)
-                    view.hideProgressBar()
-                }, {
-                    view.displayError("Error while loading data")
-                    view.hideProgressBar()
-                })
-        )
     }
 
     private fun fetchAllTrending(period: String) {
@@ -73,7 +58,7 @@ class TrendingPresenterImpl @Inject constructor(
         )
     }
 
-    private fun checkIfRefreshNeeded(period: String, oldTrending: List<MovieResult>){
+    private fun checkIfRefreshNeeded(period: String, oldTrending: List<MovieResult>) {
         if (oldTrending.isEmpty() || !repository.isTrendingMovieUpToDate(oldTrending[0]))
             fetchTrendingRemote(period)
     }
@@ -89,10 +74,10 @@ class TrendingPresenterImpl @Inject constructor(
         )
     }
 
-    private fun chooseRandomMovies(count: Int, movies: List<MovieResult>): List<MovieResult> {
+    override fun chooseRandomMovies(count: Int, movies: List<MovieResult>): List<MovieResult> {
         val newList = mutableListOf<MovieResult>()
         val randoms = mutableListOf<Int>()
-        if(movies.isNotEmpty()){
+        if (movies.isNotEmpty()) {
             for (x in 0..count) {
                 chooseRandomInt(randoms, movies, newList)
             }
@@ -103,14 +88,13 @@ class TrendingPresenterImpl @Inject constructor(
     private fun chooseRandomInt(
         randoms: MutableList<Int>,
         movies: List<MovieResult>,
-        movieList : MutableList<MovieResult>
+        movieList: MutableList<MovieResult>
     ) {
         val random = Random.nextInt(movies.size)
         if (!randoms.contains(random)) {
             randoms.add(random)
             movieList.add(movies[random])
-        }
-        else chooseRandomInt(randoms, movies, movieList)
+        } else chooseRandomInt(randoms, movies, movieList)
     }
 
 }

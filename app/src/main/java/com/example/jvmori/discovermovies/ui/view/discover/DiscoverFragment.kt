@@ -74,7 +74,7 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
         genresPresenter.setView(this)
         genresPresenter.getGenres()
         //TODO: databinding
-        slider_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        slider_pager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
 
             }
@@ -109,6 +109,7 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
 
     override fun showAllTrending(movies: List<MovieResult>) {
         popularMoviesSection.setRecyclerView(this.requireContext(), movies)
+        showRandomTrending(trendingPresenter.chooseRandomMovies(3, movies))
 }
 
     override fun showNowPlaying(movies: List<MovieResult>) {
@@ -142,15 +143,17 @@ class DiscoverFragment : Fragment(), GenresViewInterface, TrendingContract.Trend
 
     class SliderTimer(
         private var context: Context,
-        private var sliderPager: ViewPager,
+        private var sliderPager: ViewPager?,
         private val movies: List<MovieResult>
     ) : TimerTask() {
         override fun run() {
-            (context as MainActivity).runOnUiThread {
-                if (sliderPager.currentItem < movies.size - 1) {
-                    sliderPager.setCurrentItem(sliderPager.currentItem + 1, true)
-                } else {
-                    sliderPager.setCurrentItem(0, true)
+            sliderPager?.let{
+                (context as MainActivity).runOnUiThread {
+                    if (it.currentItem < movies.size - 1) {
+                        it.setCurrentItem(it.currentItem + 1, true)
+                    } else {
+                        it.setCurrentItem(0, true)
+                    }
                 }
             }
         }
