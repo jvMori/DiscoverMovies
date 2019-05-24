@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import com.example.jvmori.discovermovies.MainActivity
 import com.example.jvmori.discovermovies.data.local.database.MovieDatabase
+import com.example.jvmori.discovermovies.data.local.entity.Category
 import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
@@ -186,7 +187,7 @@ class MoviesRepository @Inject constructor(
     }
 
     fun fetchTrendingLocal(period: String) : Single<List<MovieResult>> {
-        return savedMovieDao.getAllTrending(period)
+        return savedMovieDao.getAllTrending(period, Category.TRENDING.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -257,13 +258,13 @@ class MoviesRepository @Inject constructor(
 
     private fun saveTrendingMovies(period: String, data: List<MovieResult>) {
         data.forEach {
-            it.isTrending = true
+            it.category = Category.TRENDING.toString()
             it.period = period
             it.timestamp = System.currentTimeMillis()
             it.mediaType = Const.MOVIE
         }
         Completable.fromAction{
-            savedMovieDao.updateTrending(period, data)
+            savedMovieDao.updateMovies(period, Category.TRENDING.toString(), data)
         }.subscribeOn(Schedulers.io())
             .doOnError {
                 Log.i(MainActivity.TAG, "error while saving trending movies")

@@ -23,15 +23,15 @@ interface SavedMovieDao {
     @Query("Select * from saved_movies where id like :movieId")
     fun getMovie(movieId: Int): Single<MovieResult>
 
-    @Query("Select * from saved_movies where isTrending AND period like:periodTime")
-    fun getAllTrending(periodTime: String): Single<List<MovieResult>>
+    @Query("Select * from saved_movies where category like:categoryName AND period like:periodTime")
+    fun getAllTrending(periodTime: String, categoryName : String): Single<List<MovieResult>>
 
-    @Query("Delete from saved_movies where isTrending AND period like:periodTime")
-    fun deleteTrending(periodTime: String)
+    @Query("Delete from saved_movies where category like:categoryName AND period like:periodTime")
+    fun deleteTrending(periodTime: String, categoryName : String)
 
     @Transaction
-    fun updateTrending(periodTime: String, movies: List<MovieResult>) {
-        deleteTrending(periodTime)
+    fun updateMovies(periodTime: String, categoryName : String, movies: List<MovieResult>) {
+        deleteTrending(periodTime, categoryName)
         movies.forEach {
             insert(it)
         }

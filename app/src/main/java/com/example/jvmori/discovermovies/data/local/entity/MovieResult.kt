@@ -34,7 +34,7 @@ data class MovieResult(
     @SerializedName("vote_count")
     val voteCount: Int,
     var timestamp: Long,
-    var isTrending : Boolean,
+    var category : String,
     var period : String
 ) {
     override fun equals(other: Any?): Boolean {
@@ -45,4 +45,8 @@ data class MovieResult(
         val movie = other as MovieResult
         return movie.id == id && movie.originalTitle == originalTitle
     }
+
+}
+enum class Category{
+    TRENDING, NOW_PLAYING
 }
