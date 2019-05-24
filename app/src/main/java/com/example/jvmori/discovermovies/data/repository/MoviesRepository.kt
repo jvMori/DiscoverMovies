@@ -180,7 +180,7 @@ class MoviesRepository @Inject constructor(
                 return@flatMap Observable.just(it.results)
             }
             .doOnNext {
-                saveTrendingMovies(period, it)
+                saveMovies(period, Category.TRENDING.toString(), it)
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -256,15 +256,15 @@ class MoviesRepository @Inject constructor(
             .subscribe()
     }
 
-    private fun saveTrendingMovies(period: String, data: List<MovieResult>) {
+    private fun saveMovies(period: String, category : String, data: List<MovieResult>) {
         data.forEach {
-            it.category = Category.TRENDING.toString()
+            it.category = category
             it.period = period
             it.timestamp = System.currentTimeMillis()
             it.mediaType = Const.MOVIE
         }
         Completable.fromAction{
-            savedMovieDao.updateMovies(period, Category.TRENDING.toString(), data)
+            savedMovieDao.updateMovies(period, category, data)
         }.subscribeOn(Schedulers.io())
             .doOnError {
                 Log.i(MainActivity.TAG, "error while saving trending movies")
