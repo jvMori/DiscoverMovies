@@ -38,10 +38,6 @@ class PresenterModule {
     fun provideSearchPresenter(repository: MoviesRepository) : SearchPresenter =
         SearchPresenterImpl(repository)
 
-    @Provides
-    @Singleton
-    fun provideTrendingPresenter(repository: MoviesRepository) : TrendingContract.TrendingPresenter =
-            TrendingPresenterImpl(repository)
 
     @Provides
     @Singleton

@@ -27,12 +27,10 @@ import javax.inject.Inject
 class MoviesRepository @Inject constructor(
     private val tmdbApi: TmdbAPI,
     context: Context
-) {
-    private val genreDao = MovieDatabase.invoke(context.applicationContext).genreDao()
-    private val moviesDao = MovieDatabase.invoke(context.applicationContext).moviesDao()
-    private val savedMovieDao = MovieDatabase.invoke(context.applicationContext).savedMovieDao()
+) : BaseRepository(tmdbApi, context){
+
     private lateinit var connectableObservable: ConnectableObservable<CreditsResponse>
-    private lateinit var connectableObservableTrending : ConnectableObservable<DiscoverMovieResponse>
+
 
     fun getMovies(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
         return Maybe.concat(getAllMoviesLocal(queryParam), getAllMoviesRemote(queryParam))
@@ -154,43 +152,6 @@ class MoviesRepository @Inject constructor(
                 .subscribeOn(Schedulers.io())
         }
     }
-    fun setConnectableTrendings(period: String){
-        connectableObservableTrending =
-                tmdbApi.getTrendingMovies(period)
-                    .toObservable()
-                    .subscribeOn(Schedulers.io())
-                    .replay()
-    }
-
-    fun connectTrending(){
-        connectableObservableTrending.connect()
-    }
-
-    fun getTrending(period: String) : Observable<List<MovieResult>>{
-        return Observable.concat(
-            fetchTrendingLocal(period).toObservable(),
-            fetchTrendingMoviesRemote(period))
-            .takeWhile { data -> data.isNotEmpty() && isTrendingMovieUpToDate(data[0]) }
-            .take(1)
-    }
-
-    fun fetchTrendingMoviesRemote(period: String): Observable<List<MovieResult>> {
-        return connectableObservableTrending
-            .flatMap {
-                return@flatMap Observable.just(it.results)
-            }
-            .doOnNext {
-                saveMovies(period, Category.TRENDING.toString(), it)
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    fun fetchTrendingLocal(period: String) : Single<List<MovieResult>> {
-        return savedMovieDao.getAllTrending(period, Category.TRENDING.toString())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
 
     private fun getMoviesToDiscover(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
         val parameters: HashMap<String, String> = HashMap()
@@ -207,9 +168,6 @@ class MoviesRepository @Inject constructor(
         return movie.timestamp != 0L && System.currentTimeMillis() - movie.timestamp < Const.STALE_MS
     }
 
-    fun isTrendingMovieUpToDate(movie: MovieResult): Boolean {
-        return movie.timestamp != 0L && System.currentTimeMillis() - movie.timestamp < Const.STALE_MS
-    }
 
     private fun getAllMoviesRemote(queryParam: DiscoverQueryParam): Maybe<DiscoverMovieResponse> {
         return getMoviesToDiscover(queryParam)
@@ -256,19 +214,5 @@ class MoviesRepository @Inject constructor(
             .subscribe()
     }
 
-    private fun saveMovies(period: String, category : String, data: List<MovieResult>) {
-        data.forEach {
-            it.category = category
-            it.period = period
-            it.timestamp = System.currentTimeMillis()
-            it.mediaType = Const.MOVIE
-        }
-        Completable.fromAction{
-            savedMovieDao.updateMovies(period, category, data)
-        }.subscribeOn(Schedulers.io())
-            .doOnError {
-                Log.i(MainActivity.TAG, "error while saving trending movies")
-            }
-            .subscribe()
-    }
+
 }
