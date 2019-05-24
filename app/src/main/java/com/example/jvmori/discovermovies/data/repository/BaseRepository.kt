@@ -34,4 +34,7 @@ abstract class BaseRepository(
             }
             .subscribe()
     }
+    fun isMovieUpToDate(movie: MovieResult): Boolean {
+        return movie.timestamp != 0L && System.currentTimeMillis() - movie.timestamp < Const.STALE_MS
+    }
 }

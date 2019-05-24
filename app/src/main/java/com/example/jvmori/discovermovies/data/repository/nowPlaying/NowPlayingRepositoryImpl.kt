@@ -10,7 +10,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class NowPlayingRepositoryImpl @Inject constructor (
-    private val tmdbAPI: TmdbAPI,
+    private var tmdbAPI: TmdbAPI,
     private val context: Context
 ) : NowPlayingRepository, BaseRepository(tmdbAPI, context) {
 

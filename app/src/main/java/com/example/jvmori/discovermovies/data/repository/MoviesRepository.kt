@@ -31,7 +31,6 @@ class MoviesRepository @Inject constructor(
 
     private lateinit var connectableObservable: ConnectableObservable<CreditsResponse>
 
-
     fun getMovies(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
         return Maybe.concat(getAllMoviesLocal(queryParam), getAllMoviesRemote(queryParam))
             .filter { movieResponse ->
@@ -40,7 +39,6 @@ class MoviesRepository @Inject constructor(
             .take(1)
             .toObservable()
     }
-
     fun getVideos(id: Int): Observable<VideoResponse> {
         return tmdbApi.getVideos(id)
             .subscribeOn(Schedulers.io())
