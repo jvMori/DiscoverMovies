@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 abstract class BaseRepository(
-    private val tmdbApi: TmdbAPI,
+    open var tmdbApi: TmdbAPI,
     context: Context
 ){
     val genreDao = MovieDatabase.invoke(context.applicationContext).genreDao()

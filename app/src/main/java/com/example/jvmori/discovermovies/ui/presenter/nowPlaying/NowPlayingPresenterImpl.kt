@@ -1,11 +1,10 @@
 package com.example.jvmori.discovermovies.ui.presenter.nowPlaying
-
-import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import com.example.jvmori.discovermovies.data.repository.nowPlaying.NowPlayingRepository
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class NowPlayingPresenterImpl @Inject constructor(
-    private val repository: MoviesRepository
+    private val repository: NowPlayingRepository
 ) : NowPlayingContract.NowPlayingPresenter {
 
     private val disposable = CompositeDisposable()

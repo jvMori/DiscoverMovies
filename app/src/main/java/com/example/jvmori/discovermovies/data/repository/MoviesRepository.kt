@@ -25,7 +25,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MoviesRepository @Inject constructor(
-    private val tmdbApi: TmdbAPI,
+    override var tmdbApi: TmdbAPI,
     context: Context
 ) : BaseRepository(tmdbApi, context){
 
@@ -104,15 +104,6 @@ class MoviesRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 return@flatMap Observable.just(it.results)
-            }
-    }
-
-    fun getNowPlaying() : Flowable<List<MovieResult>>{
-        return tmdbApi.getNowPlaying()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .flatMap {
-                return@flatMap Flowable.just(it.results)
             }
     }
 

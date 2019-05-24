@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class TrendingRepositoryImpl @Inject constructor (
-    private val tmdbApi: TmdbAPI,
+    override var tmdbApi: TmdbAPI,
     context: Context
 ) : TrendingRepository, BaseRepository(tmdbApi, context){
 
