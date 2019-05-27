@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.example.jvmori.discovermovies.MainActivity
 import com.example.jvmori.discovermovies.data.local.database.MovieDatabase
+import com.example.jvmori.discovermovies.data.local.entity.Collection
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.util.Const
@@ -25,6 +26,7 @@ abstract class BaseRepository(
             it.period = period
             it.timestamp = System.currentTimeMillis()
             it.mediaType = Const.MOVIE
+            it.collection = Collection.NONE.toString()
         }
         Completable.fromAction{
             savedMovieDao.updateMovies(period, category, data)

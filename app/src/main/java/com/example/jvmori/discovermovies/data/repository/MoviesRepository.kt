@@ -127,19 +127,13 @@ class MoviesRepository @Inject constructor(
             .subscribe()
     }
 
-    fun saveMovie(movie: MovieResult) {
+    fun saveMovie(movie: MovieResult, collection : String) {
         movie.mediaType = "" //can't be null in sql database
+        movie.collection = collection
         Completable.fromAction { savedMovieDao.insert(movie) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe()
-    }
-
-    fun displayAllSaved(): LiveData<List<MovieResult>> {
-        return LiveDataReactiveStreams.fromPublisher {
-            savedMovieDao.getAllSaved()
-                .subscribeOn(Schedulers.io())
-        }
     }
 
     private fun getMoviesToDiscover(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {

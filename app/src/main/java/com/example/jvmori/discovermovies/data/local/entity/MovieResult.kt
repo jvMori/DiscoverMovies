@@ -35,6 +35,7 @@ data class MovieResult(
     val voteCount: Int,
     var timestamp: Long,
     var category : String,
+    var collection: String = "",
     var period : String
 ) {
     override fun equals(other: Any?): Boolean {
@@ -50,3 +51,9 @@ data class MovieResult(
 enum class Category{
     TRENDING, NOW_PLAYING
 }
+
+enum class Collection{
+    LIKES,
+    NONE
+}
+

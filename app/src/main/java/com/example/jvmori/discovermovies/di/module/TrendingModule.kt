@@ -2,7 +2,6 @@ package com.example.jvmori.discovermovies.di.module
 
 import android.content.Context
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
-import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.data.repository.trending.TrendingRepository
 import com.example.jvmori.discovermovies.data.repository.trending.TrendingRepositoryImpl
 import com.example.jvmori.discovermovies.ui.presenter.trending.TrendingContract

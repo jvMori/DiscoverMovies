@@ -17,8 +17,8 @@ interface SavedMovieDao {
     @Delete
     fun delete(movie: MovieResult)
 
-    @Query("Select * from saved_movies")
-    fun getAllSaved(): Observable<List<MovieResult>>
+    @Query("Select * from saved_movies where collection like :collectionName")
+    fun getAllSaved(collectionName: String): Observable<List<MovieResult>>
 
     @Query("Select * from saved_movies where id like :movieId")
     fun getMovie(movieId: Int): Single<MovieResult>
