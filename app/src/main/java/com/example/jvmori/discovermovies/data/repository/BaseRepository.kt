@@ -9,6 +9,7 @@ import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.util.Const
 import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -20,13 +21,9 @@ abstract class BaseRepository(
     val moviesDao = MovieDatabase.invoke(context.applicationContext).moviesDao()
     val savedMovieDao = MovieDatabase.invoke(context.applicationContext).savedMovieDao()
 
-    fun saveMovies(period: String, category : String, data: List<MovieResult>) {
+    fun saveMovies(period: String, category : String, data: List<MovieResult>, collection: String) {
         data.forEach {
-            it.category = category
-            it.period = period
-            it.timestamp = System.currentTimeMillis()
-            it.mediaType = Const.MOVIE
-            it.collection = Collection.NONE.toString()
+            updateInfo(it, category, period, collection)
         }
         Completable.fromAction{
             savedMovieDao.updateMovies(period, category, data)
@@ -34,6 +31,27 @@ abstract class BaseRepository(
             .doOnError {
                 Log.i(MainActivity.TAG, "error while saving trending movies")
             }
+            .subscribe()
+    }
+
+    private fun updateInfo(
+        it: MovieResult,
+        category: String,
+        period: String,
+        collection: String
+    ) {
+        it.category = category
+        it.period = period
+        it.timestamp = System.currentTimeMillis()
+        it.mediaType = Const.MOVIE
+        it.collection = collection
+    }
+
+    fun saveMovie(movie: MovieResult, collection : String, category: String, period: String) {
+        updateInfo(movie, category, period, collection)
+        Completable.fromAction { savedMovieDao.insert(movie) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
             .subscribe()
     }
     fun isMovieUpToDate(movie: MovieResult): Boolean {

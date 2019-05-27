@@ -127,14 +127,7 @@ class MoviesRepository @Inject constructor(
             .subscribe()
     }
 
-    fun saveMovie(movie: MovieResult, collection : String) {
-        movie.mediaType = "" //can't be null in sql database
-        movie.collection = collection
-        Completable.fromAction { savedMovieDao.insert(movie) }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe()
-    }
+
 
     private fun getMoviesToDiscover(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
         val parameters: HashMap<String, String> = HashMap()

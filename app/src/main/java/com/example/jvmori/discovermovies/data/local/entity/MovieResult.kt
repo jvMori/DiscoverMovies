@@ -49,7 +49,7 @@ data class MovieResult(
 
 }
 enum class Category{
-    TRENDING, NOW_PLAYING
+    TRENDING, NOW_PLAYING, NONE
 }
 
 enum class Collection{

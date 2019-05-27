@@ -1,9 +1,12 @@
 package com.example.jvmori.discovermovies.ui.presenter.collections
 
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import com.example.jvmori.discovermovies.MainActivity
 import com.example.jvmori.discovermovies.data.local.entity.Collection
 import com.example.jvmori.discovermovies.data.repository.collection.CollectionRepository
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class CollectionPresenterImpl @Inject constructor (
@@ -11,20 +14,19 @@ class CollectionPresenterImpl @Inject constructor (
 ): CollectionPresenter {
 
     private lateinit var collectionView: CollectionView
-    private lateinit var lifecycleOwner : LifecycleOwner
+    private val disposable = CompositeDisposable()
 
     override fun fetchSaved() {
-        repository.displayAllSaved(Collection.LIKES.toString()).observe(
-            lifecycleOwner, Observer { result ->
-                result?.let {
-                    collectionView.displaySaved(it)
+        disposable.add(
+            repository.displayAllSaved(Collection.LIKES.toString()).subscribe(
+                { succes ->
+                    collectionView.displaySaved(succes)
+                },
+                {
+                    error -> Log.i(MainActivity.TAG, "Something went wrong!")
                 }
-            }
+            )
         )
-    }
-
-    override fun setLifeCycleOwner(lifecycleOwner: LifecycleOwner) {
-        this.lifecycleOwner = lifecycleOwner
     }
 
     override fun setView(view: CollectionView) {

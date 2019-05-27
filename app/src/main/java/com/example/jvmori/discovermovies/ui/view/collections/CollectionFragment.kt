@@ -45,7 +45,6 @@ class CollectionFragment : Fragment(), CollectionView {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        presenter.setLifeCycleOwner(this)
         presenter.setView(this)
         presenter.fetchSaved()
     }

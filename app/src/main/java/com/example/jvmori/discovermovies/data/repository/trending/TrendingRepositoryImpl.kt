@@ -2,6 +2,7 @@ package com.example.jvmori.discovermovies.data.repository.trending
 
 import android.content.Context
 import com.example.jvmori.discovermovies.data.local.entity.Category
+import com.example.jvmori.discovermovies.data.local.entity.Collection
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
@@ -26,7 +27,7 @@ class TrendingRepositoryImpl @Inject constructor (
                 return@flatMap Observable.just(it.results)
             }
             .doOnNext {
-                saveMovies(period, Category.TRENDING.toString(), it)
+                saveMovies(period, Category.TRENDING.toString(), it, Collection.NONE.toString())
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
