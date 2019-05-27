@@ -97,9 +97,11 @@ class MoviesAdapter(
 
         private fun bindGenres(movieResult: MovieResult, genres: Map<Int, String>) {
             movieResult.genreIds.forEachIndexed { index, item ->
-                itemView.categoryItem.append(genres[item])
-                if (index != movieResult.genreIds.lastIndex)
-                    itemView.categoryItem.append(" | ")
+                if(genres.isNotEmpty()){
+                    itemView.categoryItem?.append(genres[item])
+                    if (index != movieResult.genreIds.lastIndex)
+                        itemView.categoryItem?.append(" | ")
+                }
             }
         }
     }
