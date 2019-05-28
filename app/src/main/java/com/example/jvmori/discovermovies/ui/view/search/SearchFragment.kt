@@ -117,7 +117,8 @@ class SearchFragment : Fragment(), SearchViewInterface,
     }
 
     override fun onMovieItemClicked(movieId: Int) {
-        Toast.makeText(this.requireContext(), "Click", Toast.LENGTH_SHORT).show()
+        val action = SearchFragmentDirections.specifyMovieId().setMovieId(movieId)
+        NavHostFragment.findNavController(this).navigate(action)
     }
 
     override fun displayGenres(genreResponse: List<Genre>) {

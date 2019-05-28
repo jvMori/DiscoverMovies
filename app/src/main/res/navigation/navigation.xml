@@ -8,10 +8,6 @@
               android:name="com.example.jvmori.discovermovies.ui.view.discover.DiscoverFragment"
               android:label="fragment_discover" tools:layout="@layout/fragment_discover">
         <action android:id="@+id/specifyGenreId" app:destination="@id/moviesFragment">
-            <!--<argument-->
-                    <!--android:name="genre"-->
-                    <!--app:argType="integer"-->
-                    <!--android:defaultValue="0" />-->
         </action>
 
     </fragment>
@@ -29,6 +25,8 @@
               android:name="com.example.jvmori.discovermovies.ui.view.search.SearchFragment"
               android:label="SearchFragment">
         <action android:id="@+id/specifyGenre" app:destination="@id/moviesFragment"/>
+        <action android:id="@+id/specifyMovieId" app:destination="@id/detailsFragment"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"/>
     </fragment>
     <fragment android:id="@+id/collectionFragment"
               android:name="com.example.jvmori.discovermovies.ui.view.collections.CollectionFragment"
