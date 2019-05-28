@@ -85,12 +85,12 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="SearchToDetails">
+                            <entry key="specifyGenre">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="SearchToMovies">
+                            <entry key="specifyMovieId">
                               <value>
                                 <LayoutPositions />
                               </value>

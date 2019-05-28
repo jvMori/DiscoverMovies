@@ -6,6 +6,4 @@ import com.example.jvmori.discovermovies.ui.view.BaseViewInterface
 interface MoviesViewInterface : BaseViewInterface
 {
     fun displayAllItems(movieResponse: List<MovieResult>)
-    fun displaySavedIcon()
-    fun displayDeletedIcon()
 }

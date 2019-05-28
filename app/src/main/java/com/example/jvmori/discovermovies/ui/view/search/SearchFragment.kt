@@ -20,6 +20,9 @@ import com.example.jvmori.discovermovies.ui.IOnClickListener
 import com.example.jvmori.discovermovies.ui.adapters.GenreAdapter
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SearchResultsAdapter
+import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenter
+import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenterImpl
+import com.example.jvmori.discovermovies.ui.presenter.collections.SavingView
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresPresenterInterface
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresViewInterface
 import com.example.jvmori.discovermovies.ui.presenter.search.SearchPresenter
@@ -40,6 +43,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class SearchFragment : Fragment(), SearchViewInterface,
     GenresViewInterface,
+    SavingView,
     GenreAdapter.IOnGenreClick,
     IOnClickListener,
     MoviesAdapter.OnFavIconClickListener {
@@ -48,6 +52,7 @@ class SearchFragment : Fragment(), SearchViewInterface,
     lateinit var searchPresenter: SearchPresenter
     @Inject
     lateinit var genrePresenter: GenresPresenterInterface
+    @Inject lateinit var savingPresenter: SavingBasePresenter
 
     companion object {
         var genresMap = mutableMapOf<Int, String>()
@@ -65,6 +70,7 @@ class SearchFragment : Fragment(), SearchViewInterface,
     ): View? {
         // Inflate the layout for this fragment
         genrePresenter.setView(this)
+        savingPresenter.setView(this)
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
@@ -105,6 +111,7 @@ class SearchFragment : Fragment(), SearchViewInterface,
     override fun onDestroy() {
         super.onDestroy()
         searchPresenter.clear()
+        savingPresenter.dispose()
     }
 
     override fun displayResults(results: List<MovieResult>) {
@@ -147,8 +154,16 @@ class SearchFragment : Fragment(), SearchViewInterface,
         nav.navigate(action)
     }
 
-    override fun onFavClicked(movieResult: MovieResult) {
+    override fun displayDeletedIcon() {
 
+    }
+
+    override fun displaySavedIcon() {
+
+    }
+
+    override fun onFavClicked(movieResult: MovieResult) {
+        savingPresenter.saveMovie(movieResult)
     }
 
     override fun displayError(s: String) {

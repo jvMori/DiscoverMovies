@@ -1,6 +1,8 @@
 package com.example.jvmori.discovermovies.di.module
 
 import com.example.jvmori.discovermovies.data.repository.movies.MoviesRepository
+import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenter
+import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenterImpl
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenter
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenterInterface
 import com.example.jvmori.discovermovies.ui.presenter.search.SearchPresenter
@@ -16,5 +18,10 @@ class PresenterModule {
     @Singleton
     fun provideSearchPresenter(repository: MoviesRepository) : SearchPresenter =
         SearchPresenterImpl(repository)
+
+    @Provides
+    @Singleton
+    fun provideSavingPresenter(repository: MoviesRepository) : SavingBasePresenter =
+        SavingBasePresenterImpl(repository)
 
 }

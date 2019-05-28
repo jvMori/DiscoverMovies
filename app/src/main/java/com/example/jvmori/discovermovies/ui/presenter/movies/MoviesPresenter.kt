@@ -9,6 +9,7 @@ import com.example.jvmori.discovermovies.data.local.entity.Category
 import com.example.jvmori.discovermovies.data.local.entity.Collection
 import com.example.jvmori.discovermovies.data.repository.movies.MoviesRepository
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
+import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenter
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -16,7 +17,7 @@ import javax.inject.Inject
 
 class MoviesPresenter @Inject constructor(
     private val repository: MoviesRepository
-) : MoviesPresenterInterface, MoviesAdapter.OnFavIconClickListener {
+) : MoviesPresenterInterface{
 
     private lateinit var view: MoviesViewInterface
 
@@ -37,19 +38,6 @@ class MoviesPresenter @Inject constructor(
             .setEnablePlaceholders(false)
             .build()
         LivePagedListBuilder<Int, MovieResult>(sourceFactory, config).build()
-    }
-
-    override fun onFavClicked(movieResult: MovieResult) {
-        disposable.add(
-            repository.getMovieFromDbById(movieResult)
-                .subscribe({ success ->
-                    repository.deleteMovie(movieResult)
-                    view.displayDeletedIcon()
-                }, { error ->
-                    repository.saveMovie(movieResult, Collection.LIKES.toString(), Category.NONE.toString(), "week")
-                    view.displaySavedIcon()
-                })
-        )
     }
 
     override fun clear() {

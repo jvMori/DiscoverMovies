@@ -19,6 +19,8 @@ import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.ui.IOnClickListener
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
+import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenter
+import com.example.jvmori.discovermovies.ui.presenter.collections.SavingView
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenterInterface
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesViewInterface
 import com.example.jvmori.discovermovies.ui.view.search.SearchFragment
@@ -35,11 +37,12 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
+class MoviesFragment : Fragment(), MoviesViewInterface, SavingView, IOnClickListener {
 
     private var genreId: Int? = null
     @Inject
     lateinit var moviesPresenter: MoviesPresenterInterface
+    @Inject lateinit var savingPresenter: SavingBasePresenter
     private var moviesAdapter: MoviesAdapter? = null
 
     override fun onAttach(context: Context) {
@@ -58,6 +61,7 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         moviesPresenter.setView(this)
+        savingPresenter.setView(this)
         genreId = MoviesFragmentArgs.fromBundle(arguments).genre
         genreId?.let { genreId ->
             moviesPresenter.let {
@@ -107,13 +111,15 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
     override fun displayAllItems(movieResponse: List<MovieResult>) {
         moviesPresenter.let {
             moviesAdapter = MoviesAdapter(this)
-            if (it is MoviesAdapter.OnFavIconClickListener)
-                moviesAdapter?.setOnFavClickListener(it as MoviesAdapter.OnFavIconClickListener)
             moviesAdapter?.setGenres(SearchFragment.genresMap)
             recyclerViewMovies!!.layoutManager =
                     LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
             recyclerViewMovies!!.setHasFixedSize(true)
             recyclerViewMovies!!.adapter = moviesAdapter
+        }
+        savingPresenter.let{
+            if (it is MoviesAdapter.OnFavIconClickListener)
+                moviesAdapter?.setOnFavClickListener(it as MoviesAdapter.OnFavIconClickListener)
         }
     }
 
@@ -124,5 +130,6 @@ class MoviesFragment : Fragment(), MoviesViewInterface, IOnClickListener {
     override fun onDestroy() {
         super.onDestroy()
         moviesPresenter.clear()
+        savingPresenter.dispose()
     }
 }
