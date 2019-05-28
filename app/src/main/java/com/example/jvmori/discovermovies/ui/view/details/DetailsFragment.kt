@@ -74,17 +74,8 @@ class DetailsFragment : Fragment(), DetailsView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         detailsPresenter.setView(this)
-
         getMovieId()?.let {
-            detailsPresenter.apply {
-                fetchDetails(it)
-                fetchVideo(it)
-                createConnectableCredits(it)
-                fetchCast()
-                fetchCrew()
-                fetchRecommendations(it)
-                connectToCreditsObservable()
-            }
+            detailsPresenter.getDetails(it)
         }
     }
 
@@ -127,7 +118,7 @@ class DetailsFragment : Fragment(), DetailsView {
 
     override fun onDestroy() {
         super.onDestroy()
-        detailsPresenter.onClear()
+        detailsPresenter.dispose()
     }
 
     private fun handleAppBarCollapsing() {

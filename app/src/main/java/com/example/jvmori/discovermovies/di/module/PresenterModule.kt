@@ -19,10 +19,6 @@ import javax.inject.Singleton
 
 @Module
 class PresenterModule {
-    @Provides
-    @Singleton
-    fun provideDetailsPresenter(repository: MoviesRepository) : DetailsPresenter =
-        DetailsPresenterImpl(repository)
 
     @Provides
     fun provideMoviesPresenter(repository: MoviesRepository) : MoviesPresenterInterface =

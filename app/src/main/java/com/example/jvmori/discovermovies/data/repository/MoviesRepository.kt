@@ -29,7 +29,6 @@ class MoviesRepository @Inject constructor(
     context: Context
 ) : BaseRepository(tmdbApi, context){
 
-    private lateinit var connectableObservable: ConnectableObservable<CreditsResponse>
 
     fun getMovies(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
         return Maybe.concat(getAllMoviesLocal(queryParam), getAllMoviesRemote(queryParam))
@@ -38,58 +37,6 @@ class MoviesRepository @Inject constructor(
             }
             .take(1)
             .toObservable()
-    }
-    fun getVideos(id: Int): Observable<VideoResponse> {
-        return tmdbApi.getVideos(id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    fun getDetails(id: Int): Observable<MovieDetails> {
-        return tmdbApi.getMovieDetails(id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    fun setCreditsConnectable(movieId: Int) {
-        connectableObservable = tmdbApi.getCredits(movieId)
-            .subscribeOn(Schedulers.io())
-            .replay()
-    }
-
-    fun connectToCredits() {
-        connectableObservable.connect()
-    }
-
-    fun getCast(): Single<List<Cast>> {
-        return connectableObservable
-            .subscribeOn(Schedulers.io())
-            .flatMap {
-                return@flatMap Observable.just(it.cast)
-            }
-            .flatMapIterable { item -> item }
-            .filter { it -> it.profilePath != null }
-            .toList()
-    }
-
-    fun getCrew(): Single<List<Crew>> {
-        return connectableObservable
-            .subscribeOn(Schedulers.io())
-            .flatMap {
-                return@flatMap Observable.just(it.crew)
-            }
-            .flatMapIterable { item -> item }
-            .filter { it -> it.profilePath != null }
-            .toList()
-    }
-
-    fun getRecommendations(movieId: Int): Observable<List<MovieResult>> {
-        return tmdbApi.getRecommendations(movieId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .flatMap {
-                return@flatMap Observable.just(it.results)
-            }
     }
 
     fun getSearchedItems(q: String): Single<List<MovieResult>> {
@@ -114,8 +61,6 @@ class MoviesRepository @Inject constructor(
             .subscribe()
     }
 
-
-
     private fun getMoviesToDiscover(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
         val parameters: HashMap<String, String> = HashMap()
         parameters["sort_by"] = "popularity.desc"
@@ -130,7 +75,6 @@ class MoviesRepository @Inject constructor(
     private fun isMovieUpToDate(movie: DiscoverMovieResponse): Boolean {
         return movie.timestamp != 0L && System.currentTimeMillis() - movie.timestamp < Const.STALE_MS
     }
-
 
     private fun getAllMoviesRemote(queryParam: DiscoverQueryParam): Maybe<DiscoverMovieResponse> {
         return getMoviesToDiscover(queryParam)
@@ -152,6 +96,5 @@ class MoviesRepository @Inject constructor(
             Log.i("Movies", it.toString())
         }
     }
-
 
 }

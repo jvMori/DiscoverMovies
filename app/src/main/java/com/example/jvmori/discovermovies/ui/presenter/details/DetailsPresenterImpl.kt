@@ -2,22 +2,38 @@ package com.example.jvmori.discovermovies.ui.presenter.details
 
 import android.util.Log
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import com.example.jvmori.discovermovies.data.repository.details.DetailsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class DetailsPresenterImpl @Inject constructor(
-    private var repository: MoviesRepository
+    private var repository: DetailsRepository
 ) : DetailsPresenter {
 
     private lateinit var view: DetailsView
     private val disposable = CompositeDisposable()
 
-    override fun setView(view: DetailsView) {
-        this.view = view
+    override fun <T> setView(view: T) {
+        this.view = view as DetailsView
     }
 
-    override fun fetchDetails(id: Int) {
+    override fun dispose() {
+        disposable.clear()
+    }
+
+    override fun getDetails(id: Int){
+        fetchDetails(id)
+        fetchVideo(id)
+        createConnectableCredits(id)
+        fetchCast()
+        fetchCrew()
+        fetchRecommendations(id)
+        connectToCreditsObservable()
+    }
+
+
+    private fun fetchDetails(id: Int) {
         view.showProgressBar()
         disposable.add(
             repository.getDetails(id)
@@ -32,7 +48,7 @@ class DetailsPresenterImpl @Inject constructor(
         )
     }
 
-    override fun fetchVideo(movieId: Int) {
+    private fun fetchVideo(movieId: Int) {
         disposable.add(
             repository.getVideos(movieId)
                 .subscribe({
@@ -43,7 +59,7 @@ class DetailsPresenterImpl @Inject constructor(
         )
     }
 
-    override fun fetchCast() {
+    private fun fetchCast() {
         disposable.add(
             repository.getCast()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -55,7 +71,7 @@ class DetailsPresenterImpl @Inject constructor(
         )
     }
 
-    override fun fetchCrew() {
+    private fun fetchCrew() {
         disposable.add(
             repository.getCrew()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -67,7 +83,7 @@ class DetailsPresenterImpl @Inject constructor(
         )
     }
 
-    override fun fetchRecommendations(movieId: Int) {
+    private fun fetchRecommendations(movieId: Int) {
         disposable.add(
             repository.getRecommendations(movieId)
                 .subscribe({
@@ -78,15 +94,11 @@ class DetailsPresenterImpl @Inject constructor(
         )
     }
 
-    override fun createConnectableCredits(movieId: Int) {
+    private fun createConnectableCredits(movieId: Int) {
         repository.setCreditsConnectable(movieId)
     }
 
-    override fun connectToCreditsObservable() {
+    private fun connectToCreditsObservable() {
         repository.connectToCredits()
-    }
-
-    override fun onClear() {
-        disposable.clear()
     }
 }
