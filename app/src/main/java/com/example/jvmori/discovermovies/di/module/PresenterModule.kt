@@ -25,11 +25,6 @@ class PresenterModule {
         DetailsPresenterImpl(repository)
 
     @Provides
-    @Singleton
-    fun provideGenresPresenter(repository: MoviesRepository) : GenresPresenterInterface =
-        GenresPresenter(repository)
-
-    @Provides
     fun provideMoviesPresenter(repository: MoviesRepository) : MoviesPresenterInterface =
         MoviesPresenter(repository)
 

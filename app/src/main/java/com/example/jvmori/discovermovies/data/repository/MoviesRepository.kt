@@ -51,19 +51,6 @@ class MoviesRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getGenres(): Observable<List<Genre>> {
-        return Maybe.concat(getAllGenresLocal(), getAllGenresRemote())
-            .filter { list ->
-                list.isNotEmpty()
-            }
-            //.take(1)
-            .toObservable()
-    }
-
-    fun getGenreById(genreId: Int): Single<Genre> {
-        return genreDao.getGenre(genreId)
-    }
-
     fun setCreditsConnectable(movieId: Int) {
         connectableObservable = tmdbApi.getCredits(movieId)
             .subscribeOn(Schedulers.io())
@@ -164,30 +151,6 @@ class MoviesRepository @Inject constructor(
         return moviesDao.getMovies(queryParam.genresId.toInt(), queryParam.page).doAfterSuccess {
             Log.i("Movies", it.toString())
         }
-    }
-
-    private fun getAllGenresRemote(): Maybe<List<Genre>> {
-        return tmdbApi.getGenres()
-            .flatMap {
-                return@flatMap Maybe.just(it.genres)
-            }.doAfterSuccess {
-                saveData(it)
-            }
-            .doOnError {
-                Log.i("Error", "Error")
-            }
-            .subscribeOn(Schedulers.io())
-    }
-
-    public fun getAllGenresLocal(): Maybe<List<Genre>> {
-        return genreDao.getAllGenres()
-    }
-
-    private fun saveData(data: List<Genre>) {
-        Completable.fromAction {
-            genreDao.insert(data)
-        }.subscribeOn(Schedulers.io())
-            .subscribe()
     }
 
 

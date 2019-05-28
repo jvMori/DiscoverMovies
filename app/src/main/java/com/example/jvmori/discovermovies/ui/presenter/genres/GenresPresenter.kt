@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import com.example.jvmori.discovermovies.data.repository.genres.GenresRepository
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
@@ -11,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class GenresPresenter @Inject constructor (
-    private val repository: MoviesRepository
+    private val repository: GenresRepository
 ) : GenresPresenterInterface {
 
     private lateinit var genresViewInterface: GenresViewInterface

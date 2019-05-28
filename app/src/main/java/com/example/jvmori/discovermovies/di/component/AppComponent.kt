@@ -17,7 +17,8 @@ import javax.inject.Singleton
         NetworkModule::class,
         TrendingModule::class,
         NowPlayingModule::class,
-        CollectionModule::class
+        CollectionModule::class,
+        GenresModule::class
     ]
 )
 interface AppComponent {

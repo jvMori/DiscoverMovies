@@ -17,7 +17,6 @@ abstract class BaseRepository(
     open var tmdbApi: TmdbAPI,
     context: Context
 ){
-    val genreDao = MovieDatabase.invoke(context.applicationContext).genreDao()
     val moviesDao = MovieDatabase.invoke(context.applicationContext).moviesDao()
     val savedMovieDao = MovieDatabase.invoke(context.applicationContext).savedMovieDao()
 
