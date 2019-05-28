@@ -3,7 +3,6 @@ package com.example.jvmori.discovermovies.ui.presenter.genres
 import android.annotation.SuppressLint
 import android.util.Log
 import com.example.jvmori.discovermovies.data.local.entity.Genre
-import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.data.repository.genres.GenresRepository
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

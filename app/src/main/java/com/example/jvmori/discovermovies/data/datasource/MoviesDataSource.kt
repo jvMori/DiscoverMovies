@@ -3,7 +3,7 @@ package com.example.jvmori.discovermovies.data.datasource
 import android.util.Log
 import androidx.paging.PageKeyedDataSource
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
-import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import com.example.jvmori.discovermovies.data.repository.movies.MoviesRepository
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import io.reactivex.disposables.CompositeDisposable
 

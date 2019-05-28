@@ -4,7 +4,6 @@ import android.content.Context
 import com.example.jvmori.discovermovies.data.local.GenreDao
 import com.example.jvmori.discovermovies.data.local.database.MovieDatabase
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
-import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.data.repository.genres.GenresRepository
 import com.example.jvmori.discovermovies.data.repository.genres.GenresRepositoryImpl
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresPresenter

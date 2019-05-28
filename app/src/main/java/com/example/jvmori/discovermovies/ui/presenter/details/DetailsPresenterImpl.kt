@@ -1,7 +1,6 @@
 package com.example.jvmori.discovermovies.ui.presenter.details
 
 import android.util.Log
-import com.example.jvmori.discovermovies.data.repository.MoviesRepository
 import com.example.jvmori.discovermovies.data.repository.details.DetailsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

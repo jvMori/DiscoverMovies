@@ -1,8 +1,6 @@
 package com.example.jvmori.discovermovies.ui.presenter.collections
 
 import android.util.Log
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import com.example.jvmori.discovermovies.MainActivity
 import com.example.jvmori.discovermovies.data.local.entity.Collection
 import com.example.jvmori.discovermovies.data.repository.collection.CollectionRepository

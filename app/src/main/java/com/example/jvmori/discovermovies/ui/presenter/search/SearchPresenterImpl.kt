@@ -2,15 +2,13 @@ package com.example.jvmori.discovermovies.ui.presenter.search
 
 import android.util.Log
 import androidx.appcompat.widget.SearchView
-import com.example.jvmori.discovermovies.data.repository.MoviesRepository
+import com.example.jvmori.discovermovies.data.repository.movies.MoviesRepository
 import com.example.jvmori.discovermovies.util.Const
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-
 
 class SearchPresenterImpl @Inject constructor(
     private val repository: MoviesRepository
