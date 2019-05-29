@@ -52,7 +52,7 @@ class NowPlayingPresenterImpl @Inject constructor(
     }
 
     private fun checkIfRefreshNeeded(localMovies: List<MovieResult>) {
-        if (localMovies.isEmpty() || repository.isMovieUpToDate(localMovies[0]))
+        if (localMovies.isEmpty() || !repository.isMovieUpToDate(localMovies[0]))
             fetchRemote()
     }
 
