@@ -34,7 +34,7 @@ class TrendingRepositoryImpl @Inject constructor (
     }
 
     override fun fetchTrendingLocal(period: String): Single<List<MovieResult>> {
-        return savedMovieDao.getAllTrending(period, Category.TRENDING.toString())
+        return savedMovieDao.getAllFromCategory(period, Category.TRENDING.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
