@@ -5,4 +5,5 @@ import com.example.jvmori.discovermovies.ui.BasePresenter
 
 interface SavingBasePresenter : BasePresenter{
     fun saveMovie(movieResult: MovieResult)
+    fun updateFavIcon(movieResult: MovieResult)
 }

@@ -11,10 +11,10 @@ import javax.inject.Inject
 
 class SavingBasePresenterImpl @Inject constructor(
     private var repository: MoviesRepository
-) : SavingBasePresenter,  MoviesAdapter.OnFavIconClickListener {
+) : SavingBasePresenter, MoviesAdapter.OnFavIconClickListener {
 
     private val disposable = CompositeDisposable()
-    private lateinit var view : SavingView
+    private lateinit var view: SavingView
 
     override fun <T> setView(view: T) {
         this.view = view as SavingView
@@ -34,6 +34,20 @@ class SavingBasePresenterImpl @Inject constructor(
                     repository.saveMovie(movieResult, Collection.LIKES.toString(), Category.NONE.toString(), "week")
                     view.displaySavedIcon()
                 })
+        )
+    }
+
+    override fun updateFavIcon(movieResult: MovieResult) {
+        disposable.add(
+            repository.getMovieFromDbByIdAndCategory(movieResult, Collection.LIKES.toString())
+                .subscribe(
+                    {
+                        view.displayDeletedIcon()
+                    },
+                    {
+                        view.displaySavedIcon()
+                    }
+                )
         )
     }
 

@@ -20,11 +20,19 @@ class MoviesAdapter(
 
     private var genres: Map<Int, String> = mutableMapOf<Int, String>()
     private lateinit var onFavIconClickListener: OnFavIconClickListener
+    private lateinit var movieViewHolder : MovieViewHolder
 
     fun setOnFavClickListener(onFavIconClickListener: OnFavIconClickListener) {
         this.onFavIconClickListener = onFavIconClickListener
     }
 
+    fun showFullHeart(){
+        movieViewHolder.showFullHeart()
+    }
+
+    fun showEmptyHeart(){
+        movieViewHolder.showEmptyHeart()
+    }
     companion object {
         val MovieDiffCallback = object : DiffUtil.ItemCallback<MovieResult>() {
             override fun areItemsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
@@ -56,7 +64,8 @@ class MoviesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
-        return MovieViewHolder(view, onClickListener, onFavIconClickListener, genres)
+        movieViewHolder = MovieViewHolder(view, onClickListener, onFavIconClickListener, genres)
+        return movieViewHolder
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
@@ -83,6 +92,14 @@ class MoviesAdapter(
             setOnItemClickListener(item)
             setOnFavClickListener(onFavIconClickListener, item)
             bindGenres(item,genres)
+        }
+
+        fun showFullHeart(){
+            itemView.heart.setImageResource(R.drawable.ic_favorite_full)
+        }
+
+        fun showEmptyHeart(){
+            itemView.heart.setImageResource(R.drawable.ic_favorite_empty)
         }
 
         private fun setOnItemClickListener(item: MovieResult){

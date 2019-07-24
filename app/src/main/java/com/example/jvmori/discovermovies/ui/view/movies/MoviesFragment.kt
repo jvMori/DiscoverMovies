@@ -86,10 +86,12 @@ class MoviesFragment : Fragment(), MoviesViewInterface, SavingView, IOnClickList
 
     override fun displayDeletedIcon() {
         Toast.makeText(this.requireContext(), "Deleted!", Toast.LENGTH_SHORT).show()
+        moviesAdapter?.showEmptyHeart()
     }
 
     override fun displaySavedIcon() {
         Toast.makeText(this.requireContext(), "Saved!", Toast.LENGTH_SHORT).show()
+        moviesAdapter?.showFullHeart()
     }
 
     private fun navigateToDetails(movieId: Int) {
