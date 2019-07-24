@@ -20,8 +20,8 @@ interface SavedMovieDao {
     @Query("Select * from saved_movies where id like :movieId")
     fun getMovie(movieId: Int): Single<MovieResult>
 
-    @Query("Select * from saved_movies where id like :movieId AND category like:categoryName")
-    fun getMovieByIdAndCategory(movieId: Int, categoryName: String): Single<MovieResult>
+    @Query("Select * from saved_movies where id like :movieId AND collection like:collectionName")
+    fun getMovieByIdAndCategory(movieId: Int, collectionName: String): Single<MovieResult>
 
     @Query("Select * from saved_movies where category like:categoryName AND period like:periodTime")
     fun getAllFromCategory(periodTime: String, categoryName : String): Single<List<MovieResult>>
