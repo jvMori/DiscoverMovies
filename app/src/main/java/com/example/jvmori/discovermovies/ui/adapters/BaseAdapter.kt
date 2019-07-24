@@ -5,24 +5,29 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 
-abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseAdapter.BaseViewHolder<T>>(){
+abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseAdapter.BaseViewHolder<T>>() {
 
-    private var items : List<T> = mutableListOf()
+    private var items: List<T> = mutableListOf()
+    abstract var iOnItemClickListener: IOnItemClickListener?
 
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<T>
 
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: BaseViewHolder<T>, position: Int) {
-       holder.bindView(items[position])
+        holder.bindView(items[position])
     }
 
-    abstract class BaseViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView){
-        abstract fun bindView(item : T)
+    abstract class BaseViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        abstract fun bindView(item: T)
     }
 
-    fun setItems(items : List<T>){
+    fun setItems(items: List<T>) {
         this.items = items
         notifyDataSetChanged()
+    }
+
+    interface IOnItemClickListener {
+        fun onItemClicked(position: Int)
     }
 }

@@ -15,6 +15,10 @@ class GenreAdapter(
     private val onClickListener: IOnGenreClick?
 ) : BaseAdapter<Genre>() {
 
+    override var iOnItemClickListener: IOnItemClickListener?
+        get() = null
+        set(value) {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.genre_item, parent, false)
         return GenreViewHolder(view, onClickListener)

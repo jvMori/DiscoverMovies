@@ -14,6 +14,10 @@ import kotlinx.android.synthetic.main.crew_item.view.*
 
 class CrewAdapter : BaseAdapter<Crew>() {
 
+    override var iOnItemClickListener: IOnItemClickListener?
+        get() = null
+        set(value) {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Crew> {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.crew_item, parent, false)
         return CrewViewHolder(view)

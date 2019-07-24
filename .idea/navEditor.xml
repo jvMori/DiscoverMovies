@@ -37,12 +37,17 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="12" />
-                            <option name="y" value="458" />
+                            <option name="x" value="48" />
+                            <option name="y" value="304" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_discoverFragment_to_detailsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="specifyGenreId">
                               <value>
                                 <LayoutPositions />
@@ -58,8 +63,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="518" />
-                            <option name="y" value="322" />
+                            <option name="x" value="373" />
+                            <option name="y" value="520" />
                           </Point>
                         </option>
                         <option name="myPositions">

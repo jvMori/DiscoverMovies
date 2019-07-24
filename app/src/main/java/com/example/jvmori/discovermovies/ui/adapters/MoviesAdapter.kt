@@ -95,11 +95,11 @@ class MoviesAdapter(
         }
 
         fun showFullHeart(){
-            itemView.heart.setImageResource(R.drawable.ic_favorite_full)
+            //itemView.heart.setImageResource(R.drawable.ic_favorite_full)
         }
 
         fun showEmptyHeart(){
-            itemView.heart.setImageResource(R.drawable.ic_favorite_empty)
+           // itemView.heart.setImageResource(R.drawable.ic_favorite_empty)
         }
 
         private fun setOnItemClickListener(item: MovieResult){

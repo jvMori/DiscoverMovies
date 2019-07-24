@@ -9,6 +9,7 @@
               android:label="fragment_discover" tools:layout="@layout/fragment_discover">
         <action android:id="@+id/specifyGenreId" app:destination="@id/moviesFragment">
         </action>
+        <action android:id="@+id/action_discoverFragment_to_detailsFragment" app:destination="@id/detailsFragment"/>
 
     </fragment>
     <fragment android:id="@+id/moviesFragment" android:name="com.example.jvmori.discovermovies.ui.view.movies.MoviesFragment"
