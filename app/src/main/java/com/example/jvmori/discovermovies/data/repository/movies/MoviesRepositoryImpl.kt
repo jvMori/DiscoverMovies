@@ -3,6 +3,7 @@ package com.example.jvmori.discovermovies.data.repository.movies
 import android.content.Context
 import android.util.Log
 import com.example.jvmori.discovermovies.data.local.MovieDao
+import com.example.jvmori.discovermovies.data.local.entity.Collection
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
@@ -41,8 +42,8 @@ class MoviesRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun getMovieFromDbById(movie: MovieResult): Single<MovieResult> {
-        return savedMovieDao.getMovie(movie.id)
+    override fun getMovieFromDbByIdAndCategory(movie: MovieResult, category: String): Single<MovieResult> {
+        return savedMovieDao.getMovieByIdAndCategory(movie.id, category)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
     }

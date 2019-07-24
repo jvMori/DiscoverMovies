@@ -9,7 +9,7 @@ import io.reactivex.Single
 interface MoviesRepository {
     fun getMovies(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse>
     fun getSearchedItems(q: String): Single<List<MovieResult>>
-    fun getMovieFromDbById(movie: MovieResult): Single<MovieResult>
+    fun getMovieFromDbByIdAndCategory(movie: MovieResult, category: String): Single<MovieResult>
     fun deleteMovie(movie: MovieResult)
     fun saveMovie(movie: MovieResult, collection : String, category: String, period: String)
 }

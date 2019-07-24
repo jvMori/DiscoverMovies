@@ -5,6 +5,7 @@ import com.example.jvmori.discovermovies.data.local.entity.Collection
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.repository.movies.MoviesRepository
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
+import com.example.jvmori.discovermovies.util.Const
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -25,7 +26,7 @@ class SavingBasePresenterImpl @Inject constructor(
 
     override fun saveMovie(movieResult: MovieResult) {
         disposable.add(
-            repository.getMovieFromDbById(movieResult)
+            repository.getMovieFromDbByIdAndCategory(movieResult, Collection.LIKES.toString())
                 .subscribe({ success ->
                     repository.deleteMovie(movieResult)
                     view.displayDeletedIcon()
@@ -37,6 +38,7 @@ class SavingBasePresenterImpl @Inject constructor(
     }
 
     override fun onFavClicked(movieResult: MovieResult) {
+        movieResult.mediaType = Const.MOVIE
         saveMovie(movieResult)
     }
 }

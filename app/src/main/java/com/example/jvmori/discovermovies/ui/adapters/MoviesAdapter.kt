@@ -79,7 +79,7 @@ class MoviesAdapter(
             this.itemView.iconItem.clipToOutline = true
             this.itemView.categoryItem.text = ""
             LoadImage.loadImage(this.itemView.context, this.itemView.iconItem, Const.base_poster_url + item.posterPath)
-            MoviesAdapter.setStars(item.voteAverage * 10, this.itemView.layoutStars)
+            setStars(item.voteAverage * 10, this.itemView.layoutStars)
             setOnItemClickListener(item)
             setOnFavClickListener(onFavIconClickListener, item)
             bindGenres(item,genres)
