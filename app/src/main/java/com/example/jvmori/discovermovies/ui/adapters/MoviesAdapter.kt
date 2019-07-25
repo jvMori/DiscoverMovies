@@ -94,14 +94,6 @@ class MoviesAdapter(
             bindGenres(item,genres)
         }
 
-        fun showFullHeart(){
-            //itemView.heart.setImageResource(R.drawable.ic_favorite_full)
-        }
-
-        fun showEmptyHeart(){
-           // itemView.heart.setImageResource(R.drawable.ic_favorite_empty)
-        }
-
         private fun setOnItemClickListener(item: MovieResult){
             itemView.setOnClickListener { onClickListener?.onMovieItemClicked(item.id) }
         }
@@ -110,6 +102,13 @@ class MoviesAdapter(
             this.itemView.heart.setOnClickListener {
                 onFavIconClickListener?.onFavClicked(item)
             }
+        }
+        fun showFullHeart(){
+            this.itemView.heart.setImageResource(R.drawable.ic_favorite_full)
+        }
+
+        fun showEmptyHeart(){
+            // itemView.heart.setImageResource(R.drawable.ic_favorite_empty)
         }
 
         private fun bindGenres(movieResult: MovieResult, genres: Map<Int, String>) {
