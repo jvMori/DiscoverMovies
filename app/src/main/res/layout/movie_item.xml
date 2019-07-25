@@ -167,29 +167,29 @@
             app:layout_constraintTop_toBottomOf="@+id/titleItem" />
 
         <ImageView
-            android:id="@+id/heart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="8dp"
-            android:clickable="true"
-            android:elevation="20dp"
-            android:src="@drawable/ic_favorite_empty"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/heart"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:elevation="20dp"
+                android:src="@drawable/ic_favorite_empty"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageView
-            android:id="@+id/addBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:clickable="true"
-            android:elevation="20dp"
-            android:src="@drawable/ic_playlist_add"
-            android:visibility="visible"
-            app:layout_constraintEnd_toStartOf="@+id/heart"
-            app:layout_constraintTop_toTopOf="@+id/cardView" />
+                android:id="@+id/addBtn"
+                android:layout_width="22dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:elevation="20dp"
+                android:src="@drawable/ic_playlist_add"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/heart"
+                app:layout_constraintTop_toTopOf="@+id/cardView"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"

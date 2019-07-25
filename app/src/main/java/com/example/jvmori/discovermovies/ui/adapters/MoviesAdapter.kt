@@ -104,7 +104,7 @@ class MoviesAdapter(
             }
         }
         fun showFullHeart(){
-            this.itemView.heart.setImageResource(R.drawable.ic_favorite_full)
+          //  this.itemView.heart.setImageResource(R.drawable.ic_favorite_full)
         }
 
         fun showEmptyHeart(){
