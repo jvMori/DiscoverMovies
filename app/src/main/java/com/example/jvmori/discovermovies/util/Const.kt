@@ -8,6 +8,6 @@ class Const
         const val BASE_URL = "https://api.themoviedb.org/3/"
         const val base_poster_url = "https://image.tmdb.org/t/p/w185/"
         const val STALE_MS = 3600 * 1000 // data is stale after 1 hour
-        const val base_backdrop_url = "http://image.tmdb.org/t/p/w500/"
+        const val base_backdrop_url = "https://image.tmdb.org/t/p/w500/"
     }
 }
