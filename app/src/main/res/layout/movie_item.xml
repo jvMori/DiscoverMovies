@@ -176,20 +176,19 @@
                 android:elevation="20dp"
                 android:src="@drawable/ic_favorite_empty"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" tools:visibility="invisible"/>
 
         <ImageView
                 android:id="@+id/addBtn"
-                android:layout_width="22dp"
-                android:layout_height="wrap_content"
+                android:layout_width="28dp"
+                android:layout_height="0dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
                 android:clickable="true"
                 android:elevation="20dp"
                 android:src="@drawable/ic_playlist_add"
-                android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@+id/heart"
-                app:layout_constraintTop_toTopOf="@+id/cardView"/>
+                android:visibility="visible"
+                app:layout_constraintTop_toTopOf="@+id/cardView" android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintDimensionRatio="h,1:1"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
