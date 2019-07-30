@@ -52,7 +52,7 @@ class SavingBasePresenterImpl @Inject constructor(
     }
 
     override fun onAddClicked(movieResult: MovieResult) {
-        movieResult.mediaType = Const.MOVIE
-        saveMovie(movieResult)
+       // movieResult.mediaType = Const.MOVIE
+       // saveMovie(movieResult)
     }
 }
