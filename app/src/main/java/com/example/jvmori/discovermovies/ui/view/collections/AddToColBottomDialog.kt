@@ -23,6 +23,7 @@ class AddToColBottomDialog : BottomSheetDialogFragment() {
     }
 
     private fun createCollectionsList() {
+        //TODO: fetch data to list 
         val list = mutableListOf<String>("Favorites", "To Watch", "Watched")
         val adapter = AddToCollectionAdapter()
         adapter.setItems(list)
