@@ -38,6 +38,7 @@ abstract class BaseRepository(
         period: String,
         collection: String
     ) {
+        it.backdropPath = it.backdropPath ?: ""
         it.category = category
         it.period = period
         it.timestamp = System.currentTimeMillis()

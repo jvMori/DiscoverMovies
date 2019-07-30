@@ -176,7 +176,7 @@
                 android:elevation="20dp"
                 android:src="@drawable/ic_favorite_empty"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" tools:visibility="invisible"/>
+                app:layout_constraintTop_toTopOf="parent" tools:visibility="gone"/>
 
         <ImageView
                 android:id="@+id/addBtn"
