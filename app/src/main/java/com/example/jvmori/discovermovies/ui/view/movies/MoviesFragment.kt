@@ -23,6 +23,7 @@ import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePres
 import com.example.jvmori.discovermovies.ui.presenter.collections.SavingView
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenterInterface
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesViewInterface
+import com.example.jvmori.discovermovies.ui.view.collections.AddToColBottomDialog
 import com.example.jvmori.discovermovies.ui.view.search.SearchFragment
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
@@ -37,7 +38,7 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class MoviesFragment : Fragment(), MoviesViewInterface, SavingView, IOnClickListener {
+class MoviesFragment : Fragment(), MoviesViewInterface, SavingView, IOnClickListener, MoviesAdapter.OnAddBtnClickListener {
 
     private var genreId: Int? = null
     @Inject
@@ -80,6 +81,11 @@ class MoviesFragment : Fragment(), MoviesViewInterface, SavingView, IOnClickList
         })
     }
 
+    override fun onAddClicked(movieResult: MovieResult) {
+        val bottomSheetDialogFragment = AddToColBottomDialog()
+        bottomSheetDialogFragment.show(this.requireFragmentManager(), "Bottom Sheet Dialog")
+    }
+
     override fun onMovieItemClicked(movieId: Int) {
         navigateToDetails(movieId)
     }
@@ -117,10 +123,11 @@ class MoviesFragment : Fragment(), MoviesViewInterface, SavingView, IOnClickList
             recyclerViewMovies!!.setHasFixedSize(true)
             recyclerViewMovies!!.adapter = moviesAdapter
         }
-        savingPresenter.let{
-            if (it is MoviesAdapter.OnAddBtnClickListener)
-                moviesAdapter?.setOnAddBtnClickListener(it as MoviesAdapter.OnAddBtnClickListener)
-        }
+        moviesAdapter?.setOnAddBtnClickListener(this)
+//        savingPresenter.let{
+//            if (it is MoviesAdapter.OnAddBtnClickListener)
+//                moviesAdapter?.setOnAddBtnClickListener(it as MoviesAdapter.OnAddBtnClickListener)
+//        }
     }
 
     override fun displayError(s: String) {

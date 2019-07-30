@@ -82,8 +82,10 @@ class MoviesAdapter(
             this.itemView.categoryItem.text = ""
             LoadImage.loadImage(this.itemView.context, this.itemView.iconItem, Const.base_poster_url + item.posterPath)
             setStars(item.voteAverage * 10, this.itemView.layoutStars)
-            onAddBtnClickListener?.onAddClicked(item)
             setOnItemClickListener(item)
+            itemView.addBtn?.setOnClickListener{
+               onAddBtnClickListener?.onAddClicked(item)
+            }
             bindGenres(item,genres)
         }
 

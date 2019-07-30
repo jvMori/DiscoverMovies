@@ -14,13 +14,19 @@ import kotlinx.android.synthetic.main.add_to_collection_bottom_dialog.*
 class AddToColBottomDialog : BottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        createCollectionsList()
         return inflater.inflate(R.layout.add_to_collection_bottom_dialog, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        createCollectionsList()
+    }
+
     private fun createCollectionsList() {
-        val list = mutableListOf<String>("Liked", "To Watch", "Watched")
-        playlists?.adapter = AddToCollectionAdapter(list)
+        val list = mutableListOf<String>("Favorites", "To Watch", "Watched")
+        val adapter = AddToCollectionAdapter()
+        adapter.setItems(list)
+        playlists?.adapter = adapter
         playlists?.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
     }
 }

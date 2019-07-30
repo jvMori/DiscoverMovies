@@ -6,9 +6,7 @@ import android.view.ViewGroup
 import com.example.jvmori.discovermovies.R
 import kotlinx.android.synthetic.main.playlist_item.view.*
 
-class AddToCollectionAdapter (
-    val items : List<String> = mutableListOf()
-) : BaseAdapter<String>(){
+class AddToCollectionAdapter  : BaseAdapter<String>(){
 
     override var iOnItemClickListener: IOnItemClickListener?
         get() = null

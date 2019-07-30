@@ -9,11 +9,12 @@
             android:layout_width="wrap_content"
             android:layout_height="24dp" app:srcCompat="@drawable/ic_check_box_outline"
             android:id="@+id/checkbox" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp" android:layout_marginStart="8dp"/>
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="16dp" android:layout_marginStart="8dp"/>
     <TextView
             android:text="Liked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/nameOfPlaylist"
             app:layout_constraintStart_toEndOf="@+id/checkbox" android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/checkbox" app:layout_constraintTop_toTopOf="@+id/checkbox"/>
+            app:layout_constraintBottom_toBottomOf="@+id/checkbox" app:layout_constraintTop_toTopOf="@+id/checkbox"
+            android:textSize="20sp" android:paddingBottom="4dp" android:paddingTop="4dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
