@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class SavingBasePresenterImpl @Inject constructor(
     private var repository: MoviesRepository
-) : SavingBasePresenter, MoviesAdapter.OnFavIconClickListener {
+) : SavingBasePresenter, MoviesAdapter.OnAddBtnClickListener {
 
     private val disposable = CompositeDisposable()
     private lateinit var view: SavingView
@@ -51,7 +51,7 @@ class SavingBasePresenterImpl @Inject constructor(
         )
     }
 
-    override fun onFavClicked(movieResult: MovieResult) {
+    override fun onAddClicked(movieResult: MovieResult) {
         movieResult.mediaType = Const.MOVIE
         saveMovie(movieResult)
     }

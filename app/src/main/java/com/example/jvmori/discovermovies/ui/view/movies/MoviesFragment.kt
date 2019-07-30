@@ -86,12 +86,10 @@ class MoviesFragment : Fragment(), MoviesViewInterface, SavingView, IOnClickList
 
     override fun displayDeletedIcon() {
         Toast.makeText(this.requireContext(), "Deleted!", Toast.LENGTH_SHORT).show()
-        moviesAdapter?.showEmptyHeart()
     }
 
     override fun displaySavedIcon() {
         Toast.makeText(this.requireContext(), "Saved!", Toast.LENGTH_SHORT).show()
-        moviesAdapter?.showFullHeart()
     }
 
     private fun navigateToDetails(movieId: Int) {
@@ -120,8 +118,8 @@ class MoviesFragment : Fragment(), MoviesViewInterface, SavingView, IOnClickList
             recyclerViewMovies!!.adapter = moviesAdapter
         }
         savingPresenter.let{
-            if (it is MoviesAdapter.OnFavIconClickListener)
-                moviesAdapter?.setOnFavClickListener(it as MoviesAdapter.OnFavIconClickListener)
+            if (it is MoviesAdapter.OnAddBtnClickListener)
+                moviesAdapter?.setOnAddBtnClickListener(it as MoviesAdapter.OnAddBtnClickListener)
         }
     }
 

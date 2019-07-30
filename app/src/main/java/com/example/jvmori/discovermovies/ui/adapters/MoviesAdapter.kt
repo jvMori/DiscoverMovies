@@ -19,20 +19,13 @@ class MoviesAdapter(
 ) : PagedListAdapter<MovieResult, MoviesAdapter.MovieViewHolder>(MovieDiffCallback) {
 
     private var genres: Map<Int, String> = mutableMapOf<Int, String>()
-    private lateinit var onFavIconClickListener: OnFavIconClickListener
+    private lateinit var onAddBtnClickListener: OnAddBtnClickListener
     private lateinit var movieViewHolder : MovieViewHolder
 
-    fun setOnFavClickListener(onFavIconClickListener: OnFavIconClickListener) {
-        this.onFavIconClickListener = onFavIconClickListener
+    fun setOnAddBtnClickListener(onAddBtnClickListener: OnAddBtnClickListener) {
+        this.onAddBtnClickListener = onAddBtnClickListener
     }
 
-    fun showFullHeart(){
-        movieViewHolder.showFullHeart()
-    }
-
-    fun showEmptyHeart(){
-        movieViewHolder.showEmptyHeart()
-    }
     companion object {
         val MovieDiffCallback = object : DiffUtil.ItemCallback<MovieResult>() {
             override fun areItemsTheSame(oldItem: MovieResult, newItem: MovieResult): Boolean {
@@ -64,7 +57,7 @@ class MoviesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
-        movieViewHolder = MovieViewHolder(view, onClickListener, onFavIconClickListener, genres)
+        movieViewHolder = MovieViewHolder(view, onClickListener, onAddBtnClickListener, genres)
         return movieViewHolder
     }
 
@@ -77,7 +70,7 @@ class MoviesAdapter(
 
     class MovieViewHolder(itemView: View,
                           private var onClickListener: IOnClickListener?,
-                          private var onFavIconClickListener: OnFavIconClickListener?,
+                          private var onAddBtnClickListener: OnAddBtnClickListener?,
                           private var genres: Map<Int, String> = mutableMapOf()
                           ) : BaseAdapter.BaseViewHolder<MovieResult>(itemView) {
         override fun bindView(item: MovieResult) {
@@ -89,26 +82,13 @@ class MoviesAdapter(
             this.itemView.categoryItem.text = ""
             LoadImage.loadImage(this.itemView.context, this.itemView.iconItem, Const.base_poster_url + item.posterPath)
             setStars(item.voteAverage * 10, this.itemView.layoutStars)
+            onAddBtnClickListener?.onAddClicked(item)
             setOnItemClickListener(item)
-            setOnFavClickListener(onFavIconClickListener, item)
             bindGenres(item,genres)
         }
 
         private fun setOnItemClickListener(item: MovieResult){
             itemView.setOnClickListener { onClickListener?.onMovieItemClicked(item.id) }
-        }
-
-        private fun setOnFavClickListener(onFavIconClickListener: OnFavIconClickListener?, item: MovieResult) {
-            this.itemView.heart.setOnClickListener {
-                onFavIconClickListener?.onFavClicked(item)
-            }
-        }
-        fun showFullHeart(){
-          //  this.itemView.heart.setImageResource(R.drawable.ic_favorite_full)
-        }
-
-        fun showEmptyHeart(){
-            // itemView.heart.setImageResource(R.drawable.ic_favorite_empty)
         }
 
         private fun bindGenres(movieResult: MovieResult, genres: Map<Int, String>) {
@@ -126,7 +106,7 @@ class MoviesAdapter(
         this.genres = genres
     }
 
-    interface OnFavIconClickListener {
-        fun onFavClicked(movieResult: MovieResult)
+    interface OnAddBtnClickListener {
+        fun onAddClicked(movieResult: MovieResult)
     }
 }

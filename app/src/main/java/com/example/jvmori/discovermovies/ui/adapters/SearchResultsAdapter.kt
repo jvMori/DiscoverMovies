@@ -9,7 +9,7 @@ import com.example.jvmori.discovermovies.ui.IOnClickListener
 
 class SearchResultsAdapter(
     private var onclickListener : IOnClickListener?,
-    private var onFavIconClickListener: MoviesAdapter.OnFavIconClickListener?,
+    private var onAddBtnClickListener: MoviesAdapter.OnAddBtnClickListener?,
     private var genres: Map<Int, String>
 ) : BaseAdapter<MovieResult>() {
 
@@ -19,6 +19,6 @@ class SearchResultsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<MovieResult> {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
-        return MoviesAdapter.MovieViewHolder(view, onclickListener, onFavIconClickListener, genres)
+        return MoviesAdapter.MovieViewHolder(view, onclickListener, onAddBtnClickListener, genres)
     }
 }

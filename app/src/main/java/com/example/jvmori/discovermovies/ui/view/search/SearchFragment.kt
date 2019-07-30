@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,14 +20,12 @@ import com.example.jvmori.discovermovies.ui.adapters.GenreAdapter
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SearchResultsAdapter
 import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenter
-import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenterImpl
 import com.example.jvmori.discovermovies.ui.presenter.collections.SavingView
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresPresenterInterface
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresViewInterface
 import com.example.jvmori.discovermovies.ui.presenter.search.SearchPresenter
 import com.example.jvmori.discovermovies.ui.presenter.search.SearchViewInterface
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import javax.inject.Inject
 
@@ -46,7 +43,7 @@ class SearchFragment : Fragment(), SearchViewInterface,
     SavingView,
     GenreAdapter.IOnGenreClick,
     IOnClickListener,
-    MoviesAdapter.OnFavIconClickListener {
+    MoviesAdapter.OnAddBtnClickListener {
 
     @Inject
     lateinit var searchPresenter: SearchPresenter
@@ -162,7 +159,7 @@ class SearchFragment : Fragment(), SearchViewInterface,
 
     }
 
-    override fun onFavClicked(movieResult: MovieResult) {
+    override fun onAddClicked(movieResult: MovieResult) {
         savingPresenter.saveMovie(movieResult)
     }
 
