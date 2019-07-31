@@ -160,7 +160,7 @@ class SearchFragment : Fragment(), SearchViewInterface,
     }
 
     override fun onAddClicked(movieResult: MovieResult) {
-        savingPresenter.saveMovie(movieResult)
+        //savingPresenter.saveMovie(movieResult)
     }
 
     override fun displayError(s: String) {

@@ -8,12 +8,17 @@ import android.widget.AdapterView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jvmori.discovermovies.R
+import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.ui.adapters.AddToCollectionAdapter
 import com.example.jvmori.discovermovies.ui.adapters.BaseAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.add_to_collection_bottom_dialog.*
 
-class AddToColBottomDialog : BottomSheetDialogFragment(), BaseAdapter.IOnItemClickListener<String>{
+class AddToColBottomDialog(
+    private var movieResult : MovieResult
+) : BottomSheetDialogFragment(), BaseAdapter.IOnItemClickListener<String>{
+
+    var iOnAddToCollectionListner : IOnCollectionItemClicked? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.add_to_collection_bottom_dialog, container, false)
@@ -36,6 +41,12 @@ class AddToColBottomDialog : BottomSheetDialogFragment(), BaseAdapter.IOnItemCli
 
     override fun onItemClicked(item: String) {
         //TODO: toggle checkbox
+
         //TODO: setAction via interface -> saving to collection
+        iOnAddToCollectionListner?.onAddToCollection(item, movieResult)
+    }
+
+    interface IOnCollectionItemClicked {
+        fun onAddToCollection(nameCollection: String, movieResult: MovieResult)
     }
 }

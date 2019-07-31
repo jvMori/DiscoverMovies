@@ -8,18 +8,17 @@ import kotlinx.android.synthetic.main.playlist_item.view.*
 
 class AddToCollectionAdapter  : BaseAdapter<String>(){
 
-    override var iOnItemClickListener: IOnItemClickListener<String>?
-        get() = null
-        set(value) {}
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<String> {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.playlist_item, parent, false)
-        return CollectionViewHolder(view)
+        return CollectionViewHolder(view, iOnItemClickListener)
     }
 
-    class CollectionViewHolder(itemView : View) : BaseViewHolder<String>(itemView){
+    class CollectionViewHolder(itemView : View, private var iOnItemClickListener: IOnItemClickListener<String>?) : BaseViewHolder<String>(itemView){
         override fun bindView(item: String) {
             itemView.nameOfPlaylist?.text = item
+            itemView.setOnClickListener{
+                iOnItemClickListener?.onItemClicked(item)
+            }
         }
     }
 }

@@ -38,12 +38,18 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class MoviesFragment : Fragment(), MoviesViewInterface, SavingView, IOnClickListener, MoviesAdapter.OnAddBtnClickListener {
+class MoviesFragment : Fragment(),
+    MoviesViewInterface,
+    SavingView,
+    IOnClickListener,
+    MoviesAdapter.OnAddBtnClickListener,
+    AddToColBottomDialog.IOnCollectionItemClicked {
 
     private var genreId: Int? = null
     @Inject
     lateinit var moviesPresenter: MoviesPresenterInterface
-    @Inject lateinit var savingPresenter: SavingBasePresenter
+    @Inject
+    lateinit var savingPresenter: SavingBasePresenter
     private var moviesAdapter: MoviesAdapter? = null
 
     override fun onAttach(context: Context) {
@@ -82,7 +88,8 @@ class MoviesFragment : Fragment(), MoviesViewInterface, SavingView, IOnClickList
     }
 
     override fun onAddClicked(movieResult: MovieResult) {
-        val bottomSheetDialogFragment = AddToColBottomDialog()
+        val bottomSheetDialogFragment = AddToColBottomDialog(movieResult)
+        bottomSheetDialogFragment.iOnAddToCollectionListner = this
         bottomSheetDialogFragment.show(this.requireFragmentManager(), "Bottom Sheet Dialog")
     }
 
@@ -119,15 +126,15 @@ class MoviesFragment : Fragment(), MoviesViewInterface, SavingView, IOnClickList
             moviesAdapter = MoviesAdapter(this)
             moviesAdapter?.setGenres(SearchFragment.genresMap)
             recyclerViewMovies!!.layoutManager =
-                    LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
+                LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
             recyclerViewMovies!!.setHasFixedSize(true)
             recyclerViewMovies!!.adapter = moviesAdapter
         }
         moviesAdapter?.setOnAddBtnClickListener(this)
-//        savingPresenter.let{
-//            if (it is MoviesAdapter.OnAddBtnClickListener)
-//                moviesAdapter?.setOnAddBtnClickListener(it as MoviesAdapter.OnAddBtnClickListener)
-//        }
+    }
+
+    override fun onAddToCollection(nameCollection: String, movieResult: MovieResult) {
+        savingPresenter.saveMovie(movieResult, nameCollection)
     }
 
     override fun displayError(s: String) {
