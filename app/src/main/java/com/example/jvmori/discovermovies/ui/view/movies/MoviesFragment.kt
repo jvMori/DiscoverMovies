@@ -102,6 +102,7 @@ class MoviesFragment : Fragment(),
     }
 
     override fun displaySavedIcon() {
+        //TODO: show snackbar instead of toast
         Toast.makeText(this.requireContext(), "Saved!", Toast.LENGTH_SHORT).show()
     }
 

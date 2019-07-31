@@ -68,20 +68,17 @@
                 <TextView
                         android:id="@+id/titleTextView"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="100dp"
                         android:gravity="bottom"
-                        android:text="Call me by your name"
+                        android:text="Call me by your name call me by your name"
                         android:textColor="@color/textPrimary"
                         android:textSize="23sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@+id/backdropImg"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/posterImg"
-                        app:layout_constraintTop_toTopOf="@+id/backdropImg"/>
+                        app:layout_constraintTop_toTopOf="@+id/posterImg"/>
 
                 <TextView
                         android:id="@+id/categoryItem"

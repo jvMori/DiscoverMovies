@@ -42,7 +42,6 @@ class AddToColBottomDialog(
     override fun onItemClicked(item: String) {
         //TODO: toggle checkbox
 
-        //TODO: setAction via interface -> saving to collection
         iOnAddToCollectionListner?.onAddToCollection(item, movieResult)
     }
 
