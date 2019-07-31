@@ -13,7 +13,7 @@ import com.example.jvmori.discovermovies.ui.adapters.BaseAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.add_to_collection_bottom_dialog.*
 
-class AddToColBottomDialog : BottomSheetDialogFragment(), BaseAdapter.IOnItemClickListener{
+class AddToColBottomDialog : BottomSheetDialogFragment(), BaseAdapter.IOnItemClickListener<String>{
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.add_to_collection_bottom_dialog, container, false)
@@ -34,7 +34,7 @@ class AddToColBottomDialog : BottomSheetDialogFragment(), BaseAdapter.IOnItemCli
         playlists?.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
     }
 
-    override fun onItemClicked(position: Int) {
+    override fun onItemClicked(item: String) {
         //TODO: toggle checkbox
         //TODO: setAction via interface -> saving to collection
     }

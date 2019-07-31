@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseAdapter.BaseViewHolder<T>>() {
 
     private var items: List<T> = mutableListOf()
-    abstract var iOnItemClickListener: IOnItemClickListener?
+    var iOnItemClickListener: IOnItemClickListener<T>? = null
 
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<T>
 
@@ -27,7 +27,7 @@ abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseAdapter.BaseViewHolder<
         notifyDataSetChanged()
     }
 
-    interface IOnItemClickListener {
-        fun onItemClicked(position: Int)
+    interface IOnItemClickListener<T> {
+        fun onItemClicked(item: T)
     }
 }

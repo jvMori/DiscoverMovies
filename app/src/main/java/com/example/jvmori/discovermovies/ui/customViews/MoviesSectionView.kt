@@ -48,7 +48,8 @@ class MoviesSectionView(context: Context, attrs: AttributeSet) : ConstraintLayou
         adapter.setItems(movies)
         rvMovies.adapter = adapter
     }
-    fun setIOnItemClickedListener(iOnItemClickListener: BaseAdapter.IOnItemClickListener){
+
+    fun setIOnItemClickedListener(iOnItemClickListener: BaseAdapter.IOnItemClickListener<MovieResult>){
         adapter.iOnItemClickListener = iOnItemClickListener
     }
 }

@@ -13,10 +13,6 @@ class SearchResultsAdapter(
     private var genres: Map<Int, String>
 ) : BaseAdapter<MovieResult>() {
 
-    override var iOnItemClickListener: IOnItemClickListener?
-        get() = null
-        set(value) {}
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<MovieResult> {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
         return MoviesAdapter.MovieViewHolder(view, onclickListener, onAddBtnClickListener, genres)

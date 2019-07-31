@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.playlist_item.view.*
 
 class AddToCollectionAdapter  : BaseAdapter<String>(){
 
-    override var iOnItemClickListener: IOnItemClickListener?
+    override var iOnItemClickListener: IOnItemClickListener<String>?
         get() = null
         set(value) {}
 

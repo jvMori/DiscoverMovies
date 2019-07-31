@@ -1,17 +1,13 @@
 package com.example.jvmori.discovermovies.ui.view.discover
 
 import android.content.Context
-import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.example.jvmori.discovermovies.MainActivity
 import com.example.jvmori.discovermovies.R
@@ -19,17 +15,12 @@ import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.ui.adapters.BaseAdapter
-import com.example.jvmori.discovermovies.ui.adapters.GenreAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SliderPagerAdapter
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresPresenterInterface
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresViewInterface
 import com.example.jvmori.discovermovies.ui.presenter.nowPlaying.NowPlayingContract
 import com.example.jvmori.discovermovies.ui.presenter.trending.TrendingContract
-import com.example.jvmori.discovermovies.ui.view.movies.MoviesFragmentDirections
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_discover.*
-import kotlinx.android.synthetic.main.loading.*
-import java.time.Duration
 import java.util.*
 import javax.inject.Inject
 
@@ -46,7 +37,7 @@ class DiscoverFragment : Fragment(),
     GenresViewInterface,
     TrendingContract.TrendingView,
     NowPlayingContract.NowPlayingView,
-    BaseAdapter.IOnItemClickListener
+    BaseAdapter.IOnItemClickListener<MovieResult>
 {
 
     @Inject
@@ -129,9 +120,9 @@ class DiscoverFragment : Fragment(),
         nowPlayingMoviesSection.setIOnItemClickedListener(this)
     }
 
-    override fun onItemClicked(position: Int) {
+    override fun onItemClicked(movieResult: MovieResult) {
         val action =
-            DiscoverFragmentDirections.action_discoverFragment_to_detailsFragment().setMovieId(position)
+            DiscoverFragmentDirections.action_discoverFragment_to_detailsFragment().setMovieId(movieResult.id)
         NavHostFragment.findNavController(this).navigate(action)
     }
 
