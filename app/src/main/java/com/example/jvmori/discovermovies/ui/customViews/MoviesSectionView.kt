@@ -1,6 +1,7 @@
 package com.example.jvmori.discovermovies.ui.customViews
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -39,6 +40,10 @@ class MoviesSectionView(context: Context, attrs: AttributeSet) : ConstraintLayou
 
     fun setTitleText(title : String){
         titleTextView.text = title
+    }
+
+    fun setIcon(drawable: Drawable){
+        iconIv.setImageDrawable(drawable)
     }
 
     fun setRecyclerView(context: Context, movies: List<MovieResult>){
