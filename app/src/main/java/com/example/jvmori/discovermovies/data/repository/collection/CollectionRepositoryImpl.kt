@@ -28,7 +28,7 @@ class CollectionRepositoryImpl @Inject constructor (
 
     override fun delete(nameOfCollection: String) {
         Completable.fromAction {
-            savedMovieDao.delete(nameOfCollection)
+              savedMovieDao.delete(nameOfCollection)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
