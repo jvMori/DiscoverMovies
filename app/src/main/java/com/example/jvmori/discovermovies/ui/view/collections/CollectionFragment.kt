@@ -15,6 +15,7 @@ import com.example.jvmori.discovermovies.MainActivity
 
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
+import com.example.jvmori.discovermovies.data.local.entity.Collection
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SearchResultsAdapter
@@ -53,7 +54,7 @@ class CollectionFragment : Fragment(), CollectionView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         presenter.setView(this)
-        presenter.fetchSaved()
+        presenter.fetchSaved(Collection.LIKES.toString())
     }
 
     override fun displaySaved(movies : List<MovieResult>) {

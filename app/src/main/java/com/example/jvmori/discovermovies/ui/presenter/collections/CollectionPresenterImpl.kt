@@ -14,9 +14,9 @@ class CollectionPresenterImpl @Inject constructor (
     private lateinit var collectionView: CollectionView
     private val disposable = CompositeDisposable()
 
-    override fun fetchSaved() {
+    override fun fetchSaved(collectionName : String) {
         disposable.add(
-            repository.displayAllSaved(Collection.LIKES.toString()).subscribe(
+            repository.displayAllSaved(collectionName).subscribe(
                 { succes ->
                     collectionView.displaySaved(succes)
                 },
