@@ -52,8 +52,5 @@ enum class Category{
     TRENDING, NOW_PLAYING, NONE
 }
 
-enum class Collection{
-    LIKES,
-    NONE
-}
+
 

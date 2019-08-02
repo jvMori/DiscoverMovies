@@ -6,3 +6,10 @@ import androidx.room.Entity
 data class CollectionType (
     val colName : String
 )
+
+enum class Collection{
+    LIKES,
+    TO_WATCH,
+    WATCHED,
+    NONE
+}

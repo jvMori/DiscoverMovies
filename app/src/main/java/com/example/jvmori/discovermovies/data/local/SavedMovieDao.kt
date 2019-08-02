@@ -1,6 +1,7 @@
 package com.example.jvmori.discovermovies.data.local
 
 import androidx.room.*
+import com.example.jvmori.discovermovies.data.local.entity.CollectionType
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -37,4 +38,12 @@ interface SavedMovieDao {
         }
     }
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCollection(name : String)
+
+    @Query("Select * from collection_table")
+    fun getAllCollections() : Observable<CollectionType>
+
+    @Delete
+    fun delete(name : String)
 }
