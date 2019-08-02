@@ -7,7 +7,7 @@
     <com.example.jvmori.discovermovies.ui.customViews.MoviesSectionView
             android:id="@+id/customSectionItem"
             android:layout_width="match_parent"
-            app:icon="@color/colorAccent"
+            app:icon="@drawable/ic_collection"
             app:titleText="Favorites"
             android:layout_height="wrap_content"/>
 
