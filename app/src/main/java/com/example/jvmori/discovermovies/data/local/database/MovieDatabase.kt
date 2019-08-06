@@ -6,13 +6,16 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.jvmori.discovermovies.data.local.GenreDao
 import com.example.jvmori.discovermovies.data.local.MovieDao
 import com.example.jvmori.discovermovies.data.local.SavedMovieDao
+import com.example.jvmori.discovermovies.data.local.entity.*
 import com.example.jvmori.discovermovies.data.local.entity.Collection
-import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
-import com.example.jvmori.discovermovies.data.local.entity.Genre
-import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.util.Converters
 
-@Database(entities = [Genre::class, DiscoverMovieResponse::class, MovieResult::class], version = 10, exportSchema = false)
+@Database(entities = [
+    Genre::class,
+    DiscoverMovieResponse::class,
+    MovieResult::class,
+    CollectionType::class
+], version = 11, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun genreDao(): GenreDao
@@ -33,9 +36,9 @@ abstract class MovieDatabase : RoomDatabase() {
             return object : RoomDatabase.Callback(){
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    savedMovieDao?.insertCollection(Collection.LIKES.toString())
-                    savedMovieDao?.insertCollection(Collection.WATCHED.toString())
-                    savedMovieDao?.insertCollection(Collection.TO_WATCH.toString())
+                    savedMovieDao?.insertCollection(CollectionType(Collection.LIKES.toString()) )
+                    savedMovieDao?.insertCollection(CollectionType(Collection.WATCHED.toString()))
+                    savedMovieDao?.insertCollection(CollectionType(Collection.TO_WATCH.toString()))
                 }
             }
         }
