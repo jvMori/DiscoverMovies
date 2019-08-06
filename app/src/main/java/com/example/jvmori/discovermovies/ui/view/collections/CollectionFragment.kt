@@ -68,11 +68,13 @@ class CollectionFragment : Fragment(), CollectionView {
     }
 
     override fun displayCollections(collections: List<CollectionType>) {
+        val list = mutableListOf<String>("Favorites", "To Watch", "Watched")
+        val col = mutableListOf(CollectionType("Favorites"), CollectionType("To Watch"), CollectionType("Watched"))
         adapter = CollectionAdapter(this.requireContext())
-        collections.forEach {
-            presenter.fetchSaved(it.colName)
+        list.forEach {
+            presenter.fetchSaved(it)
         }
-        adapter.setItems(collections)
+        adapter.setItems(col)
         recyclerViewFavs.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
         recyclerViewFavs.adapter = adapter
     }
