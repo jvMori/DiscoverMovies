@@ -8,5 +8,5 @@ interface CollectionRepository {
     fun displayAllSaved(collection : CollectionType): Observable<List<MovieResult>>
     fun insert(nameOfCollection : CollectionType)
     fun delete(nameOfCollection: CollectionType)
-    fun getAllCollectionsNames() : Observable<CollectionType>
+    fun getAllCollectionsNames() : Observable<List<CollectionType>>
 }

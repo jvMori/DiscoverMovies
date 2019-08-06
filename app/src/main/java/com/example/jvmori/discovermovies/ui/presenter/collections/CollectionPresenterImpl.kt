@@ -8,27 +8,41 @@ import com.example.jvmori.discovermovies.data.repository.collection.CollectionRe
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class CollectionPresenterImpl @Inject constructor (
+class CollectionPresenterImpl @Inject constructor(
     private var repository: CollectionRepository
-): CollectionPresenter {
+) : CollectionPresenter {
 
     private lateinit var collectionView: CollectionView
     private val disposable = CompositeDisposable()
 
-    override fun fetchSaved(collectionName : String) {
+    override fun fetchAllCollections() {
+        disposable.add(
+            repository.getAllCollectionsNames()
+                .subscribe(
+                    { success ->
+                        collectionView.displayCollections(success)
+                    }, {
+                        Log.i(MainActivity.TAG, "Something went wrong!")
+                    }
+                )
+        )
+    }
+
+    override fun fetchSaved(collectionName: String) {
         disposable.add(
             repository.displayAllSaved(CollectionType(collectionName)).subscribe(
-                { succes ->
-                    collectionView.displaySaved(succes)
+                { success ->
+                    collectionView.displaySaved(success, collectionName)
                 },
                 {
-                    error -> Log.i(MainActivity.TAG, "Something went wrong!")
+                    Log.i(MainActivity.TAG, "Something went wrong!")
                 }
             )
         )
     }
 
+
     override fun setView(view: CollectionView) {
-       collectionView = view
+        collectionView = view
     }
 }

@@ -22,8 +22,8 @@ abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseAdapter.BaseViewHolder<
         abstract fun bindView(item: T)
     }
 
-    fun setItems(items: List<T>) {
-        this.items = items
+    fun setItems(items: List<T>?) {
+        this.items = items ?: mutableListOf()
         notifyDataSetChanged()
     }
 

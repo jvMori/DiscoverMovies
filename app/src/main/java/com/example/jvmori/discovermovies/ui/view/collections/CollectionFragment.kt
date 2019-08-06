@@ -16,7 +16,9 @@ import com.example.jvmori.discovermovies.MainActivity
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.local.entity.Collection
+import com.example.jvmori.discovermovies.data.local.entity.CollectionType
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
+import com.example.jvmori.discovermovies.ui.adapters.CollectionAdapter
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SearchResultsAdapter
 import com.example.jvmori.discovermovies.ui.presenter.collections.CollectionPresenter
@@ -37,7 +39,9 @@ private const val ARG_PARAM2 = "param2"
  */
 class CollectionFragment : Fragment(), CollectionView {
 
-    @Inject lateinit var presenter : CollectionPresenter
+    @Inject
+    lateinit var presenter: CollectionPresenter
+    private lateinit var adapter: CollectionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,16 +58,22 @@ class CollectionFragment : Fragment(), CollectionView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         presenter.setView(this)
-        presenter.fetchSaved(Collection.LIKES.toString())
+        presenter.fetchAllCollections()
     }
 
-    override fun displaySaved(movies : List<MovieResult>) {
-        Log.i(MainActivity.TAG, movies.toString())
-        val adapter = SearchResultsAdapter(null, null, SearchFragment.genresMap)
-        adapter.setItems(movies)
-        recyclerViewFavs!!.layoutManager =
-                LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
-        recyclerViewFavs!!.setHasFixedSize(true)
+    override fun displaySaved(movies: List<MovieResult>, collName: String) {
+        adapter.mapOfCollections[collName] = movies
+        adapter.notifyDataSetChanged()
+        adapter.viewHolder.update(movies)
+    }
+
+    override fun displayCollections(collections: List<CollectionType>) {
+        adapter = CollectionAdapter(this.requireContext())
+        collections.forEach {
+            presenter.fetchSaved(it.colName)
+        }
+        adapter.setItems(collections)
+        recyclerViewFavs.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
         recyclerViewFavs.adapter = adapter
     }
 }

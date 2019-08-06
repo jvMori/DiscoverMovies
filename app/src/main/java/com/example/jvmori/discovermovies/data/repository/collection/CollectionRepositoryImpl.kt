@@ -33,7 +33,7 @@ class CollectionRepositoryImpl @Inject constructor (
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getAllCollectionsNames(): Observable<CollectionType> {
+    override fun getAllCollectionsNames(): Observable<List<CollectionType>> {
         return savedMovieDao.getAllCollections()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

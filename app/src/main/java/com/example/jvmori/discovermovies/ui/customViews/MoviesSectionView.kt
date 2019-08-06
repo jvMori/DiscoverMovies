@@ -46,12 +46,17 @@ class MoviesSectionView(context: Context, attrs: AttributeSet) : ConstraintLayou
         iconIv.setImageDrawable(drawable)
     }
 
-    fun setRecyclerView(context: Context, movies: List<MovieResult>){
+    fun setRecyclerView(context: Context, movies: List<MovieResult>?){
         rvMovies.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         rvMovies.setHasFixedSize(true)
         adapter = SimilarMoviesAdapter()
         adapter.setItems(movies)
         rvMovies.adapter = adapter
+    }
+
+    fun updateItems(movies: List<MovieResult>?){
+        adapter.setItems(movies)
+        adapter.notifyDataSetChanged()
     }
 
     fun setIOnItemClickedListener(iOnItemClickListener: BaseAdapter.IOnItemClickListener<MovieResult>){
