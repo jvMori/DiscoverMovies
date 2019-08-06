@@ -5,8 +5,8 @@ import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import io.reactivex.Observable
 
 interface CollectionRepository {
-    fun displayAllSaved(collection : String): Observable<List<MovieResult>>
-    fun insert(nameOfCollection : String)
-    fun delete(nameOfCollection: String)
+    fun displayAllSaved(collection : CollectionType): Observable<List<MovieResult>>
+    fun insert(nameOfCollection : CollectionType)
+    fun delete(nameOfCollection: CollectionType)
     fun getAllCollectionsNames() : Observable<CollectionType>
 }

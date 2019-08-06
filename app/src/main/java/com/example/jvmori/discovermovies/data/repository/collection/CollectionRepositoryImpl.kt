@@ -19,14 +19,14 @@ class CollectionRepositoryImpl @Inject constructor (
     private var context: Context
 ) : CollectionRepository, BaseRepository(tmdbAPI, context) {
 
-    override fun insert(nameOfCollection: String) {
+    override fun insert(nameOfCollection: CollectionType) {
         Completable.fromAction {
             savedMovieDao.insertCollection(nameOfCollection)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun delete(nameOfCollection: String) {
+    override fun delete(nameOfCollection: CollectionType) {
         Completable.fromAction {
               savedMovieDao.delete(nameOfCollection)
         }.subscribeOn(Schedulers.io())
@@ -39,8 +39,8 @@ class CollectionRepositoryImpl @Inject constructor (
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override  fun displayAllSaved(collection: String): Observable<List<MovieResult>> {
-        return savedMovieDao.getAllSaved(collection)
+    override  fun displayAllSaved(collection: CollectionType): Observable<List<MovieResult>> {
+        return savedMovieDao.getAllSaved(collection.colName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }

@@ -39,11 +39,11 @@ interface SavedMovieDao {
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCollection(name : String)
+    fun insertCollection(collection : CollectionType)
 
     @Query("Select * from collection_table")
     fun getAllCollections() : Observable<CollectionType>
 
     @Delete
-    fun delete(name : String)
+    fun delete(collection : CollectionType)
 }
