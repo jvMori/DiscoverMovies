@@ -16,8 +16,7 @@ class CollectionAdapter(var context : Context) : BaseAdapter<CollectionType>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<CollectionType> {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.collection_rv_item, parent, false)
-        viewHolder = CollectionViewHolder(view, context, mapOfCollections)
-        return viewHolder
+        return CollectionViewHolder(view, context, mapOfCollections)
     }
 
     class CollectionViewHolder(itemView : View, var context: Context, private val map : Map<String, List<MovieResult>>) : BaseViewHolder<CollectionType>(itemView){

@@ -68,9 +68,33 @@ class CollectionFragment : Fragment(), CollectionView {
     }
 
     override fun displayCollections(collections: List<CollectionType>) {
+        val movies = mutableListOf(MovieResult(
+            0,
+            false,
+            "",
+            "",
+            mutableListOf(),
+            "",
+            "",
+            "",
+            12.4,
+            "",
+            "",
+            "",
+            false,
+            0.0,
+            123,
+            1,
+            "",
+            "",
+            ""
+        ))
         val list = mutableListOf<String>("Favorites", "To Watch", "Watched")
         val col = mutableListOf(CollectionType("Favorites"), CollectionType("To Watch"), CollectionType("Watched"))
         adapter = CollectionAdapter(this.requireContext())
+        adapter.mapOfCollections["Favorites"] = movies
+        adapter.mapOfCollections["To Watch"] = movies
+        adapter.mapOfCollections["Watched"] = movies
         list.forEach {
             presenter.fetchSaved(it)
         }
