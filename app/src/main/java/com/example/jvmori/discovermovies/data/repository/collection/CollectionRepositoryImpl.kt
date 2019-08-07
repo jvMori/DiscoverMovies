@@ -2,6 +2,7 @@ package com.example.jvmori.discovermovies.data.repository.collection
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import com.example.jvmori.discovermovies.data.local.entity.CollectionType
@@ -24,6 +25,11 @@ class CollectionRepositoryImpl @Inject constructor (
             savedMovieDao.insertCollection(nameOfCollection)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnError {
+                Log.i("Error", "error")
+            }.doOnComplete {
+                Log.i("Completed", "completed")
+            }
     }
 
     override fun delete(nameOfCollection: CollectionType) {
