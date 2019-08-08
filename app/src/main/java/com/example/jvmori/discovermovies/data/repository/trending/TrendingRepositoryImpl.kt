@@ -2,7 +2,7 @@ package com.example.jvmori.discovermovies.data.repository.trending
 
 import android.content.Context
 import com.example.jvmori.discovermovies.data.local.entity.Category
-import com.example.jvmori.discovermovies.data.local.entity.Collection
+import com.example.jvmori.discovermovies.data.local.Collection
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.TmdbAPI

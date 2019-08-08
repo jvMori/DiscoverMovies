@@ -5,11 +5,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.datasource.MovieDataSourceFactory
-import com.example.jvmori.discovermovies.data.local.entity.Category
-import com.example.jvmori.discovermovies.data.local.entity.Collection
 import com.example.jvmori.discovermovies.data.repository.movies.MoviesRepository
-import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
-import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenter
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject

@@ -3,7 +3,6 @@ package com.example.jvmori.discovermovies.data.repository.movies
 import android.content.Context
 import android.util.Log
 import com.example.jvmori.discovermovies.data.local.MovieDao
-import com.example.jvmori.discovermovies.data.local.entity.Collection
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.TmdbAPI

@@ -3,7 +3,6 @@ package com.example.jvmori.discovermovies.ui.view.collections
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,21 +10,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jvmori.discovermovies.MainActivity
 
 import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
-import com.example.jvmori.discovermovies.data.local.entity.Collection
-import com.example.jvmori.discovermovies.data.local.entity.CollectionType
+import com.example.jvmori.discovermovies.data.local.entity.CollectionData
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.ui.adapters.CollectionAdapter
-import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
-import com.example.jvmori.discovermovies.ui.adapters.SearchResultsAdapter
 import com.example.jvmori.discovermovies.ui.presenter.collections.CollectionPresenter
 import com.example.jvmori.discovermovies.ui.presenter.collections.CollectionView
-import com.example.jvmori.discovermovies.ui.view.search.SearchFragment
 import kotlinx.android.synthetic.main.fragment_collection.*
-import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
@@ -67,9 +60,9 @@ class CollectionFragment : Fragment(), CollectionView {
         adapter.viewHolder.update(movies)
     }
 
-    override fun displayCollections(collections: List<CollectionType>) {
+    override fun displayCollections(collections: List<CollectionData>) {
         val list = mutableListOf<String>("Favorites", "To Watch", "Watched")
-        val col = mutableListOf(CollectionType("Favorites"), CollectionType("To Watch"), CollectionType("Watched"))
+        val col = mutableListOf(CollectionData("Favorites",0), CollectionData("To Watch",0), CollectionData("Watched",0))
         adapter = CollectionAdapter(this.requireContext())
         list.forEach {
             presenter.fetchSaved(it)

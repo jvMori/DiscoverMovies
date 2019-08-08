@@ -1,13 +1,11 @@
 package com.example.jvmori.discovermovies.ui.presenter.collections
 
 import com.example.jvmori.discovermovies.data.local.entity.Category
-import com.example.jvmori.discovermovies.data.local.entity.Collection
-import com.example.jvmori.discovermovies.data.local.entity.CollectionType
+import com.example.jvmori.discovermovies.data.local.Collection
+import com.example.jvmori.discovermovies.data.local.entity.CollectionData
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.repository.collection.CollectionRepository
 import com.example.jvmori.discovermovies.data.repository.movies.MoviesRepository
-import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
-import com.example.jvmori.discovermovies.util.Const
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -35,7 +33,7 @@ class SavingBasePresenterImpl @Inject constructor(
                     view.displayDeletedIcon()
                 }, { error ->
                     repository.saveMovie(movieResult, collection, Category.NONE.toString(), "week")
-                    repositoryCol.insert(CollectionType(collection))
+                    repositoryCol.insert(CollectionData(collection,0))
                     view.displaySavedIcon()
                 })
         )
