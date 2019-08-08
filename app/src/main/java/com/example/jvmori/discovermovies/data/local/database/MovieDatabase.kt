@@ -15,7 +15,7 @@ import com.example.jvmori.discovermovies.data.local.Collection
     DiscoverMovieResponse::class,
     MovieResult::class,
     CollectionData::class
-], version = 15, exportSchema = false)
+], version = 13, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun genreDao(): GenreDao
@@ -47,9 +47,9 @@ abstract class MovieDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context,
-                MovieDatabase::class.java, "movies.db"
+                MovieDatabase::class.java, "discoverMovies.db"
             )
-                .addCallback(prePopulate())
+               // .addCallback(prePopulate())
                 .fallbackToDestructiveMigration()
                 .build()
 
