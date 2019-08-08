@@ -9,13 +9,15 @@ import com.example.jvmori.discovermovies.data.local.SavedMovieDao
 import com.example.jvmori.discovermovies.data.local.entity.*
 import com.example.jvmori.discovermovies.util.Converters
 import com.example.jvmori.discovermovies.data.local.Collection
+import io.reactivex.Completable
+import io.reactivex.schedulers.Schedulers
 
 @Database(entities = [
     Genre::class,
     DiscoverMovieResponse::class,
     MovieResult::class,
     CollectionData::class
-], version = 13, exportSchema = false)
+], version = 14, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun genreDao(): GenreDao
@@ -36,9 +38,13 @@ abstract class MovieDatabase : RoomDatabase() {
             return object : RoomDatabase.Callback(){
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.LIKES.toString(),0) )
-                    instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.WATCHED.toString(),0))
-                    instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.TO_WATCH.toString(),0))
+                    Completable.fromAction {
+                        instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.LIKES.toString(),0) )
+                        instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.WATCHED.toString(),0))
+                        instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.TO_WATCH.toString(),0))
+                    }.subscribeOn(Schedulers.io())
+                        .subscribe()
+
                 }
             }
         }
@@ -49,7 +55,7 @@ abstract class MovieDatabase : RoomDatabase() {
                 context,
                 MovieDatabase::class.java, "discoverMovies.db"
             )
-               // .addCallback(prePopulate())
+                .addCallback(prePopulate())
                 .fallbackToDestructiveMigration()
                 .build()
 
