@@ -68,7 +68,7 @@
                 <ImageView
                         android:src="@drawable/ic_playlist_add"
                         android:layout_width="41dp"
-                        android:layout_height="37dp" android:id="@+id/imageView18"
+                        android:layout_height="37dp" android:id="@+id/addBtn"
                         app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
                         app:layout_constraintBottom_toBottomOf="@+id/ratingItem"
                         app:layout_constraintTop_toTopOf="@+id/ratingItem"/>
@@ -125,7 +125,7 @@
                         android:textColor="@color/colorAccent"
                         android:textSize="24sp"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/imageView18"
+                        app:layout_constraintEnd_toStartOf="@+id/addBtn"
                         app:layout_constraintBottom_toBottomOf="@+id/starsLayout"
                         android:layout_marginEnd="16dp" app:layout_constraintTop_toTopOf="@+id/starsLayout"/>
 

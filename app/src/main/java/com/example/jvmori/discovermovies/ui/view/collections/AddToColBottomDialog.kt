@@ -11,14 +11,27 @@ import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.ui.adapters.AddToCollectionAdapter
 import com.example.jvmori.discovermovies.ui.adapters.BaseAdapter
+import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenter
+import com.example.jvmori.discovermovies.ui.presenter.collections.SavingView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.add_to_collection_bottom_dialog.*
+import javax.inject.Inject
 
 class AddToColBottomDialog(
     private var movieResult : MovieResult
-) : BottomSheetDialogFragment(), BaseAdapter.IOnItemClickListener<String>{
+) : BottomSheetDialogFragment(), BaseAdapter.IOnItemClickListener<String>, SavingView{
+
+    override fun displaySavedIcon() {
+
+    }
+
+    override fun displayDeletedIcon() {
+
+    }
 
     var iOnAddToCollectionListner : IOnCollectionItemClicked? = null
+    @Inject
+    lateinit var savingPresenter : SavingBasePresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.add_to_collection_bottom_dialog, container, false)
@@ -26,6 +39,7 @@ class AddToColBottomDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        savingPresenter.setView(this)
         createCollectionsList()
     }
 
@@ -42,7 +56,8 @@ class AddToColBottomDialog(
     override fun onItemClicked(item: String) {
         //TODO: toggle checkbox
 
-        iOnAddToCollectionListner?.onAddToCollection(item, movieResult)
+        //iOnAddToCollectionListner?.onAddToCollection(item, movieResult)
+        savingPresenter.saveMovie(movieResult, item)
     }
 
     interface IOnCollectionItemClicked {

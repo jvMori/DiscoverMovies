@@ -24,6 +24,7 @@ import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SimilarMoviesAdapter
 import com.example.jvmori.discovermovies.ui.presenter.details.DetailsPresenter
 import com.example.jvmori.discovermovies.ui.presenter.details.DetailsView
+import com.example.jvmori.discovermovies.ui.view.collections.AddToColBottomDialog
 import com.example.jvmori.discovermovies.util.Const
 import com.example.jvmori.discovermovies.util.LoadImage
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener
@@ -76,6 +77,14 @@ class DetailsFragment : Fragment(), DetailsView {
         detailsPresenter.setView(this)
         getMovieId()?.let {
             detailsPresenter.getDetails(it)
+        }
+    }
+
+    fun createAddBtnClickListener(movieResult: MovieResult){
+        addBtn.setOnClickListener {
+            val bottomSheetDialogFragment = AddToColBottomDialog(movieResult)
+            //bottomSheetDialogFragment.iOnAddToCollectionListner = this
+            bottomSheetDialogFragment.show(this.requireFragmentManager(), "Bottom Sheet Dialog")
         }
     }
 
