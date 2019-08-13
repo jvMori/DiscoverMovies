@@ -92,6 +92,7 @@ class DetailsFragment : Fragment(), DetailsView {
         return DetailsFragmentArgs.fromBundle(arguments).movieId
     }
 
+
     override fun showResults(movieDetails: MovieDetails) {
         setDetailViewUI(movieDetails)
     }

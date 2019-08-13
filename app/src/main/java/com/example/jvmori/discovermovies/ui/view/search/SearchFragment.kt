@@ -45,6 +45,10 @@ class SearchFragment : Fragment(), SearchViewInterface,
     IOnClickListener,
     MoviesAdapter.OnAddBtnClickListener {
 
+    override fun onMovieClicked(movieResult: MovieResult) {
+
+    }
+
     @Inject
     lateinit var searchPresenter: SearchPresenter
     @Inject

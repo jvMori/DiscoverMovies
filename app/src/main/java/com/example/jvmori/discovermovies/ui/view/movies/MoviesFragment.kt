@@ -93,8 +93,12 @@ class MoviesFragment : Fragment(),
         bottomSheetDialogFragment.show(this.requireFragmentManager(), "Bottom Sheet Dialog")
     }
 
+    override fun onMovieClicked(movieResult: MovieResult) {
+        navigateToDetails(movieResult)
+    }
+
     override fun onMovieItemClicked(movieId: Int) {
-        navigateToDetails(movieId)
+
     }
 
     override fun displayDeletedIcon() {
@@ -106,10 +110,10 @@ class MoviesFragment : Fragment(),
         Toast.makeText(this.requireContext(), "Saved!", Toast.LENGTH_SHORT).show()
     }
 
-    private fun navigateToDetails(movieId: Int) {
-        val action =
-            MoviesFragmentDirections.action_moviesFragment_to_detailsFragment().setMovieId(movieId)
-        NavHostFragment.findNavController(this).navigate(action)
+    private fun navigateToDetails(movieResult: MovieResult) {
+//        val action =
+//            MoviesFragmentDirections.action_moviesFragment_to_detailsFragment().setMovieResult(movieResult)
+       // NavHostFragment.findNavController(this).navigate(action)
     }
 
     override fun showProgressBar() {
