@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 import java.sql.Timestamp
 
 @Entity(tableName = "saved_movies")
@@ -39,31 +40,8 @@ data class MovieResult (
     var category : String,
     var collection: String = "",
     var period : String
-) : Parcelable
+) : Serializable
 {
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readString(),
-        parcel.readString(),
-        TODO("genreIds"),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readDouble(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readDouble(),
-        parcel.readInt(),
-        parcel.readLong(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString()
-    ) {
-    }
-
     override fun equals(other: Any?): Boolean {
         if (other == this)
             return true
@@ -71,41 +49,6 @@ data class MovieResult (
             return false
         val movie = other as MovieResult
         return movie.id == id && movie.originalTitle == originalTitle
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
-        parcel.writeByte(if (adult) 1 else 0)
-        parcel.writeString(mediaType)
-        parcel.writeString(backdropPath)
-        parcel.writeString(originalLanguage)
-        parcel.writeString(originalTitle)
-        parcel.writeString(overview)
-        parcel.writeDouble(popularity)
-        parcel.writeString(posterPath)
-        parcel.writeString(releaseDate)
-        parcel.writeString(title)
-        parcel.writeByte(if (video) 1 else 0)
-        parcel.writeDouble(voteAverage)
-        parcel.writeInt(voteCount)
-        parcel.writeLong(timestamp)
-        parcel.writeString(category)
-        parcel.writeString(collection)
-        parcel.writeString(period)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<MovieResult> {
-        override fun createFromParcel(parcel: Parcel): MovieResult {
-            return MovieResult(parcel)
-        }
-
-        override fun newArray(size: Int): Array<MovieResult?> {
-            return arrayOfNulls(size)
-        }
     }
 
 }

@@ -113,7 +113,7 @@ class MoviesFragment : Fragment(),
     private fun navigateToDetails(movieResult: MovieResult) {
 //        val action =
 //            MoviesFragmentDirections.action_moviesFragment_to_detailsFragment().setMovieResult(movieResult)
-       // NavHostFragment.findNavController(this).navigate(action)
+//        NavHostFragment.findNavController(this).navigate(action)
     }
 
     override fun showProgressBar() {
