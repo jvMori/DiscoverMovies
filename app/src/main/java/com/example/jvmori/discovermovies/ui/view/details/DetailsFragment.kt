@@ -125,8 +125,10 @@ class DetailsFragment : Fragment(), DetailsView {
         appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (Math.abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
                 backdropImg.visibility = View.INVISIBLE
+                backdropLayout.visibility = View.INVISIBLE
             } else {
                 backdropImg.visibility = View.VISIBLE
+                backdropLayout.visibility = View.VISIBLE
             }
         })
     }
