@@ -50,6 +50,8 @@ class DetailsFragment : Fragment(), DetailsView {
     @Inject
     lateinit var savingBasePresenter : SavingBasePresenter
 
+    private var movieResult: MovieResult? = null
+
     override fun onAttach(context: Context) {
         (context.applicationContext as MoviesApplication).movieComponent.inject(this)
         super.onAttach(context)
@@ -73,13 +75,17 @@ class DetailsFragment : Fragment(), DetailsView {
                 NavHostFragment.findNavController(this).popBackStack()
             }
         }
+        movieResult?.let{
+            createAddBtnClickListener(it)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         detailsPresenter.setView(this)
-        getMovieId()?.let {
-            detailsPresenter.getDetails(it)
+        movieResult = getMovieResult()
+        movieResult?.let {
+            detailsPresenter.getDetails(it.id)
         }
     }
 
@@ -91,8 +97,8 @@ class DetailsFragment : Fragment(), DetailsView {
         }
     }
 
-    private fun getMovieId(): Int? {
-        return (arguments?.getSerializable("movieResult") as MovieResult).id
+    private fun getMovieResult(): MovieResult? {
+        return (arguments?.getSerializable("movieResult") as MovieResult)
     }
 
 
