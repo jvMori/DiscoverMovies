@@ -33,7 +33,7 @@ class SavingBasePresenterImpl @Inject constructor(
                     view.displayDeletedIcon()
                 }, { error ->
                     repository.saveMovie(movieResult, collection, Category.NONE.toString(), "week")
-                    repositoryCol.insert(CollectionData(collection,0))
+                    repositoryCol.insert(CollectionData(collection,0, false))
                     view.displaySavedIcon()
                 })
         )

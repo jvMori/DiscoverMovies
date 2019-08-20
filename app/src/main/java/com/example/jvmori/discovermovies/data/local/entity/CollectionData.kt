@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey
 data class CollectionData (
     @PrimaryKey(autoGenerate = false)
     val collectionName : String,
-    val collectionId : Int
+    val collectionId : Int,
+    var isChecked : Boolean
 )
 
 

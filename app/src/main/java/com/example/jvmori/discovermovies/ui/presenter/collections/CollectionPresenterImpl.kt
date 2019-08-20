@@ -29,7 +29,7 @@ class CollectionPresenterImpl @Inject constructor(
 
     override fun fetchSaved(collectionName: String) {
         disposable.add(
-            repository.displayAllSaved(CollectionData(collectionName, 0)).subscribe(
+            repository.displayAllSaved(CollectionData(collectionName, 0, false)).subscribe(
                 { success ->
                     collectionView.displaySaved(success, collectionName)
                 },

@@ -17,7 +17,7 @@ import io.reactivex.schedulers.Schedulers
     DiscoverMovieResponse::class,
     MovieResult::class,
     CollectionData::class
-], version = 17, exportSchema = false)
+], version = 18, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun genreDao(): GenreDao
@@ -39,9 +39,9 @@ abstract class MovieDatabase : RoomDatabase() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
                     Completable.fromAction {
-                        instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.getName(Collection.LIKES),0) )
-                        instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.getName(Collection.WATCHED),0))
-                        instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.getName(Collection.TO_WATCH),0))
+                        instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.getName(Collection.LIKES),0, false) )
+                        instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.getName(Collection.WATCHED),0, false))
+                        instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.getName(Collection.TO_WATCH),0, false))
                     }.subscribeOn(Schedulers.io())
                         .subscribe()
 
