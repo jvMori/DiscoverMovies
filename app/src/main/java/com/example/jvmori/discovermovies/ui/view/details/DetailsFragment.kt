@@ -22,6 +22,7 @@ import com.example.jvmori.discovermovies.ui.adapters.CastAdapter
 import com.example.jvmori.discovermovies.ui.adapters.CrewAdapter
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SimilarMoviesAdapter
+import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenter
 import com.example.jvmori.discovermovies.ui.presenter.details.DetailsPresenter
 import com.example.jvmori.discovermovies.ui.presenter.details.DetailsView
 import com.example.jvmori.discovermovies.ui.view.collections.AddToColBottomDialog
@@ -46,6 +47,8 @@ class DetailsFragment : Fragment(), DetailsView {
 
     @Inject
     lateinit var detailsPresenter: DetailsPresenter
+    @Inject
+    lateinit var savingBasePresenter : SavingBasePresenter
 
     override fun onAttach(context: Context) {
         (context.applicationContext as MoviesApplication).movieComponent.inject(this)
@@ -82,14 +85,14 @@ class DetailsFragment : Fragment(), DetailsView {
 
     fun createAddBtnClickListener(movieResult: MovieResult){
         addBtn.setOnClickListener {
-            val bottomSheetDialogFragment = AddToColBottomDialog(movieResult)
+            val bottomSheetDialogFragment = AddToColBottomDialog(movieResult, savingBasePresenter)
             //bottomSheetDialogFragment.iOnAddToCollectionListner = this
             bottomSheetDialogFragment.show(this.requireFragmentManager(), "Bottom Sheet Dialog")
         }
     }
 
     private fun getMovieId(): Int? {
-        return DetailsFragmentArgs.fromBundle(arguments).movieId
+        return (arguments?.getSerializable("movieResult") as MovieResult).id
     }
 
 

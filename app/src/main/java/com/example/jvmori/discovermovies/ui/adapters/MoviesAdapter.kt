@@ -91,7 +91,6 @@ class MoviesAdapter(
 
         private fun setOnItemClickListener(item: MovieResult){
             itemView.setOnClickListener {
-                onClickListener?.onMovieItemClicked(item.id)
                 onClickListener?.onMovieClicked(item)
             }
         }

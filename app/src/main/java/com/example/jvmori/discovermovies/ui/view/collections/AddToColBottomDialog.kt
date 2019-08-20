@@ -19,7 +19,8 @@ import kotlinx.android.synthetic.main.add_to_collection_bottom_dialog.*
 import javax.inject.Inject
 
 class AddToColBottomDialog(
-    private var movieResult : MovieResult
+    private var movieResult : MovieResult,
+    private var savingPresenter : SavingBasePresenter?
 ) : BottomSheetDialogFragment(), BaseAdapter.IOnItemClickListener<String>, SavingView{
 
     override fun displaySavedIcon() {
@@ -29,9 +30,7 @@ class AddToColBottomDialog(
     override fun displayDeletedIcon() {
 
     }
-
     var iOnAddToCollectionListner : IOnCollectionItemClicked? = null
-    lateinit var savingPresenter : SavingBasePresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.add_to_collection_bottom_dialog, container, false)
@@ -39,7 +38,7 @@ class AddToColBottomDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        savingPresenter.setView(this)
+        savingPresenter?.setView(this)
         createCollectionsList()
     }
 
@@ -56,8 +55,8 @@ class AddToColBottomDialog(
     override fun onItemClicked(item: String) {
         //TODO: toggle checkbox
 
-        iOnAddToCollectionListner?.onAddToCollection(item, movieResult)
-       // savingPresenter.saveMovie(movieResult, item)
+        //iOnAddToCollectionListner?.onAddToCollection(item, movieResult)
+        savingPresenter?.saveMovie(movieResult, item)
     }
 
     interface IOnCollectionItemClicked {

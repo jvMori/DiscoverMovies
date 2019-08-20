@@ -88,17 +88,13 @@ class MoviesFragment : Fragment(),
     }
 
     override fun onAddClicked(movieResult: MovieResult) {
-        val bottomSheetDialogFragment = AddToColBottomDialog(movieResult)
+        val bottomSheetDialogFragment = AddToColBottomDialog(movieResult, savingPresenter)
         bottomSheetDialogFragment.iOnAddToCollectionListner = this
         bottomSheetDialogFragment.show(this.requireFragmentManager(), "Bottom Sheet Dialog")
     }
 
     override fun onMovieClicked(movieResult: MovieResult) {
         navigateToDetails(movieResult)
-    }
-
-    override fun onMovieItemClicked(movieId: Int) {
-
     }
 
     override fun displayDeletedIcon() {
@@ -111,9 +107,9 @@ class MoviesFragment : Fragment(),
     }
 
     private fun navigateToDetails(movieResult: MovieResult) {
-//        val action =
-//            MoviesFragmentDirections.action_moviesFragment_to_detailsFragment().setMovieResult(movieResult)
-//        NavHostFragment.findNavController(this).navigate(action)
+        val bundle = Bundle()
+        bundle.putSerializable("movieResult", movieResult)
+        NavHostFragment.findNavController(this).navigate(R.id.action_moviesFragment_to_detailsFragment, bundle)
     }
 
     override fun showProgressBar() {

@@ -45,9 +45,6 @@ class SearchFragment : Fragment(), SearchViewInterface,
     IOnClickListener,
     MoviesAdapter.OnAddBtnClickListener {
 
-    override fun onMovieClicked(movieResult: MovieResult) {
-
-    }
 
     @Inject
     lateinit var searchPresenter: SearchPresenter
@@ -124,9 +121,10 @@ class SearchFragment : Fragment(), SearchViewInterface,
         searchResults.adapter = adapter
     }
 
-    override fun onMovieItemClicked(movieId: Int) {
-        val action = SearchFragmentDirections.specifyMovieId().setMovieId(movieId)
-        NavHostFragment.findNavController(this).navigate(action)
+    override fun onMovieClicked(movieResult: MovieResult) {
+        val bundle = Bundle()
+        bundle.putSerializable("movieResult", movieResult)
+        NavHostFragment.findNavController(this).navigate(R.id.specifyMovieId, bundle)
     }
 
     override fun displayGenres(genreResponse: List<Genre>) {

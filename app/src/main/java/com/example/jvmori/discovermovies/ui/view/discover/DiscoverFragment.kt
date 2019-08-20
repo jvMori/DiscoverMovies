@@ -2,6 +2,7 @@ package com.example.jvmori.discovermovies.ui.view.discover
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -121,9 +122,9 @@ class DiscoverFragment : Fragment(),
     }
 
     override fun onItemClicked(movieResult: MovieResult) {
-        val action =
-            DiscoverFragmentDirections.action_discoverFragment_to_detailsFragment().setMovieId(movieResult.id)
-        NavHostFragment.findNavController(this).navigate(action)
+        val bundle = Bundle()
+        bundle.putSerializable("movieResult", movieResult)
+        NavHostFragment.findNavController(this).navigate(R.id.action_discoverFragment_to_detailsFragment, bundle)
     }
 
     private fun setupSliderAdapter(movies: List<MovieResult>) {
