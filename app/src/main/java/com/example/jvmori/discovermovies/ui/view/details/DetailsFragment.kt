@@ -22,6 +22,7 @@ import com.example.jvmori.discovermovies.ui.adapters.CastAdapter
 import com.example.jvmori.discovermovies.ui.adapters.CrewAdapter
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SimilarMoviesAdapter
+import com.example.jvmori.discovermovies.ui.presenter.collections.CollectionPresenter
 import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenter
 import com.example.jvmori.discovermovies.ui.presenter.details.DetailsPresenter
 import com.example.jvmori.discovermovies.ui.presenter.details.DetailsView
@@ -49,6 +50,8 @@ class DetailsFragment : Fragment(), DetailsView {
     lateinit var detailsPresenter: DetailsPresenter
     @Inject
     lateinit var savingBasePresenter : SavingBasePresenter
+    @Inject
+    lateinit var collectionPresenter: CollectionPresenter
 
     private var movieResult: MovieResult? = null
 
@@ -89,10 +92,9 @@ class DetailsFragment : Fragment(), DetailsView {
         }
     }
 
-    fun createAddBtnClickListener(movieResult: MovieResult){
+    private fun createAddBtnClickListener(movieResult: MovieResult){
         addBtn.setOnClickListener {
-            val bottomSheetDialogFragment = AddToColBottomDialog(movieResult, savingBasePresenter)
-            //bottomSheetDialogFragment.iOnAddToCollectionListner = this
+            val bottomSheetDialogFragment = AddToColBottomDialog(movieResult, savingBasePresenter, collectionPresenter)
             bottomSheetDialogFragment.show(this.requireFragmentManager(), "Bottom Sheet Dialog")
         }
     }

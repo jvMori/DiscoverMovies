@@ -41,7 +41,7 @@ interface SavedMovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCollection(collection : CollectionData)
 
-    @Query("SELECT * FROM saved_coll_table where collectionId like 0")
+    @Query("SELECT * FROM saved_coll_table where collectionId like 0 ORDER BY collectionName")
     fun getAllCollections() : Observable<List<CollectionData>>
 
     @Delete

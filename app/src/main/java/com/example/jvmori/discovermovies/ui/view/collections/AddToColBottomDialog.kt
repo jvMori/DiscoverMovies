@@ -8,20 +8,23 @@ import android.widget.AdapterView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jvmori.discovermovies.R
+import com.example.jvmori.discovermovies.data.local.entity.CollectionData
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.ui.adapters.AddToCollectionAdapter
 import com.example.jvmori.discovermovies.ui.adapters.BaseAdapter
-import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenter
-import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenterImpl
-import com.example.jvmori.discovermovies.ui.presenter.collections.SavingView
+import com.example.jvmori.discovermovies.ui.presenter.collections.*
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.add_to_collection_bottom_dialog.*
 import javax.inject.Inject
 
 class AddToColBottomDialog(
     private var movieResult : MovieResult,
-    private var savingPresenter : SavingBasePresenter?
-) : BottomSheetDialogFragment(), BaseAdapter.IOnItemClickListener<String>, SavingView{
+    private var savingPresenter : SavingBasePresenter?,
+    private var collectionPresenter : CollectionPresenter?
+) : BottomSheetDialogFragment(),
+    BaseAdapter.IOnItemClickListener<CollectionData>,
+    SavingView,
+    CollectionView {
 
     override fun displaySavedIcon() {
 
@@ -30,8 +33,6 @@ class AddToColBottomDialog(
     override fun displayDeletedIcon() {
 
     }
-    var iOnAddToCollectionListner : IOnCollectionItemClicked? = null
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.add_to_collection_bottom_dialog, container, false)
     }
@@ -39,12 +40,19 @@ class AddToColBottomDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         savingPresenter?.setView(this)
-        createCollectionsList()
+        collectionPresenter?.setView(this)
+        collectionPresenter?.fetchAllCollections()
     }
 
-    private fun createCollectionsList() {
-        //TODO: fetch data to list dynamically
-        val list = mutableListOf<String>("Favorites", "To Watch", "Watched")
+    override fun displayCollections(collections: List<CollectionData>) {
+        createCollectionsList(collections)
+    }
+
+    override fun displaySaved(movies: List<MovieResult>, collName: String) {
+
+    }
+
+    private fun createCollectionsList(list: List<CollectionData>) {
         val adapter = AddToCollectionAdapter()
         adapter.setItems(list)
         adapter.iOnItemClickListener = this
@@ -52,14 +60,11 @@ class AddToColBottomDialog(
         playlists?.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
     }
 
-    override fun onItemClicked(item: String) {
+    override fun onItemClicked(item: CollectionData) {
         //TODO: toggle checkbox
-
-        //iOnAddToCollectionListner?.onAddToCollection(item, movieResult)
-        savingPresenter?.saveMovie(movieResult, item)
-    }
-
-    interface IOnCollectionItemClicked {
-        fun onAddToCollection(nameCollection: String, movieResult: MovieResult)
+        //check if movie is in collection
+        //toggle boolean
+        //set view
+        savingPresenter?.saveMovie(movieResult, item.collectionName)
     }
 }

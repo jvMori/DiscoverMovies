@@ -19,6 +19,7 @@ import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.ui.IOnClickListener
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
+import com.example.jvmori.discovermovies.ui.presenter.collections.CollectionPresenter
 import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenter
 import com.example.jvmori.discovermovies.ui.presenter.collections.SavingView
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenterInterface
@@ -42,14 +43,16 @@ class MoviesFragment : Fragment(),
     MoviesViewInterface,
     SavingView,
     IOnClickListener,
-    MoviesAdapter.OnAddBtnClickListener,
-    AddToColBottomDialog.IOnCollectionItemClicked {
+    MoviesAdapter.OnAddBtnClickListener
+   {
 
     private var genreId: Int? = null
     @Inject
     lateinit var moviesPresenter: MoviesPresenterInterface
     @Inject
     lateinit var savingPresenter: SavingBasePresenter
+    @Inject
+    lateinit var collectionPresenter : CollectionPresenter
     private var moviesAdapter: MoviesAdapter? = null
 
     override fun onAttach(context: Context) {
@@ -88,8 +91,7 @@ class MoviesFragment : Fragment(),
     }
 
     override fun onAddClicked(movieResult: MovieResult) {
-        val bottomSheetDialogFragment = AddToColBottomDialog(movieResult, savingPresenter)
-        bottomSheetDialogFragment.iOnAddToCollectionListner = this
+        val bottomSheetDialogFragment = AddToColBottomDialog(movieResult, savingPresenter, collectionPresenter)
         bottomSheetDialogFragment.show(this.requireFragmentManager(), "Bottom Sheet Dialog")
     }
 
@@ -132,10 +134,6 @@ class MoviesFragment : Fragment(),
             recyclerViewMovies!!.adapter = moviesAdapter
         }
         moviesAdapter?.setOnAddBtnClickListener(this)
-    }
-
-    override fun onAddToCollection(nameCollection: String, movieResult: MovieResult) {
-        savingPresenter.saveMovie(movieResult, nameCollection)
     }
 
     override fun displayError(s: String) {
