@@ -13,7 +13,7 @@ class AddToCollectionAdapter  : BaseAdapter<CollectionData>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<CollectionData> {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.playlist_item, parent, false)
-        collectionViewHolder = CollectionViewHolder(view, iOnItemClickListener)
+        collectionViewHolder = CollectionViewHolder(view, iOnItemWithIdClickListener)
         return collectionViewHolder
     }
 
@@ -22,7 +22,7 @@ class AddToCollectionAdapter  : BaseAdapter<CollectionData>(){
         notifyItemChanged(position)
     }
 
-    class CollectionViewHolder(itemView : View, private var iOnItemClickListener: IOnItemClickListener<CollectionData>?) :
+    class CollectionViewHolder(itemView : View, private var iOnItemClickListener: IOnItemWithIdClickListener<CollectionData>?) :
         BaseViewHolder<CollectionData>(itemView){
 
         override fun bindView(item: CollectionData) {
@@ -30,7 +30,7 @@ class AddToCollectionAdapter  : BaseAdapter<CollectionData>(){
             val img = if(item.isChecked ) R.drawable.ic_check_box else R.drawable.ic_check_box_outline
             itemView.checkbox.setImageResource(img)
             itemView.setOnClickListener{
-                iOnItemClickListener?.onItemClicked(item)
+                iOnItemClickListener?.onItemWithIndexClicked(item, adapterPosition)
             }
         }
     }

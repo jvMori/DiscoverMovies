@@ -9,6 +9,7 @@ abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseAdapter.BaseViewHolder<
 
     private var items: List<T> = mutableListOf()
     var iOnItemClickListener: IOnItemClickListener<T>? = null
+    var iOnItemWithIdClickListener : IOnItemWithIdClickListener<T>? = null
 
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<T>
 
@@ -31,5 +32,8 @@ abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseAdapter.BaseViewHolder<
 
     interface IOnItemClickListener<T> {
         fun onItemClicked(item: T)
+    }
+    interface IOnItemWithIdClickListener<T> {
+        fun onItemWithIndexClicked(item: T, index : Int)
     }
 }

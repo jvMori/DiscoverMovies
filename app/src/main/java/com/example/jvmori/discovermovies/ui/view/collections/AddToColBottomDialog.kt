@@ -22,7 +22,7 @@ class AddToColBottomDialog(
     private var savingPresenter : SavingBasePresenter?,
     private var collectionPresenter : CollectionPresenter?
 ) : BottomSheetDialogFragment(),
-    BaseAdapter.IOnItemClickListener<CollectionData>,
+    BaseAdapter.IOnItemWithIdClickListener<CollectionData>,
     SavingView,
     CollectionView {
 
@@ -59,7 +59,7 @@ class AddToColBottomDialog(
     private fun createCollectionsList(list: List<CollectionData>) {
         adapter = AddToCollectionAdapter()
         adapter.setItems(list)
-        adapter.iOnItemClickListener = this
+        adapter.iOnItemWithIdClickListener = this
         playlists?.adapter = adapter
         playlists?.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
     }
@@ -72,13 +72,10 @@ class AddToColBottomDialog(
         adapter.changeData(index, false)
     }
 
-    override fun onItemClicked(item: CollectionData) {
-        //TODO: toggle checkbox
-        //check if movie is in collection
-        //toggle boolean
-        //set view
+    override fun onItemWithIndexClicked(item: CollectionData, index: Int) {
+        item.isChecked = !item.isChecked
+        adapter.changeData(index, item.isChecked)
         savingPresenter?.saveMovie(movieResult, item.collectionName)
     }
-
 
 }
