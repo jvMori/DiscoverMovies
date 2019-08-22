@@ -45,6 +45,14 @@ class SearchFragment : Fragment(), SearchViewInterface,
     IOnClickListener,
     MoviesAdapter.OnAddBtnClickListener {
 
+    override fun showCheckedIcon(index: Int) {
+
+    }
+
+    override fun showUncheckedIcon(index: Int) {
+
+    }
+
 
     @Inject
     lateinit var searchPresenter: SearchPresenter

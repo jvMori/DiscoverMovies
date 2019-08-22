@@ -26,6 +26,8 @@ class AddToColBottomDialog(
     SavingView,
     CollectionView {
 
+    private lateinit var adapter : AddToCollectionAdapter
+
     override fun displaySavedIcon() {
 
     }
@@ -33,6 +35,7 @@ class AddToColBottomDialog(
     override fun displayDeletedIcon() {
 
     }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.add_to_collection_bottom_dialog, container, false)
     }
@@ -46,6 +49,7 @@ class AddToColBottomDialog(
 
     override fun displayCollections(collections: List<CollectionData>) {
         createCollectionsList(collections)
+        savingPresenter?.checkIsInCollection(collections, movieResult)
     }
 
     override fun displaySaved(movies: List<MovieResult>, collName: String) {
@@ -53,11 +57,19 @@ class AddToColBottomDialog(
     }
 
     private fun createCollectionsList(list: List<CollectionData>) {
-        val adapter = AddToCollectionAdapter()
+        adapter = AddToCollectionAdapter()
         adapter.setItems(list)
         adapter.iOnItemClickListener = this
         playlists?.adapter = adapter
         playlists?.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
+    }
+
+    override fun showCheckedIcon(index: Int) {
+        adapter.changeData(index, true)
+    }
+
+    override fun showUncheckedIcon(index: Int) {
+        adapter.changeData(index, false)
     }
 
     override fun onItemClicked(item: CollectionData) {
@@ -67,4 +79,6 @@ class AddToColBottomDialog(
         //set view
         savingPresenter?.saveMovie(movieResult, item.collectionName)
     }
+
+
 }

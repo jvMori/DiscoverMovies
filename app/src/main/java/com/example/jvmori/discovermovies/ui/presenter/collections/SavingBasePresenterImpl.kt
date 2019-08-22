@@ -28,15 +28,30 @@ class SavingBasePresenterImpl @Inject constructor(
     override fun saveMovie(movieResult: MovieResult, collection: String) {
         disposable.add(
             repository.getMovieFromDbByIdAndCategory(movieResult, collection)
-                .subscribe({ success ->
+                .subscribe({
                     repository.deleteMovie(movieResult)
                     view.displayDeletedIcon()
-                }, { error ->
+                }, {
                     repository.saveMovie(movieResult, collection, Category.NONE.toString(), "week")
                     repositoryCol.insert(CollectionData(collection,0, false))
                     view.displaySavedIcon()
                 })
         )
+    }
+
+    override fun checkIsInCollection(items : List<CollectionData>, movieResult: MovieResult){
+        items.forEachIndexed { index, collectionData ->
+            disposable.add(
+                repository.getMovieFromDbByIdAndCategory(movieResult, collectionData.collectionName)
+                    .subscribe(
+                        {
+                            view.showCheckedIcon(index)
+                        }, {
+                            view.showUncheckedIcon(index)
+                        }
+                    )
+            )
+        }
     }
 
     override fun updateFavIcon(movieResult: MovieResult) {

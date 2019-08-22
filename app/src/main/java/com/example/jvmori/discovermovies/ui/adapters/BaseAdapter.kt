@@ -27,6 +27,8 @@ abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseAdapter.BaseViewHolder<
         notifyDataSetChanged()
     }
 
+    fun getItems() : List<T> = items
+
     interface IOnItemClickListener<T> {
         fun onItemClicked(item: T)
     }

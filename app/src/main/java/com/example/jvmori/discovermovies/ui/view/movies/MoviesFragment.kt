@@ -45,8 +45,15 @@ class MoviesFragment : Fragment(),
     IOnClickListener,
     MoviesAdapter.OnAddBtnClickListener
    {
+       override fun showCheckedIcon(index: Int) {
 
-    private var genreId: Int? = null
+       }
+
+       override fun showUncheckedIcon(index: Int) {
+
+       }
+
+       private var genreId: Int? = null
     @Inject
     lateinit var moviesPresenter: MoviesPresenterInterface
     @Inject

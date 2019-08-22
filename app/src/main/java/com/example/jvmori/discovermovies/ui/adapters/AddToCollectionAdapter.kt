@@ -17,6 +17,11 @@ class AddToCollectionAdapter  : BaseAdapter<CollectionData>(){
         return collectionViewHolder
     }
 
+    fun changeData(position: Int, checked : Boolean){
+        getItems()[position].isChecked = checked
+        notifyItemChanged(position)
+    }
+
     class CollectionViewHolder(itemView : View, private var iOnItemClickListener: IOnItemClickListener<CollectionData>?) :
         BaseViewHolder<CollectionData>(itemView){
 
