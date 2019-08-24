@@ -82,6 +82,7 @@ class SearchFragment : Fragment(), SearchViewInterface,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        progressSearch.visibility = View.GONE
         searchPresenter.setView(this)
         searchPresenter.onSearchViewQueryChanged(searchView)
         searchPresenter.searchItems()

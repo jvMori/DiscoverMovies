@@ -67,7 +67,7 @@ class SearchPresenterImpl @Inject constructor(
             override fun onQueryTextChange(newText: String?): Boolean {
                 Log.i(TAG, "Search query: $newText")
                 publishSubject.onNext(newText!!.toLowerCase().trim())
-                view.showProgressBar()
+                if(newText.isNotEmpty()) view.showProgressBar()
                 return true
             }
         })

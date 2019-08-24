@@ -66,8 +66,8 @@
             android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="visible">
         <LinearLayout android:orientation="vertical" android:layout_width="match_parent"
                       android:layout_height="wrap_content">
-            <ProgressBar android:id="@+id/progressSearch" android:layout_width="match_parent"
-                         android:layout_height="wrap_content" android:layout_marginTop="16dp"/>
+          <ProgressBar android:id="@+id/progressSearch" android:layout_width="match_parent"
+                       android:layout_height="wrap_content" android:layout_marginTop="16dp" android:visibility="gone"/>
 
           <androidx.recyclerview.widget.RecyclerView
                   android:id="@+id/genresRv"
