@@ -32,5 +32,7 @@
     </fragment>
     <fragment android:id="@+id/collectionFragment"
               android:name="com.example.jvmori.discovermovies.ui.view.collections.CollectionFragment"
-              android:label="fragment_collection" tools:layout="@layout/fragment_collection"/>
+              android:label="fragment_collection" tools:layout="@layout/fragment_collection">
+        <action android:id="@+id/action_collectionFragment_to_detailsFragment" app:destination="@id/detailsFragment"/>
+    </fragment>
 </navigation>

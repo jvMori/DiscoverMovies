@@ -18,11 +18,11 @@ import kotlinx.android.synthetic.main.movie_section.view.*
 
 class MoviesSectionView(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
 
-    lateinit var adapter : SimilarMoviesAdapter
+    lateinit var adapter: SimilarMoviesAdapter
 
     init {
         inflate(context, R.layout.movie_section, this)
-        val titleTextView : TextView = findViewById(R.id.titleTextView)
+        val titleTextView: TextView = findViewById(R.id.titleTextView)
 
         context.theme.obtainStyledAttributes(
             attrs,
@@ -30,46 +30,46 @@ class MoviesSectionView(context: Context, attrs: AttributeSet) : ConstraintLayou
             0,
             0
         ).apply {
-            try{
+            try {
                 titleTextView.text = getString(R.styleable.MoviesSectionView_titleText)
                 iconIv.setImageDrawable(getDrawable(R.styleable.MoviesSectionView_icon))
-            }finally {
+            } finally {
                 recycle()
             }
         }
     }
 
-    fun setTitleText(title : String){
+    fun setTitleText(title: String) {
         titleTextView.text = title
     }
 
-    fun setIcon(drawable: Drawable){
+    fun setIcon(drawable: Drawable) {
         iconIv.setImageDrawable(drawable)
     }
 
-    fun setRecyclerView(context: Context, movies: List<MovieResult>?){
-        movies?.let{
-            if(movies.isNotEmpty()){
+    fun setRecyclerView(context: Context, movies: List<MovieResult>?) {
+        adapter = SimilarMoviesAdapter()
+        movies?.let {
+            if (movies.isNotEmpty()) {
                 rvMovies.visibility = View.VISIBLE
                 emtpyTxt.visibility = View.GONE
                 rvMovies.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
                 rvMovies.setHasFixedSize(true)
-                adapter = SimilarMoviesAdapter()
                 adapter.setItems(movies)
                 rvMovies.adapter = adapter
-            }else{
+            } else {
                 rvMovies.visibility = View.GONE
                 emtpyTxt.visibility = View.VISIBLE
             }
         }
     }
 
-    fun updateItems(movies: List<MovieResult>?){
+    fun updateItems(movies: List<MovieResult>?) {
         adapter.setItems(movies)
         adapter.notifyDataSetChanged()
     }
 
-    fun setIOnItemClickedListener(iOnItemClickListener: BaseAdapter.IOnItemClickListener<MovieResult>){
+    fun setIOnItemClickedListener(iOnItemClickListener: BaseAdapter.IOnItemClickListener<MovieResult>?) {
         adapter.iOnItemClickListener = iOnItemClickListener
     }
 }

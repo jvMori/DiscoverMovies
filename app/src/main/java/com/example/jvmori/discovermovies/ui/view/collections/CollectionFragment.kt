@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -15,6 +16,7 @@ import com.example.jvmori.discovermovies.R
 import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.local.entity.CollectionData
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
+import com.example.jvmori.discovermovies.ui.adapters.BaseAdapter
 import com.example.jvmori.discovermovies.ui.adapters.CollectionAdapter
 import com.example.jvmori.discovermovies.ui.presenter.collections.CollectionPresenter
 import com.example.jvmori.discovermovies.ui.presenter.collections.CollectionView
@@ -30,7 +32,7 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class CollectionFragment : Fragment(), CollectionView {
+class CollectionFragment : Fragment(), CollectionView, BaseAdapter.IOnItemClickListener<MovieResult> {
 
     @Inject
     lateinit var presenter: CollectionPresenter
@@ -62,11 +64,18 @@ class CollectionFragment : Fragment(), CollectionView {
 
     override fun displayCollections(collections: List<CollectionData>) {
         adapter = CollectionAdapter(this.requireContext())
+        adapter.iOnMovieClicked = this
         collections.forEach {
             presenter.fetchSaved(it.collectionName)
         }
         adapter.setItems(collections)
         recyclerViewFavs.layoutManager = LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
         recyclerViewFavs.adapter = adapter
+    }
+
+    override fun onItemClicked(item: MovieResult) {
+        val bundle = Bundle()
+        bundle.putSerializable("movieResult", item)
+        NavHostFragment.findNavController(this).navigate(R.id.action_collectionFragment_to_detailsFragment, bundle)
     }
 }
