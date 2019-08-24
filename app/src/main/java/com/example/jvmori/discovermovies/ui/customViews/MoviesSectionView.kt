@@ -3,6 +3,7 @@ package com.example.jvmori.discovermovies.ui.customViews
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,11 +48,20 @@ class MoviesSectionView(context: Context, attrs: AttributeSet) : ConstraintLayou
     }
 
     fun setRecyclerView(context: Context, movies: List<MovieResult>?){
-        rvMovies.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        rvMovies.setHasFixedSize(true)
-        adapter = SimilarMoviesAdapter()
-        adapter.setItems(movies)
-        rvMovies.adapter = adapter
+        movies?.let{
+            if(movies.isNotEmpty()){
+                rvMovies.visibility = View.VISIBLE
+                emtpyTxt.visibility = View.GONE
+                rvMovies.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                rvMovies.setHasFixedSize(true)
+                adapter = SimilarMoviesAdapter()
+                adapter.setItems(movies)
+                rvMovies.adapter = adapter
+            }else{
+                rvMovies.visibility = View.GONE
+                emtpyTxt.visibility = View.VISIBLE
+            }
+        }
     }
 
     fun updateItems(movies: List<MovieResult>?){
