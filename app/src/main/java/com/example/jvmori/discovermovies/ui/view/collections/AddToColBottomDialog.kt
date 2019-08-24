@@ -45,6 +45,9 @@ class AddToColBottomDialog(
         savingPresenter?.setView(this)
         collectionPresenter?.setView(this)
         collectionPresenter?.fetchAllCollections()
+        done.setOnClickListener {
+            dismiss()
+        }
     }
 
     override fun displayCollections(collections: List<CollectionData>) {
