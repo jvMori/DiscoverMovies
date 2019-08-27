@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,10 +24,10 @@ import com.example.jvmori.discovermovies.ui.presenter.genres.GenresPresenterInte
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresViewInterface
 import com.example.jvmori.discovermovies.ui.presenter.search.SearchPresenter
 import com.example.jvmori.discovermovies.ui.presenter.search.SearchViewInterface
-import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_search.*
-import javax.inject.Inject
 import com.example.jvmori.discovermovies.util.navigateToDetails
+import com.google.android.material.appbar.AppBarLayout
+import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
