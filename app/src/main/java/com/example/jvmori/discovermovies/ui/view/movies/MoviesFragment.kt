@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -26,6 +25,8 @@ import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenterInte
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesViewInterface
 import com.example.jvmori.discovermovies.ui.view.collections.AddToColBottomDialog
 import com.example.jvmori.discovermovies.ui.view.search.SearchFragment
+import com.example.jvmori.discovermovies.util.genreIdKey
+import com.example.jvmori.discovermovies.util.navigateToDetails
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
@@ -41,25 +42,15 @@ private const val ARG_PARAM2 = "param2"
  */
 class MoviesFragment : Fragment(),
     MoviesViewInterface,
-    SavingView,
     IOnClickListener,
-    MoviesAdapter.OnAddBtnClickListener
-   {
-       override fun showCheckedIcon(index: Int) {
-
-       }
-
-       override fun showUncheckedIcon(index: Int) {
-
-       }
-
-       private var genreId: Int? = null
+    MoviesAdapter.OnAddBtnClickListener {
+    private var genreId: Int? = null
     @Inject
     lateinit var moviesPresenter: MoviesPresenterInterface
     @Inject
     lateinit var savingPresenter: SavingBasePresenter
     @Inject
-    lateinit var collectionPresenter : CollectionPresenter
+    lateinit var collectionPresenter: CollectionPresenter
     private var moviesAdapter: MoviesAdapter? = null
 
     override fun onAttach(context: Context) {
@@ -78,8 +69,8 @@ class MoviesFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         moviesPresenter.setView(this)
-        savingPresenter.setView(this)
-        genreId = MoviesFragmentArgs.fromBundle(arguments).genre
+        genreId = arguments?.getInt(genreIdKey)
+        //genreId = MoviesFragmentArgs.fromBundle(arguments).genre
         genreId?.let { genreId ->
             moviesPresenter.let {
                 it.parameters = DiscoverQueryParam(genreId.toString(), 1)
@@ -103,22 +94,7 @@ class MoviesFragment : Fragment(),
     }
 
     override fun onMovieClicked(movieResult: MovieResult) {
-        navigateToDetails(movieResult)
-    }
-
-    override fun displayDeletedIcon() {
-        Toast.makeText(this.requireContext(), "Deleted!", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun displaySavedIcon() {
-        //TODO: show snackbar instead of toast
-        Toast.makeText(this.requireContext(), "Saved!", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun navigateToDetails(movieResult: MovieResult) {
-        val bundle = Bundle()
-        bundle.putSerializable("movieResult", movieResult)
-        NavHostFragment.findNavController(this).navigate(R.id.action_moviesFragment_to_detailsFragment, bundle)
+        navigateToDetails(movieResult, this, R.id.action_moviesFragment_to_detailsFragment)
     }
 
     override fun showProgressBar() {

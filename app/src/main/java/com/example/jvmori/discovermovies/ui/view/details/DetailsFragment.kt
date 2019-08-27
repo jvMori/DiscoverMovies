@@ -29,6 +29,7 @@ import com.example.jvmori.discovermovies.ui.presenter.details.DetailsView
 import com.example.jvmori.discovermovies.ui.view.collections.AddToColBottomDialog
 import com.example.jvmori.discovermovies.util.Const
 import com.example.jvmori.discovermovies.util.LoadImage
+import com.example.jvmori.discovermovies.util.movieResultKey
 import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.AbstractYouTubePlayerListener
 import kotlinx.android.synthetic.main.fragment_details.*
 import javax.inject.Inject
@@ -100,9 +101,8 @@ class DetailsFragment : Fragment(), DetailsView {
     }
 
     private fun getMovieResult(): MovieResult? {
-        return (arguments?.getSerializable("movieResult") as MovieResult)
+        return (arguments?.getSerializable(movieResultKey) as MovieResult)
     }
-
 
     override fun showResults(movieDetails: MovieDetails) {
         setDetailViewUI(movieDetails)

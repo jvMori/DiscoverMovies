@@ -151,14 +151,7 @@ class SearchFragment : Fragment(), SearchViewInterface,
     }
 
     override fun onGenreClicked(item: Genre) {
-        navigateToMovieList(item)
-    }
-
-    private fun navigateToMovieList(item: Genre) {
-        val id = item.idGenre
-        val action = SearchFragmentDirections.specifyGenre().setGenre(id)
-        val nav = NavHostFragment.findNavController(this)
-        nav.navigate(action)
+        com.example.jvmori.discovermovies.util.navigateToMovieList(item, this, R.id.specifyGenre)
     }
 
     override fun displayDeletedIcon() {
