@@ -28,6 +28,7 @@ import com.example.jvmori.discovermovies.ui.presenter.search.SearchViewInterface
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_search.*
 import javax.inject.Inject
+import com.example.jvmori.discovermovies.util.navigateToDetails
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -131,9 +132,7 @@ class SearchFragment : Fragment(), SearchViewInterface,
     }
 
     override fun onMovieClicked(movieResult: MovieResult) {
-        val bundle = Bundle()
-        bundle.putSerializable("movieResult", movieResult)
-        NavHostFragment.findNavController(this).navigate(R.id.specifyMovieId, bundle)
+        navigateToDetails(movieResult, this, R.id.specifyMovieId)
     }
 
     override fun displayGenres(genreResponse: List<Genre>) {

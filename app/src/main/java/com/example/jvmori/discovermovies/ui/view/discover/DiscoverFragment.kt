@@ -21,6 +21,7 @@ import com.example.jvmori.discovermovies.ui.presenter.genres.GenresPresenterInte
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresViewInterface
 import com.example.jvmori.discovermovies.ui.presenter.nowPlaying.NowPlayingContract
 import com.example.jvmori.discovermovies.ui.presenter.trending.TrendingContract
+import com.example.jvmori.discovermovies.util.navigateToDetails
 import kotlinx.android.synthetic.main.fragment_discover.*
 import java.util.*
 import javax.inject.Inject
@@ -122,9 +123,7 @@ class DiscoverFragment : Fragment(),
     }
 
     override fun onItemClicked(movieResult: MovieResult) {
-        val bundle = Bundle()
-        bundle.putSerializable("movieResult", movieResult)
-        NavHostFragment.findNavController(this).navigate(R.id.action_discoverFragment_to_detailsFragment, bundle)
+        navigateToDetails(movieResult, this, R.id.action_discoverFragment_to_detailsFragment)
     }
 
     private fun setupSliderAdapter(movies: List<MovieResult>) {

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -21,6 +20,7 @@ import com.example.jvmori.discovermovies.ui.adapters.CollectionAdapter
 import com.example.jvmori.discovermovies.ui.presenter.collections.CollectionPresenter
 import com.example.jvmori.discovermovies.ui.presenter.collections.CollectionView
 import kotlinx.android.synthetic.main.fragment_collection.*
+import com.example.jvmori.discovermovies.util.navigateToDetails
 import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
@@ -74,8 +74,6 @@ class CollectionFragment : Fragment(), CollectionView, BaseAdapter.IOnItemClickL
     }
 
     override fun onItemClicked(item: MovieResult) {
-        val bundle = Bundle()
-        bundle.putSerializable("movieResult", item)
-        NavHostFragment.findNavController(this).navigate(R.id.action_collectionFragment_to_detailsFragment, bundle)
+        navigateToDetails(item, this, R.id.action_collectionFragment_to_detailsFragment)
     }
 }
