@@ -1,12 +1,9 @@
 package com.example.jvmori.discovermovies.data.local.entity
 
-import android.os.Parcel
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
-import java.sql.Timestamp
 
 @Entity(tableName = "saved_movies")
 data class MovieResult (
