@@ -22,4 +22,6 @@ class TrendingModule{
     @Singleton
     fun provideTrendingPresenter(repository: TrendingRepository) : TrendingContract.TrendingPresenter =
         TrendingPresenterImpl(repository)
+
+
 }
