@@ -63,7 +63,7 @@ class TrendingPresenterImpl @Inject constructor(
         disposable.add(
             repository.fetchTrendingMoviesRemote(period)
                 .subscribe({
-                    view.showAllTrending(it)
+                    view.showAllTrending(it.results)
                 }, {
                     view.displayError("Something went wrong! Try again!")
                 })

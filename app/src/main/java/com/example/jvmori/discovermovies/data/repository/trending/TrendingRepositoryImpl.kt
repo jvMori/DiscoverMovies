@@ -7,6 +7,7 @@ import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.repository.BaseRepository
+import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,15 +20,16 @@ class TrendingRepositoryImpl @Inject constructor (
     context: Context
 ) : TrendingRepository, BaseRepository(tmdbApi, context){
 
+    override fun getMovies(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
+        return fetchTrendingMoviesRemote("week")
+    }
+
     private lateinit var connectableObservableTrending : ConnectableObservable<DiscoverMovieResponse>
 
-    override fun fetchTrendingMoviesRemote(period: String): Observable<List<MovieResult>> {
+    override fun fetchTrendingMoviesRemote(period: String): Observable<DiscoverMovieResponse> {
         return connectableObservableTrending
-            .flatMap {
-                return@flatMap Observable.just(it.results)
-            }
             .doOnNext {
-                saveMovies(period, Category.TRENDING.toString(), it, Collection.NONE.toString())
+                saveMovies(period, Category.TRENDING.toString(), it.results, Collection.NONE.toString())
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -55,12 +57,12 @@ class TrendingRepositoryImpl @Inject constructor (
         return isMovieUpToDate(movie)
     }
 
-    fun getTrending(period: String) : Observable<List<MovieResult>>{
-        return Observable.concat(
-            fetchTrendingLocal(period).toObservable(),
-            fetchTrendingMoviesRemote(period))
-            .takeWhile { data -> data.isNotEmpty() && isMovieUpToDate(data[0]) }
-            .take(1)
-    }
+//    fun getTrending(period: String) : Observable<DiscoverMovieResponse>{
+//        return Observable.concat(
+//            fetchTrendingLocal(period).toObservable(),
+//            fetchTrendingMoviesRemote(period))
+//            .takeWhile { data -> data.isNotEmpty() && isMovieUpToDate(data[0]) }
+//            .take(1)
+//    }
 
 }
