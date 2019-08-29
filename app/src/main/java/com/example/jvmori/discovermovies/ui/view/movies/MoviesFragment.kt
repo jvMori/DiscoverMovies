@@ -29,6 +29,7 @@ import com.example.jvmori.discovermovies.util.genreIdKey
 import com.example.jvmori.discovermovies.util.navigateToDetails
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
+import javax.inject.Named
 
 
 // TODO: Rename parameter arguments, choose names that match

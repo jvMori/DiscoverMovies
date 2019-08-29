@@ -7,16 +7,27 @@ import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.repository.movies.BaseMoviesRepository
 import com.example.jvmori.discovermovies.data.repository.movies.MoviesRepository
 import com.example.jvmori.discovermovies.data.repository.movies.MoviesRepositoryImpl
+import com.example.jvmori.discovermovies.data.repository.trending.TrendingRepositoryImpl
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenter
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenterInterface
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
 class MoviesModule {
+
     @Provides
-    fun provideMoviesPresenter(repository: BaseMoviesRepository) : MoviesPresenterInterface =
+    @Singleton
+   // @Named("MoviesForSpecificGenre")
+    fun provideMoviesPresenter(@Named("MoviesForSpecificGenre") repository: BaseMoviesRepository) : MoviesPresenterInterface =
+        MoviesPresenter(repository)
+
+    @Provides
+    @Singleton
+    @Named("TrendingMovies")
+    fun provideTrendingPresenter(@Named("TrendingMovies") repository: BaseMoviesRepository) : MoviesPresenterInterface =
         MoviesPresenter(repository)
 
     @Provides
@@ -25,6 +36,7 @@ class MoviesModule {
 
     @Provides
     @Singleton
+    @Named("MoviesForSpecificGenre")
     fun provideBaseMoviesRepository(
         context: Context,
         moviesDao: MovieDao,
