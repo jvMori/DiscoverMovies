@@ -10,6 +10,7 @@ import com.example.jvmori.discovermovies.data.repository.movies.MoviesRepository
 import com.example.jvmori.discovermovies.data.repository.trending.TrendingRepositoryImpl
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenter
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenterInterface
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -20,13 +21,13 @@ class MoviesModule {
 
     @Provides
     @Singleton
-   // @Named("MoviesForSpecificGenre")
+    @Named("MoviesForSpecificGenre")
     fun provideMoviesPresenter(@Named("MoviesForSpecificGenre") repository: BaseMoviesRepository) : MoviesPresenterInterface =
         MoviesPresenter(repository)
 
     @Provides
     @Singleton
-    @Named("TrendingMovies")
+    //@Named("TrendingMovies")
     fun provideTrendingPresenter(@Named("TrendingMovies") repository: BaseMoviesRepository) : MoviesPresenterInterface =
         MoviesPresenter(repository)
 

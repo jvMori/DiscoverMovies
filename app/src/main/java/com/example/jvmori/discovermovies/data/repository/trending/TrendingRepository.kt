@@ -9,7 +9,7 @@ import io.reactivex.Single
 interface TrendingRepository : BaseMoviesRepository {
     fun fetchTrendingMoviesRemote(period: String): Observable<DiscoverMovieResponse>
     fun fetchTrendingLocal(period: String) : Single<List<MovieResult>>
-    fun connectTrending()
-    fun setConnectableTrendings(period: String)
+    //fun connectTrending()
+    //fun setConnectableTrendings(period: String)
     fun isTrendingMovieUpToDate(movie: MovieResult): Boolean
 }

@@ -71,7 +71,7 @@ class MoviesFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
         moviesPresenter.setView(this)
         genreId = arguments?.getInt(genreIdKey)
-        //genreId = MoviesFragmentArgs.fromBundle(arguments).genre
+
         genreId?.let { genreId ->
             moviesPresenter.let {
                 it.parameters = DiscoverQueryParam(genreId.toString(), 1)

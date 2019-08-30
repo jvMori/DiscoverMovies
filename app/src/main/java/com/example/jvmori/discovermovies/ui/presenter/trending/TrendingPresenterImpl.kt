@@ -27,13 +27,13 @@ class TrendingPresenterImpl @Inject constructor(
     }
 
     override fun getTrending(period: String, count: Int) {
-        setConnectableTrending(period)
+       // setConnectableTrending(period)
         fetchAllTrending(period)
-        repository.connectTrending()
+       // repository.connectTrending()
     }
 
     private fun setConnectableTrending(period: String) {
-        repository.setConnectableTrendings(period)
+       // repository.setConnectableTrendings(period)
     }
 
     private fun fetchAllTrending(period: String) {
