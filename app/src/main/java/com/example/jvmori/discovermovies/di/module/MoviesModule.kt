@@ -21,15 +21,15 @@ class MoviesModule {
 
     @Provides
     @Singleton
-    @Named("MoviesForSpecificGenre")
+    //@Named("MoviesForSpecificGenre")
     fun provideMoviesPresenter(@Named("MoviesForSpecificGenre") repository: BaseMoviesRepository) : MoviesPresenterInterface =
         MoviesPresenter(repository)
 
-    @Provides
-    @Singleton
-    //@Named("TrendingMovies")
-    fun provideTrendingPresenter(@Named("TrendingMovies") repository: BaseMoviesRepository) : MoviesPresenterInterface =
-        MoviesPresenter(repository)
+//    @Provides
+//    @Singleton
+//    //@Named("TrendingMovies")
+//    fun provideTrendingPresenter(@Named("TrendingMovies") repository: BaseMoviesRepository) : MoviesPresenterInterface =
+//        MoviesPresenter(repository)
 
     @Provides
     @Singleton
