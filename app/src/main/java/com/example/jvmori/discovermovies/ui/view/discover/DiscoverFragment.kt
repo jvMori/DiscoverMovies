@@ -138,13 +138,13 @@ class DiscoverFragment : Fragment(),
     }
 
     override fun showProgressBar() {
-        loadingIncluded.visibility = View.VISIBLE
-        content.visibility = View.GONE
+        loadingIncluded?.visibility = View.VISIBLE
+        content?.visibility = View.GONE
     }
 
     override fun hideProgressBar() {
-        loadingIncluded.visibility = View.GONE
-        content.visibility = View.VISIBLE
+        loadingIncluded?.visibility = View.GONE
+        content?.visibility = View.VISIBLE
     }
 
     override fun displayError(s: String) {

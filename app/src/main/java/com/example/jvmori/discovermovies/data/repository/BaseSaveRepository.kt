@@ -13,7 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-abstract class BaseRepository(
+abstract class BaseSaveRepository(
     open var tmdbApi: TmdbAPI,
     context: Context
 ){

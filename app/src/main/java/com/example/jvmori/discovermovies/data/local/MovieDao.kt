@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import io.reactivex.Maybe
+import io.reactivex.Observable
 
 @Dao
 interface MovieDao

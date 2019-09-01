@@ -17,7 +17,7 @@ import io.reactivex.schedulers.Schedulers
     DiscoverMovieResponse::class,
     MovieResult::class,
     CollectionData::class
-], version = 19, exportSchema = false)
+], version = 23, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun genreDao(): GenreDao

@@ -5,7 +5,7 @@ import android.util.Log
 import com.example.jvmori.discovermovies.data.local.entity.CollectionData
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
-import com.example.jvmori.discovermovies.data.repository.BaseRepository
+import com.example.jvmori.discovermovies.data.repository.BaseSaveRepository
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class CollectionRepositoryImpl @Inject constructor (
     private var tmdbAPI: TmdbAPI,
     private var context: Context
-) : CollectionRepository, BaseRepository(tmdbAPI, context) {
+) : CollectionRepository, BaseSaveRepository(tmdbAPI, context) {
 
     override fun insert(nameOfCollection: CollectionData) {
         Completable.fromAction {

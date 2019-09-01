@@ -6,7 +6,7 @@ import com.example.jvmori.discovermovies.data.local.MovieDao
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
-import com.example.jvmori.discovermovies.data.repository.BaseRepository
+import com.example.jvmori.discovermovies.data.repository.BaseSaveRepository
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import com.example.jvmori.discovermovies.util.Const
 import io.reactivex.Completable
@@ -19,17 +19,23 @@ import javax.inject.Inject
 
 class MoviesRepositoryImpl @Inject constructor(
     private var context: Context,
-    private var moviesDao : MovieDao,
-    private var tmdbAPI: TmdbAPI
-) : MoviesRepository, BaseRepository(tmdbAPI, context) {
+    private var tmdbAPI: TmdbAPI,
+    override var moviesDao: MovieDao
+) : MoviesRepository, BaseSaveRepository(tmdbAPI, context) {
 
-    override fun getMovies(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
-        return Maybe.concat(getAllMoviesLocal(queryParam), getAllMoviesRemote(queryParam))
-            .filter { movieResponse ->
-                movieResponse.results.isNotEmpty() && isMovieUpToDate(movieResponse)
+    override fun getAllMoviesRemote(queryParam: DiscoverQueryParam): Maybe<DiscoverMovieResponse> {
+        return getMoviesToDiscover(queryParam)
+            .firstElement()
+            .flatMap {
+                it.genreId = queryParam.genresId.toInt()
+                it.timestamp = System.currentTimeMillis()
+                return@flatMap Maybe.just(it)
             }
-            .take(1)
-            .toObservable()
+            .doOnSuccess {
+                moviesDao.updateData(it)
+            }.doOnError {
+                Log.i("Error", "Error")
+            }
     }
 
     override fun getSearchedItems(q: String): Single<List<MovieResult>> {
@@ -54,22 +60,6 @@ class MoviesRepositoryImpl @Inject constructor(
             .subscribe()
     }
 
-
-    private fun getAllMoviesRemote(queryParam: DiscoverQueryParam): Maybe<DiscoverMovieResponse> {
-        return getMoviesToDiscover(queryParam)
-            .firstElement()
-            .flatMap {
-                it.genreId = queryParam.genresId.toInt()
-                it.timestamp = System.currentTimeMillis()
-                return@flatMap Maybe.just(it)
-            }
-            .doAfterSuccess {
-                moviesDao.updateData(it)
-            }.doOnError {
-                Log.i("Error", "Error")
-            }
-    }
-
     private fun getMoviesToDiscover(queryParam: DiscoverQueryParam): Observable<DiscoverMovieResponse> {
         val parameters: HashMap<String, String> = HashMap()
         parameters["sort_by"] = "popularity.desc"
@@ -79,15 +69,5 @@ class MoviesRepositoryImpl @Inject constructor(
         parameters["year"] = queryParam.year
 
         return tmdbAPI.getMovies(parameters)
-    }
-
-    private fun getAllMoviesLocal(queryParam: DiscoverQueryParam): Maybe<DiscoverMovieResponse> {
-        return moviesDao.getMovies(queryParam.genresId.toInt(), queryParam.page).doAfterSuccess {
-            Log.i("Movies", it.toString())
-        }
-    }
-
-    private fun isMovieUpToDate(movie: DiscoverMovieResponse): Boolean {
-        return movie.timestamp != 0L && System.currentTimeMillis() - movie.timestamp < Const.STALE_MS
     }
 }

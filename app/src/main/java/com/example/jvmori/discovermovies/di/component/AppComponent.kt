@@ -20,7 +20,8 @@ import javax.inject.Singleton
         CollectionModule::class,
         GenresModule::class,
         DetailsModule::class,
-        MoviesModule::class
+        MoviesModule::class,
+        DatabaseModule::class
     ]
 )
 interface AppComponent {

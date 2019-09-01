@@ -2,14 +2,17 @@ package com.example.jvmori.discovermovies.ui.presenter.trending
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
-import com.example.jvmori.discovermovies.data.repository.trending.TrendingRepository
+import com.example.jvmori.discovermovies.data.repository.movies.BaseMoviesRepository
+import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
+import com.example.jvmori.discovermovies.util.Const
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 import kotlin.random.Random
 
 class TrendingPresenterImpl @Inject constructor(
-    private val repository: TrendingRepository
+    private val repository: BaseMoviesRepository
 ) : TrendingContract.TrendingPresenter {
 
     private val disposable = CompositeDisposable()
@@ -27,17 +30,22 @@ class TrendingPresenterImpl @Inject constructor(
     }
 
     override fun getTrending(period: String, count: Int) {
-        fetchAllTrending(period)
+       // fetchAllTrending(period)
+        fetchTrendingRemote(period)
     }
 
     private fun fetchAllTrending(period: String) {
+        val param = DiscoverQueryParam(period = period, genresId = Const.genreIdForTrendingMovies.toString(), page = 1)
         disposable.add(
-            repository.fetchTrendingLocal(period)
+            repository.getAllMoviesLocal(param)
+                .doOnComplete {
+                    fetchTrendingRemote(period)
+                }
                 .subscribe({
-                    if (it.isNotEmpty()) {
-                        view.showAllTrending(it)
+                    if (it.results.isNotEmpty()) {
+                        view.showAllTrending(it.results)
                         view.hideProgressBar()
-                        checkIfRefreshNeeded(period, it)
+                        checkIfRefreshNeeded(period, it.results)
                     } else {
                         fetchTrendingRemote(period)
                     }
@@ -49,13 +57,15 @@ class TrendingPresenterImpl @Inject constructor(
     }
 
     private fun checkIfRefreshNeeded(period: String, oldTrending: List<MovieResult>) {
-        if (oldTrending.isEmpty() || !repository.isTrendingMovieUpToDate(oldTrending[0]))
+        val response = DiscoverMovieResponse(1, Const.genreIdForTrendingMovies, oldTrending, 1000, oldTrending[0].timestamp)
+        if (oldTrending.isEmpty() || !repository.isMovieUpToDate(response))
             fetchTrendingRemote(period)
     }
 
     private fun fetchTrendingRemote(period: String) {
+        val param = DiscoverQueryParam(period = period, genresId = Const.genreIdForTrendingMovies.toString())
         disposable.add(
-            repository.fetchTrendingMoviesRemote(period)
+            repository.getAllMoviesRemote(param)
                 .subscribe({
                     view.showAllTrending(it.results)
                 }, {

@@ -5,7 +5,7 @@ import com.example.jvmori.discovermovies.data.local.entity.Category
 import com.example.jvmori.discovermovies.data.local.Collection
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
-import com.example.jvmori.discovermovies.data.repository.BaseRepository
+import com.example.jvmori.discovermovies.data.repository.BaseSaveRepository
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class NowPlayingRepositoryImpl @Inject constructor (
     private var tmdbAPI: TmdbAPI,
     private val context: Context
-) : NowPlayingRepository, BaseRepository(tmdbAPI, context) {
+) : NowPlayingRepository, BaseSaveRepository(tmdbAPI, context) {
 
     override fun getNowPlayingRemote(): Flowable<List<MovieResult>> {
         return tmdbApi.getNowPlaying()

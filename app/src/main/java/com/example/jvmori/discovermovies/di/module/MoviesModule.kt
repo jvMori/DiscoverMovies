@@ -16,8 +16,10 @@ import dagger.Provides
 import javax.inject.Named
 import javax.inject.Singleton
 
-@Module
-class MoviesModule {
+@Module(includes = [
+    DatabaseModule::class
+])
+class MoviesModule  {
 
     @Provides
     @Singleton
@@ -27,17 +29,13 @@ class MoviesModule {
 
     @Provides
     @Singleton
-    fun provideMoviesDao(context: Context): MovieDao = MovieDatabase.invoke(context).moviesDao()
-
-    @Provides
-    @Singleton
     @Named("Movies")
     fun provideBaseMoviesRepository(
         context: Context,
         moviesDao: MovieDao,
         tmdbAPI: TmdbAPI
     ): BaseMoviesRepository =
-        MoviesRepositoryImpl(context, moviesDao, tmdbAPI)
+        MoviesRepositoryImpl(context, tmdbAPI, moviesDao)
 
     @Provides
     @Singleton
@@ -46,5 +44,5 @@ class MoviesModule {
         moviesDao: MovieDao,
         tmdbAPI: TmdbAPI
     ): MoviesRepository =
-        MoviesRepositoryImpl(context, moviesDao, tmdbAPI)
+        MoviesRepositoryImpl(context, tmdbAPI, moviesDao)
 }
