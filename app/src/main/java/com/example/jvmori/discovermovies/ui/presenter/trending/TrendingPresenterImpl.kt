@@ -45,7 +45,7 @@ class TrendingPresenterImpl @Inject constructor(
                 )
         )
     }
-    
+
     override fun chooseRandomMovies(count: Int, movies: List<MovieResult>): List<MovieResult> {
         val newList = mutableListOf<MovieResult>()
         val randoms = mutableListOf<Int>()
