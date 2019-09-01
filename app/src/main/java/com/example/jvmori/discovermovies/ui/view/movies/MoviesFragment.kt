@@ -47,7 +47,7 @@ class MoviesFragment : Fragment(),
     MoviesAdapter.OnAddBtnClickListener {
     private var genreId: Int? = null
 
-    @field:[Inject Named("Movies")]
+    @field:[Inject Named("TrendingMovies")]
     lateinit var moviesPresenter: MoviesPresenterInterface
     @Inject
     lateinit var savingPresenter: SavingBasePresenter
