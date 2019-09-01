@@ -28,7 +28,6 @@ class TrendingRepositoryImpl @Inject constructor (
 
     override fun fetchTrendingMoviesRemote(period: String): Observable<DiscoverMovieResponse> {
         return  tmdbApi.getTrendingMovies(period)
-            .toObservable()
             .doOnNext {
                 saveMovies(period, Category.TRENDING.toString(), it.results, Collection.NONE.toString())
             }
