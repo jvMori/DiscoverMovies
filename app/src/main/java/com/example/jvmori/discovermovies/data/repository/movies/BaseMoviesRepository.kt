@@ -1,12 +1,15 @@
 package com.example.jvmori.discovermovies.data.repository.movies
 
 import android.util.Log
+import androidx.annotation.MainThread
 import com.example.jvmori.discovermovies.data.local.MovieDao
 import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import com.example.jvmori.discovermovies.util.Const
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 interface BaseMoviesRepository {
     var moviesDao: MovieDao
@@ -15,6 +18,8 @@ interface BaseMoviesRepository {
             .filter { movieResponse ->
                 movieResponse.results.isNotEmpty() && isMovieUpToDate(movieResponse)
             }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .take(1)
             .toObservable()
     }

@@ -30,50 +30,22 @@ class TrendingPresenterImpl @Inject constructor(
     }
 
     override fun getTrending(period: String, count: Int) {
-        //fetchAllTrending(period)
-        fetchTrendingRemote(period)
-    }
-
-    private fun fetchAllTrending(period: String) {
         val param = DiscoverQueryParam(period = period, genresId = Const.genreIdForTrendingMovies.toString(), page = 1)
         disposable.add(
-            repository.getAllMoviesLocal(param)
-                .doOnComplete {
-                    fetchTrendingRemote(period)
-                }
-                .subscribe({
-                    if (it.results.isNotEmpty()) {
+            repository.getMovies(param)
+                .subscribe(
+                    {
                         view.showAllTrending(it.results)
                         view.hideProgressBar()
-                        checkIfRefreshNeeded(period, it.results)
-                    } else {
-                        fetchTrendingRemote(period)
+                    },
+                    {
+                        view.displayError("Error while loading data")
+                        view.hideProgressBar()
                     }
-                }, {
-                    view.displayError("Error while loading data")
-                    view.hideProgressBar()
-                })
+                )
         )
     }
-
-    private fun checkIfRefreshNeeded(period: String, oldTrending: List<MovieResult>) {
-        val response = DiscoverMovieResponse(1, Const.genreIdForTrendingMovies, oldTrending, 1000, oldTrending[0].timestamp)
-        if (oldTrending.isEmpty() || !repository.isMovieUpToDate(response))
-            fetchTrendingRemote(period)
-    }
-
-    private fun fetchTrendingRemote(period: String) {
-        val param = DiscoverQueryParam(period = period, genresId = Const.genreIdForTrendingMovies.toString())
-        disposable.add(
-            repository.getAllMoviesRemote(param)
-                .subscribe({
-                    view.showAllTrending(it.results)
-                }, {
-                    view.displayError("Something went wrong! Try again!")
-                })
-        )
-    }
-
+    
     override fun chooseRandomMovies(count: Int, movies: List<MovieResult>): List<MovieResult> {
         val newList = mutableListOf<MovieResult>()
         val randoms = mutableListOf<Int>()
