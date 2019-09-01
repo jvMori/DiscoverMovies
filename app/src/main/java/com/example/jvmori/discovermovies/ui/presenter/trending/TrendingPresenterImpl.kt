@@ -30,7 +30,7 @@ class TrendingPresenterImpl @Inject constructor(
     }
 
     override fun getTrending(period: String, count: Int) {
-       // fetchAllTrending(period)
+        //fetchAllTrending(period)
         fetchTrendingRemote(period)
     }
 
