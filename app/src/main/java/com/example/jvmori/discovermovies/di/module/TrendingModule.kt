@@ -15,22 +15,28 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class TrendingModule{
+class TrendingModule {
 
     @Provides
     @Singleton
     @Named("TrendingMovies")
-    fun provideBaseMoviesRepository(tmdbAPI: TmdbAPI, context: Context) : BaseMoviesRepository =
+    fun provideBaseTrendingPresenter(@Named("TrendingMovies") repository: BaseMoviesRepository): MoviesPresenterInterface =
+        MoviesPresenter(repository)
+
+    @Provides
+    @Singleton
+    @Named("TrendingMovies")
+    fun provideBaseMoviesRepository(tmdbAPI: TmdbAPI, context: Context): BaseMoviesRepository =
         TrendingRepositoryImpl(tmdbAPI, context)
 
     @Provides
     @Singleton
-    fun provideTrendingRepository(tmdbAPI: TmdbAPI, context: Context) : TrendingRepository =
+    fun provideTrendingRepository(tmdbAPI: TmdbAPI, context: Context): TrendingRepository =
         TrendingRepositoryImpl(tmdbAPI, context)
 
     @Provides
     @Singleton
-    fun provideTrendingPresenter(repository: TrendingRepository) : TrendingContract.TrendingPresenter =
+    fun provideTrendingPresenter(repository: TrendingRepository): TrendingContract.TrendingPresenter =
         TrendingPresenterImpl(repository)
 
 

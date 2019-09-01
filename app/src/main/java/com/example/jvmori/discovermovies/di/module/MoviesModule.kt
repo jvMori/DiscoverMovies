@@ -21,15 +21,9 @@ class MoviesModule {
 
     @Provides
     @Singleton
-    //@Named("MoviesForSpecificGenre")
-    fun provideMoviesPresenter(@Named("MoviesForSpecificGenre") repository: BaseMoviesRepository) : MoviesPresenterInterface =
+    @Named("Movies")
+    fun provideMoviesPresenter(@Named("Movies") repository: BaseMoviesRepository) : MoviesPresenterInterface =
         MoviesPresenter(repository)
-
-//    @Provides
-//    @Singleton
-//    //@Named("TrendingMovies")
-//    fun provideTrendingPresenter(@Named("TrendingMovies") repository: BaseMoviesRepository) : MoviesPresenterInterface =
-//        MoviesPresenter(repository)
 
     @Provides
     @Singleton
@@ -37,7 +31,7 @@ class MoviesModule {
 
     @Provides
     @Singleton
-    @Named("MoviesForSpecificGenre")
+    @Named("Movies")
     fun provideBaseMoviesRepository(
         context: Context,
         moviesDao: MovieDao,
