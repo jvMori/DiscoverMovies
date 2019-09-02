@@ -18,8 +18,6 @@ interface BaseMoviesRepository {
             .filter { movieResponse ->
                 movieResponse.results.isNotEmpty() && isMovieUpToDate(movieResponse)
             }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .take(1)
             .toObservable()
     }

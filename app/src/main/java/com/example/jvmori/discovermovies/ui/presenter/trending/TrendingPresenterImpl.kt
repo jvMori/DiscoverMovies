@@ -7,7 +7,9 @@ import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.repository.movies.BaseMoviesRepository
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 import com.example.jvmori.discovermovies.util.Const
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -33,6 +35,8 @@ class TrendingPresenterImpl @Inject constructor(
         val param = DiscoverQueryParam(period = period, genresId = Const.genreIdForTrendingMovies.toString(), page = 1)
         disposable.add(
             repository.getMovies(param)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
                         view.showAllTrending(it.results)
