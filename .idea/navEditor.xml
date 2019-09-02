@@ -46,7 +46,7 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="166" />
+                            <option name="x" value="157" />
                             <option name="y" value="414" />
                           </Point>
                         </option>
@@ -110,6 +110,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="trendingMoviesFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="536" />
+                            <option name="y" value="736" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

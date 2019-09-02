@@ -22,6 +22,7 @@ import com.example.jvmori.discovermovies.ui.presenter.genres.GenresViewInterface
 import com.example.jvmori.discovermovies.ui.presenter.nowPlaying.NowPlayingContract
 import com.example.jvmori.discovermovies.ui.presenter.trending.TrendingContract
 import com.example.jvmori.discovermovies.util.navigateToDetails
+import com.example.jvmori.discovermovies.util.navigateToMovieList
 import kotlinx.android.synthetic.main.fragment_discover.*
 import java.util.*
 import javax.inject.Inject
@@ -114,6 +115,9 @@ class DiscoverFragment : Fragment(),
     override fun showAllTrending(movies: List<MovieResult>) {
         popularMoviesSection.setRecyclerView(this.requireContext(), movies)
         popularMoviesSection.setIOnItemClickedListener(this)
+        popularMoviesSection.clickOnMoreBtn {
+            navigateToMovieList(Genre(1000, "Trending"), this, R.id.action_discoverFragment_to_trendingMoviesFragment)
+        }
         showRandomTrending(trendingPresenter.chooseRandomMovies(3, movies))
 }
 

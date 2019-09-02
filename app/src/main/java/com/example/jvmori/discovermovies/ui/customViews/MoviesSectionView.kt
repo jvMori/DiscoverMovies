@@ -47,6 +47,12 @@ class MoviesSectionView(context: Context, attrs: AttributeSet) : ConstraintLayou
         iconIv.setImageDrawable(drawable)
     }
 
+    fun clickOnMoreBtn(onClick: () -> Unit){
+        moreBtn.setOnClickListener {
+            onClick()
+        }
+    }
+
     fun setRecyclerView(context: Context, movies: List<MovieResult>?) {
         adapter = SimilarMoviesAdapter()
         movies?.let {

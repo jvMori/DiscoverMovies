@@ -10,6 +10,8 @@
         <action android:id="@+id/specifyGenreId" app:destination="@id/moviesFragment">
         </action>
         <action android:id="@+id/action_discoverFragment_to_detailsFragment" app:destination="@id/detailsFragment"/>
+        <action android:id="@+id/action_discoverFragment_to_trendingMoviesFragment"
+                app:destination="@id/trendingMoviesFragment"/>
 
     </fragment>
     <fragment android:id="@+id/moviesFragment"
@@ -35,5 +37,10 @@
               android:name="com.example.jvmori.discovermovies.ui.view.collections.CollectionFragment"
               android:label="fragment_collection" tools:layout="@layout/fragment_collection">
         <action android:id="@+id/action_collectionFragment_to_detailsFragment" app:destination="@id/detailsFragment"/>
+    </fragment>
+    <fragment android:id="@+id/trendingMoviesFragment"
+              android:name="com.example.jvmori.discovermovies.ui.view.movies.TrendingMoviesFragment"
+              android:label="TrendingMoviesFragment">
+        <argument android:name="genre" app:argType="integer"/>
     </fragment>
 </navigation>
