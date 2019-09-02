@@ -22,7 +22,6 @@ import javax.inject.Singleton
 class MoviesModule  {
 
     @Provides
-    @Singleton
     @Named("Movies")
     fun provideMoviesPresenter(@Named("Movies") repository: BaseMoviesRepository) : MoviesPresenterInterface =
         MoviesPresenter(repository)

@@ -10,6 +10,6 @@ import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
 interface MoviesPresenterInterface {
     fun setView(view : MoviesViewInterface)
     val moviesDataList : LiveData<PagedList<MovieResult>>
-    var parameters: DiscoverQueryParam
+    var parameters: DiscoverQueryParam?
     fun clear()
 }

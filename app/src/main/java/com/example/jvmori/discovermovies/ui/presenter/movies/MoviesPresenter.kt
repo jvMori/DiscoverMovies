@@ -22,11 +22,12 @@ class MoviesPresenter @Inject constructor(
     }
 
     private val pageSize = 20
-    override lateinit var parameters: DiscoverQueryParam
+    override var parameters: DiscoverQueryParam? = null
     private val disposable = CompositeDisposable()
+    private lateinit var sourceFactory : MovieDataSourceFactory
 
     override val moviesDataList: LiveData<PagedList<MovieResult>> by lazy {
-        val sourceFactory =
+        sourceFactory =
             MovieDataSourceFactory(repository, parameters, disposable)
         val config = PagedList.Config.Builder()
             .setPageSize(pageSize)
@@ -35,7 +36,6 @@ class MoviesPresenter @Inject constructor(
             .build()
         LivePagedListBuilder<Int, MovieResult>(sourceFactory, config).build()
     }
-
     override fun clear() {
         disposable.clear()
     }
