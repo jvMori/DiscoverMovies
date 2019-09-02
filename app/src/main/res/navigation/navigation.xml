@@ -12,8 +12,9 @@
         <action android:id="@+id/action_discoverFragment_to_detailsFragment" app:destination="@id/detailsFragment"/>
 
     </fragment>
-    <fragment android:id="@+id/moviesFragment" android:name="com.example.jvmori.discovermovies.ui.view.movies.MoviesFragment"
-              android:label="fragment_movies" tools:layout="@layout/fragment_movies">
+    <fragment android:id="@+id/moviesFragment"
+              android:name="com.example.jvmori.discovermovies.ui.view.movies.GenreMoviesFragment"
+              android:label="fragment_movies">
         <argument android:name="genre" app:argType="integer" android:defaultValue="0"/>
         <action android:id="@+id/action_moviesFragment_to_detailsFragment" app:destination="@id/detailsFragment"/>
     </fragment>

@@ -39,24 +39,19 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class MoviesFragment : Fragment(),
+abstract class MoviesFragment : Fragment(),
     MoviesViewInterface,
     IOnClickListener,
     MoviesAdapter.OnAddBtnClickListener {
     private var genreId: Int? = null
 
-    @field:[Inject Named("Movies")]
-    lateinit var moviesPresenter: MoviesPresenterInterface
+    abstract var moviesPresenter: MoviesPresenterInterface
+
     @Inject
     lateinit var savingPresenter: SavingBasePresenter
     @Inject
     lateinit var collectionPresenter: CollectionPresenter
     private var moviesAdapter: MoviesAdapter? = null
-
-    override fun onAttach(context: Context) {
-        (context.applicationContext as MoviesApplication).movieComponent.inject(this)
-        super.onAttach(context)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,8 +64,8 @@ class MoviesFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         moviesPresenter.setView(this)
-        genreId = arguments?.getInt(genreIdKey)
 
+        genreId = arguments?.getInt(genreIdKey)
         genreId?.let { genreId ->
             moviesPresenter.let {
                 it.parameters = DiscoverQueryParam(genreId.toString(), 1)
