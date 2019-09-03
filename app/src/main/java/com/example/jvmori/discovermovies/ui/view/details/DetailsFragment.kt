@@ -56,12 +56,6 @@ class DetailsFragment : Fragment(), DetailsView {
 
     private var movieResult: MovieResult? = null
 
-    override fun onAttach(context: Context) {
-        (context.applicationContext as MoviesApplication).movieComponent.inject(this)
-        super.onAttach(context)
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

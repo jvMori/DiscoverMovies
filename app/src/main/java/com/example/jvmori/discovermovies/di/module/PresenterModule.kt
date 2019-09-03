@@ -3,6 +3,7 @@ package com.example.jvmori.discovermovies.di.module
 import com.example.jvmori.discovermovies.data.repository.collection.CollectionRepository
 import com.example.jvmori.discovermovies.data.repository.collection.CollectionRepositoryImpl
 import com.example.jvmori.discovermovies.data.repository.movies.MoviesRepository
+import com.example.jvmori.discovermovies.di.scope.MainActivityScope
 import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenter
 import com.example.jvmori.discovermovies.ui.presenter.collections.SavingBasePresenterImpl
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenter
@@ -17,13 +18,13 @@ import javax.inject.Singleton
 class PresenterModule {
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideSearchPresenter(repository: MoviesRepository) : SearchPresenter =
         SearchPresenterImpl(repository)
 
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideSavingPresenter(repository: MoviesRepository, repositoryCol : CollectionRepository) : SavingBasePresenter =
         SavingBasePresenterImpl(repository, repositoryCol)
 

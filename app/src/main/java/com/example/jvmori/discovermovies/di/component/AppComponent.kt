@@ -1,36 +1,30 @@
 package com.example.jvmori.discovermovies.di.component
 
+import android.app.Application
+import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.di.module.*
-import com.example.jvmori.discovermovies.ui.view.collections.CollectionFragment
-import com.example.jvmori.discovermovies.ui.view.details.DetailsFragment
-import com.example.jvmori.discovermovies.ui.view.discover.DiscoverFragment
-import com.example.jvmori.discovermovies.ui.view.movies.GenreMoviesFragment
-import com.example.jvmori.discovermovies.ui.view.movies.MoviesFragment
-import com.example.jvmori.discovermovies.ui.view.movies.TrendingMoviesFragment
-import com.example.jvmori.discovermovies.ui.view.search.SearchFragment
+import com.example.jvmori.discovermovies.di.module.app.DatabaseModule
+import com.example.jvmori.discovermovies.di.module.app.NetworkModule
+import com.example.jvmori.discovermovies.di.scope.ApplicationScope
+import dagger.BindsInstance
 import dagger.Component
-import javax.inject.Singleton
+import dagger.android.AndroidInjectionModule
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
 
-@Singleton
+@ApplicationScope
 @Component(
-    modules = [AppModule::class,
-        PresenterModule::class,
-        NetworkModule::class,
-        TrendingModule::class,
-        NowPlayingModule::class,
-        CollectionModule::class,
-        GenresModule::class,
-        DetailsModule::class,
-        MoviesModule::class,
-        DatabaseModule::class
+    modules = [AndroidSupportInjectionModule::class,
+        AndroidInjectionModule::class,
+        DatabaseModule::class,
+        NetworkModule::class
     ]
 )
-interface AppComponent {
-    fun inject(target: DetailsFragment)
-    fun inject(target: DiscoverFragment)
-    fun inject(target: MoviesFragment)
-    fun inject(target: SearchFragment)
-    fun inject(target: CollectionFragment)
-    fun inject(target : TrendingMoviesFragment)
-    fun inject(target: GenreMoviesFragment)
+interface AppComponent : AndroidInjector<MoviesApplication>{
+    @Component.Builder
+    interface Builder {
+        fun build(): AppComponent
+        @BindsInstance
+        fun application(application: Application): Builder
+    }
 }

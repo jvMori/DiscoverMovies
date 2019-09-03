@@ -11,8 +11,4 @@ class TrendingMoviesFragment : MoviesFragment() {
     @field:[Inject Named("TrendingMovies")]
     override lateinit var moviesPresenter: MoviesPresenterInterface
 
-    override fun onAttach(context: Context) {
-        (context.applicationContext as MoviesApplication).movieComponent.inject(this)
-        super.onAttach(context)
-    }
 }

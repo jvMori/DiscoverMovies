@@ -6,6 +6,7 @@ import com.example.jvmori.discovermovies.data.local.database.MovieDatabase
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.repository.genres.GenresRepository
 import com.example.jvmori.discovermovies.data.repository.genres.GenresRepositoryImpl
+import com.example.jvmori.discovermovies.di.scope.MainActivityScope
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresPresenter
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresPresenterInterface
 import dagger.Module
@@ -16,16 +17,12 @@ import javax.inject.Singleton
 class GenresModule{
 
     @Provides
-    @Singleton
-    fun provideGenreDao(context : Context) : GenreDao =  MovieDatabase.invoke(context.applicationContext).genreDao()
-
-    @Provides
-    @Singleton
+    @MainActivityScope
     fun provideGenresPresenter(repository: GenresRepository) : GenresPresenterInterface =
         GenresPresenter(repository)
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideGenreRepository(tmdbAPI: TmdbAPI, context: Context, genreDao : GenreDao) : GenresRepository =
         GenresRepositoryImpl(tmdbAPI, context, genreDao)
 }

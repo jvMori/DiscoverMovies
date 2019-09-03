@@ -57,7 +57,6 @@ class DiscoverFragment : Fragment(),
     private var movies : List<MovieResult>? = null
 
     override fun onAttach(context: Context) {
-        (context.applicationContext as MoviesApplication).movieComponent.inject(this)
         if (context is MainActivity) contextActivity = context
         super.onAttach(context)
     }

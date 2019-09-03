@@ -1,25 +1,12 @@
 package com.example.jvmori.discovermovies.application
 
-import android.app.Application
-import com.example.jvmori.discovermovies.di.component.AppComponent
 import com.example.jvmori.discovermovies.di.component.DaggerAppComponent
-import com.example.jvmori.discovermovies.di.module.AppModule
-import dagger.Provides
-import javax.inject.Singleton
+import dagger.android.AndroidInjector
+import dagger.android.support.DaggerApplication
 
-class MoviesApplication : Application() {
-    lateinit var movieComponent : AppComponent
-        private set
+class MoviesApplication : DaggerApplication() {
 
-    override fun onCreate() {
-        super.onCreate()
-        movieComponent = initDagger(this)
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder().application(this).build()
     }
-
-    private fun initDagger(app: MoviesApplication) : AppComponent{
-        return DaggerAppComponent.builder()
-            .appModule(AppModule(app))
-            .build()
-    }
-
 }

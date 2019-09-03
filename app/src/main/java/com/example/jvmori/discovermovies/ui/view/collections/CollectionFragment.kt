@@ -46,11 +46,6 @@ class CollectionFragment : Fragment(), CollectionView, BaseAdapter.IOnItemClickL
         return inflater.inflate(R.layout.fragment_collection, container, false)
     }
 
-    override fun onAttach(context: Context) {
-        (context.applicationContext as MoviesApplication).movieComponent.inject(this)
-        super.onAttach(context)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         presenter.setView(this)
         presenter.fetchAllCollections()

@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.repository.nowPlaying.NowPlayingRepository
 import com.example.jvmori.discovermovies.data.repository.nowPlaying.NowPlayingRepositoryImpl
+import com.example.jvmori.discovermovies.di.scope.MainActivityScope
 import com.example.jvmori.discovermovies.ui.presenter.nowPlaying.NowPlayingContract
 import com.example.jvmori.discovermovies.ui.presenter.nowPlaying.NowPlayingPresenterImpl
 import dagger.Module
@@ -14,12 +15,12 @@ import javax.inject.Singleton
 class NowPlayingModule{
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideNowPlayingRepository(tmdbAPI: TmdbAPI, context: Context) : NowPlayingRepository =
         NowPlayingRepositoryImpl(tmdbAPI, context)
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideNowPlayingPresenter(repository: NowPlayingRepository) : NowPlayingContract.NowPlayingPresenter =
         NowPlayingPresenterImpl(repository)
 }

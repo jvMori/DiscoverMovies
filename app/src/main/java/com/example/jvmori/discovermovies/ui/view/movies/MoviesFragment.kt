@@ -1,7 +1,6 @@
 package com.example.jvmori.discovermovies.ui.view.movies
 
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,9 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.jvmori.discovermovies.R
-import com.example.jvmori.discovermovies.application.MoviesApplication
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.ui.IOnClickListener
 import com.example.jvmori.discovermovies.ui.adapters.MoviesAdapter
@@ -27,7 +24,6 @@ import com.example.jvmori.discovermovies.util.genreIdKey
 import com.example.jvmori.discovermovies.util.navigateToDetails
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
-import javax.inject.Named
 
 
 // TODO: Rename parameter arguments, choose names that match

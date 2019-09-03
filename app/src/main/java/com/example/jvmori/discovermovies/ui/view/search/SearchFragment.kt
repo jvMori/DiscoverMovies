@@ -64,12 +64,6 @@ class SearchFragment : Fragment(), SearchViewInterface,
         var genresMap = mutableMapOf<Int, String>()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (context.applicationContext as MoviesApplication).movieComponent.inject(this)
-        super.onAttach(context)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

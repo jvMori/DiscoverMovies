@@ -1,6 +1,7 @@
-package com.example.jvmori.discovermovies.di.module
+package com.example.jvmori.discovermovies.di.module.app
 
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
+import com.example.jvmori.discovermovies.di.scope.ApplicationScope
 import com.example.jvmori.discovermovies.util.Const
 import dagger.Module
 import dagger.Provides
@@ -9,13 +10,12 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Singleton
 
 @Module
 class NetworkModule {
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideInterceptor(): Interceptor {
         return Interceptor { chain ->
             val url = chain.request()
@@ -33,13 +33,13 @@ class NetworkModule {
 
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideHttpClient(requestInterceptor: Interceptor): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(requestInterceptor)
         .build()
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideRetrofit(okHttpClient: OkHttpClient) : Retrofit =
         Retrofit.Builder()
             .client(okHttpClient)
@@ -49,6 +49,6 @@ class NetworkModule {
             .build()
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideTmdbApi(retrofit : Retrofit) = retrofit.create(TmdbAPI::class.java)
 }
