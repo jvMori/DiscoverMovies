@@ -34,6 +34,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.player.listeners.Abstract
 import kotlinx.android.synthetic.main.fragment_details.*
 import javax.inject.Inject
 import com.google.android.material.appbar.AppBarLayout
+import dagger.android.support.DaggerFragment
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -45,7 +46,7 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class DetailsFragment : Fragment(), DetailsView {
+class DetailsFragment : DaggerFragment(), DetailsView {
 
     @Inject
     lateinit var detailsPresenter: DetailsPresenter

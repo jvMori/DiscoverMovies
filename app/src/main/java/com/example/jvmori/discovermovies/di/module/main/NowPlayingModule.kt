@@ -1,9 +1,11 @@
-package com.example.jvmori.discovermovies.di.module
+package com.example.jvmori.discovermovies.di.module.main
 
+import android.app.Application
 import android.content.Context
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.repository.nowPlaying.NowPlayingRepository
 import com.example.jvmori.discovermovies.data.repository.nowPlaying.NowPlayingRepositoryImpl
+import com.example.jvmori.discovermovies.di.scope.ApplicationScope
 import com.example.jvmori.discovermovies.di.scope.MainActivityScope
 import com.example.jvmori.discovermovies.ui.presenter.nowPlaying.NowPlayingContract
 import com.example.jvmori.discovermovies.ui.presenter.nowPlaying.NowPlayingPresenterImpl
@@ -15,12 +17,12 @@ import javax.inject.Singleton
 class NowPlayingModule{
 
     @Provides
-    @MainActivityScope
-    fun provideNowPlayingRepository(tmdbAPI: TmdbAPI, context: Context) : NowPlayingRepository =
+    @Singleton
+    fun provideNowPlayingRepository(tmdbAPI: TmdbAPI, context: Application) : NowPlayingRepository =
         NowPlayingRepositoryImpl(tmdbAPI, context)
 
     @Provides
-    @MainActivityScope
+    @Singleton
     fun provideNowPlayingPresenter(repository: NowPlayingRepository) : NowPlayingContract.NowPlayingPresenter =
         NowPlayingPresenterImpl(repository)
 }

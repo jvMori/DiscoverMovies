@@ -10,12 +10,13 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 class NetworkModule {
 
     @Provides
-    @ApplicationScope
+    @Singleton
     fun provideInterceptor(): Interceptor {
         return Interceptor { chain ->
             val url = chain.request()
@@ -33,13 +34,13 @@ class NetworkModule {
 
 
     @Provides
-    @ApplicationScope
+    @Singleton
     fun provideHttpClient(requestInterceptor: Interceptor): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(requestInterceptor)
         .build()
 
     @Provides
-    @ApplicationScope
+    @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient) : Retrofit =
         Retrofit.Builder()
             .client(okHttpClient)
@@ -49,6 +50,6 @@ class NetworkModule {
             .build()
 
     @Provides
-    @ApplicationScope
+    @Singleton
     fun provideTmdbApi(retrofit : Retrofit) = retrofit.create(TmdbAPI::class.java)
 }

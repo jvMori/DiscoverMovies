@@ -1,5 +1,6 @@
-package com.example.jvmori.discovermovies.di.module
+package com.example.jvmori.discovermovies.di.module.main
 
+import android.app.Application
 import android.content.Context
 import com.example.jvmori.discovermovies.data.local.MovieDao
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
@@ -7,6 +8,7 @@ import com.example.jvmori.discovermovies.data.repository.movies.BaseMoviesReposi
 import com.example.jvmori.discovermovies.data.repository.movies.MoviesRepository
 import com.example.jvmori.discovermovies.data.repository.movies.MoviesRepositoryImpl
 import com.example.jvmori.discovermovies.di.module.app.DatabaseModule
+import com.example.jvmori.discovermovies.di.scope.ApplicationScope
 import com.example.jvmori.discovermovies.di.scope.MainActivityScope
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenter
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenterInterface
@@ -15,9 +17,7 @@ import dagger.Provides
 import javax.inject.Named
 import javax.inject.Singleton
 
-@Module(includes = [
-    DatabaseModule::class
-])
+@Module
 class MoviesModule  {
 
     @Provides
@@ -29,16 +29,16 @@ class MoviesModule  {
     @Singleton
     @Named("Movies")
     fun provideBaseMoviesRepository(
-        context: Context,
+        context: Application,
         moviesDao: MovieDao,
         tmdbAPI: TmdbAPI
     ): BaseMoviesRepository =
         MoviesRepositoryImpl(context, tmdbAPI, moviesDao)
 
     @Provides
-    @MainActivityScope
+    @Singleton
     fun provideMoviesRepository(
-        context: Context,
+        context: Application,
         moviesDao: MovieDao,
         tmdbAPI: TmdbAPI
     ): MoviesRepository =

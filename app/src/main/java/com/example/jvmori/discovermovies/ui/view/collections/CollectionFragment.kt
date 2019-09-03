@@ -21,6 +21,7 @@ import com.example.jvmori.discovermovies.ui.presenter.collections.CollectionPres
 import com.example.jvmori.discovermovies.ui.presenter.collections.CollectionView
 import kotlinx.android.synthetic.main.fragment_collection.*
 import com.example.jvmori.discovermovies.util.navigateToDetails
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
@@ -32,7 +33,7 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class CollectionFragment : Fragment(), CollectionView, BaseAdapter.IOnItemClickListener<MovieResult> {
+class CollectionFragment : DaggerFragment(), CollectionView, BaseAdapter.IOnItemClickListener<MovieResult> {
 
     @Inject
     lateinit var presenter: CollectionPresenter

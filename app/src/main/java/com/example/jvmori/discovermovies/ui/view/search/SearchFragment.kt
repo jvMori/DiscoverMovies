@@ -27,6 +27,7 @@ import com.example.jvmori.discovermovies.ui.presenter.search.SearchViewInterface
 import kotlinx.android.synthetic.main.fragment_search.*
 import com.example.jvmori.discovermovies.util.navigateToDetails
 import com.google.android.material.appbar.AppBarLayout
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,7 +39,7 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class SearchFragment : Fragment(), SearchViewInterface,
+class SearchFragment : DaggerFragment(), SearchViewInterface,
     GenresViewInterface,
     SavingView,
     GenreAdapter.IOnGenreClick,

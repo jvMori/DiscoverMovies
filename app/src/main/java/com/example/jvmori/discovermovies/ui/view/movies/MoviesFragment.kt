@@ -22,8 +22,10 @@ import com.example.jvmori.discovermovies.ui.view.collections.AddToColBottomDialo
 import com.example.jvmori.discovermovies.ui.view.search.SearchFragment
 import com.example.jvmori.discovermovies.util.genreIdKey
 import com.example.jvmori.discovermovies.util.navigateToDetails
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
+import javax.inject.Named
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,13 +37,14 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-abstract class MoviesFragment : Fragment(),
+class MoviesFragment : DaggerFragment(),
     MoviesViewInterface,
     IOnClickListener,
     MoviesAdapter.OnAddBtnClickListener {
     private var genreId: Int? = null
 
-    abstract var moviesPresenter: MoviesPresenterInterface
+    @field:[Inject Named("Movies")]
+    lateinit var moviesPresenter: MoviesPresenterInterface
 
     @Inject
     lateinit var savingPresenter: SavingBasePresenter
