@@ -21,14 +21,7 @@ import javax.inject.Singleton
         AndroidInjectionModule::class,
         ActivityBuildersModule::class,
         DatabaseModule::class,
-        NetworkModule::class,
-        PresenterModule::class,
-        TrendingModule::class,
-        NowPlayingModule::class,
-        CollectionModule::class,
-        GenresModule::class,
-        DetailsModule::class,
-        MoviesModule::class
+        NetworkModule::class
     ]
 )
 interface AppComponent : AndroidInjector<MoviesApplication>{

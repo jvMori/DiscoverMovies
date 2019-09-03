@@ -14,11 +14,11 @@ import javax.inject.Singleton
 @Module
 class DetailsModule {
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideDetailsRepository (tmdbAPI: TmdbAPI): DetailsRepository = DetailsRepositoryImpl(tmdbAPI)
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideDetailsPresenter(repository: DetailsRepository) : DetailsPresenter =
         DetailsPresenterImpl(repository)
 }

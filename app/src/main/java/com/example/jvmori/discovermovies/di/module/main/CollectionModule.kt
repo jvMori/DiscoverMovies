@@ -17,12 +17,12 @@ import javax.inject.Singleton
 class CollectionModule {
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideNowCollectionRepository(tmdbAPI: TmdbAPI, context: Application) : CollectionRepository =
         CollectionRepositoryImpl(tmdbAPI, context)
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideCollectionPresenter(repository: CollectionRepository) : CollectionPresenter =
         CollectionPresenterImpl(repository)
 }

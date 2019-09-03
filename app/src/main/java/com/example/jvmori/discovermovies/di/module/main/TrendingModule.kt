@@ -20,20 +20,20 @@ import javax.inject.Singleton
 class TrendingModule {
 
     @Provides
-    @Singleton
+    @MainActivityScope
     @Named("TrendingMovies")
     fun provideTrendingRepository(tmdbAPI: TmdbAPI, movieDao: MovieDao): BaseMoviesRepository =
         TrendingRepositoryImpl(tmdbAPI, movieDao)
 
     @Provides
-    @Singleton
+    @MainActivityScope
     @Named("TrendingMovies")
     fun provideBaseTrendingPresenter(@Named("TrendingMovies") repository: BaseMoviesRepository): MoviesPresenterInterface =
         MoviesPresenter(repository)
 
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideTrendingPresenter(@Named("TrendingMovies") repository: BaseMoviesRepository): TrendingContract.TrendingPresenter =
         TrendingPresenterImpl(repository)
 

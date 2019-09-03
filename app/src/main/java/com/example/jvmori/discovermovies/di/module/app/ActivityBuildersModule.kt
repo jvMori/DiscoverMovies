@@ -10,9 +10,17 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class ActivityBuildersModule {
 
+    @MainActivityScope
     @ContributesAndroidInjector(
         modules = [
-            MainFragmentBuildersModule::class
+            MainFragmentBuildersModule::class,
+            TrendingModule::class,
+            PresenterModule::class,
+            NowPlayingModule::class,
+            CollectionModule::class,
+            GenresModule::class,
+            DetailsModule::class,
+            MoviesModule::class
         ]
     )
     abstract fun contributeMainActivity() : MainActivity

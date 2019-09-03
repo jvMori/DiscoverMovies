@@ -26,7 +26,7 @@ class MoviesModule  {
         MoviesPresenter(repository)
 
     @Provides
-    @Singleton
+    @MainActivityScope
     @Named("Movies")
     fun provideBaseMoviesRepository(
         context: Application,
@@ -36,7 +36,7 @@ class MoviesModule  {
         MoviesRepositoryImpl(context, tmdbAPI, moviesDao)
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideMoviesRepository(
         context: Application,
         moviesDao: MovieDao,

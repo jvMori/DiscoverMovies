@@ -19,13 +19,13 @@ import javax.inject.Singleton
 class PresenterModule {
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideSearchPresenter(repository: MoviesRepository) : SearchPresenter =
         SearchPresenterImpl(repository)
 
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideSavingPresenter(repository: MoviesRepository, repositoryCol : CollectionRepository) : SavingBasePresenter =
         SavingBasePresenterImpl(repository, repositoryCol)
 

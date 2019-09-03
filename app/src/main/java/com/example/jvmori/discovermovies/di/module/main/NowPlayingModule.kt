@@ -17,12 +17,12 @@ import javax.inject.Singleton
 class NowPlayingModule{
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideNowPlayingRepository(tmdbAPI: TmdbAPI, context: Application) : NowPlayingRepository =
         NowPlayingRepositoryImpl(tmdbAPI, context)
 
     @Provides
-    @Singleton
+    @MainActivityScope
     fun provideNowPlayingPresenter(repository: NowPlayingRepository) : NowPlayingContract.NowPlayingPresenter =
         NowPlayingPresenterImpl(repository)
 }
