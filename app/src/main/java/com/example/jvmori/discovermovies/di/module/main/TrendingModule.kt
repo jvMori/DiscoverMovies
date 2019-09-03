@@ -26,11 +26,9 @@ class TrendingModule {
         TrendingRepositoryImpl(tmdbAPI, movieDao)
 
     @Provides
-    @MainActivityScope
     @Named("TrendingMovies")
     fun provideBaseTrendingPresenter(@Named("TrendingMovies") repository: BaseMoviesRepository): MoviesPresenterInterface =
         MoviesPresenter(repository)
-
 
     @Provides
     @MainActivityScope
