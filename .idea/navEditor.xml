@@ -57,6 +57,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_discoverFragment_to_trendingMoviesFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="specifyGenreId">
                               <value>
                                 <LayoutPositions />

@@ -87,10 +87,8 @@ abstract class MoviesFragment : DaggerFragment(),
         bottomSheetDialogFragment.show(this.requireFragmentManager(), "Bottom Sheet Dialog")
     }
 
-    //TODO
     override fun onMovieClicked(movieResult: MovieResult) {
         navigateToDetails(movieResult, this)
-        //navigateToDetails(movieResult, this, R.id.action_moviesFragment_to_detailsFragment)
     }
 
     abstract fun navigateToDetails(movieResult: MovieResult, fragment: Fragment)
