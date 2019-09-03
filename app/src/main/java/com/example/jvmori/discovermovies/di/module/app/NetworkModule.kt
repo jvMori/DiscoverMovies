@@ -16,7 +16,7 @@ import javax.inject.Singleton
 class NetworkModule {
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideInterceptor(): Interceptor {
         return Interceptor { chain ->
             val url = chain.request()
@@ -34,13 +34,13 @@ class NetworkModule {
 
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideHttpClient(requestInterceptor: Interceptor): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(requestInterceptor)
         .build()
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideRetrofit(okHttpClient: OkHttpClient) : Retrofit =
         Retrofit.Builder()
             .client(okHttpClient)
@@ -50,6 +50,6 @@ class NetworkModule {
             .build()
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideTmdbApi(retrofit : Retrofit) = retrofit.create(TmdbAPI::class.java)
 }

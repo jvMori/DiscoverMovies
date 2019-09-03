@@ -23,7 +23,7 @@ abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeMoviesFragment() : MoviesFragment
-    
+
     @ContributesAndroidInjector
     abstract fun contributeSearchFragment() : SearchFragment
 }

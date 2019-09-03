@@ -7,16 +7,15 @@ import com.example.jvmori.discovermovies.data.local.database.MovieDatabase
 import com.example.jvmori.discovermovies.di.scope.ApplicationScope
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 @Module
 class DatabaseModule {
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideMoviesDao(context: Application): MovieDao = MovieDatabase.invoke(context.applicationContext).moviesDao()
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideGenreDao(context : Application) : GenreDao =  MovieDatabase.invoke(context.applicationContext).genreDao()
 }
