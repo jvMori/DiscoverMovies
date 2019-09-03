@@ -1,6 +1,7 @@
 package com.example.jvmori.discovermovies.data.local.database
 
 import android.content.Context
+import android.util.Log
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.jvmori.discovermovies.data.local.GenreDao
@@ -17,13 +18,12 @@ import io.reactivex.schedulers.Schedulers
     DiscoverMovieResponse::class,
     MovieResult::class,
     CollectionData::class
-], version = 24, exportSchema = false)
+], version = 26, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun genreDao(): GenreDao
     abstract fun moviesDao(): MovieDao
     abstract fun savedMovieDao() : SavedMovieDao
-
 
     companion object {
         @Volatile
@@ -43,8 +43,10 @@ abstract class MovieDatabase : RoomDatabase() {
                         instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.getName(Collection.WATCHED),0, false))
                         instance?.savedMovieDao()?.insertCollection(CollectionData(Collection.getName(Collection.TO_WATCH),0, false))
                     }.subscribeOn(Schedulers.io())
+                        .doOnError {
+                            Log.i("error", it.message)
+                        }
                         .subscribe()
-
                 }
             }
         }
@@ -53,7 +55,7 @@ abstract class MovieDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context,
-                MovieDatabase::class.java, "discoverMovies.db"
+                MovieDatabase::class.java, "discoverMoviesNew.db"
             )
                 .addCallback(prePopulate())
                 .fallbackToDestructiveMigration()

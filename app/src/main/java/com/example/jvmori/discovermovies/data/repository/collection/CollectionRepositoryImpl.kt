@@ -41,6 +41,12 @@ class CollectionRepositoryImpl @Inject constructor (
         return savedMovieDao.getAllCollections()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnError {
+                Log.i("Error", it.message)
+            }
+            .doOnComplete {
+                Log.i("Complete", "Completed")
+            }
     }
 
     override  fun displayAllSaved(collection: CollectionData): Observable<List<MovieResult>> {
