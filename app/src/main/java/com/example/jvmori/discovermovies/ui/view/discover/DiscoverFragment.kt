@@ -116,7 +116,7 @@ class DiscoverFragment : DaggerFragment(),
         popularMoviesSection.setRecyclerView(this.requireContext(), movies)
         popularMoviesSection.setIOnItemClickedListener(this)
         popularMoviesSection.clickOnMoreBtn {
-            //navigateToMovieList(Genre(1000, "Trending"), this, R.id.action_discoverFragment_to_trendingMoviesFragment)
+            navigateToMovieList(Genre(1000, "Trending"), this, R.id.action_discoverFragment_to_trendingMoviesFragment)
         }
         showRandomTrending(trendingPresenter.chooseRandomMovies(3, movies))
 }

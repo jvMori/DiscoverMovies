@@ -13,8 +13,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="176" />
-                            <option name="y" value="-191" />
+                            <option name="x" value="162" />
+                            <option name="y" value="-245" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -34,8 +34,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="769" />
-                            <option name="y" value="111" />
+                            <option name="x" value="828" />
+                            <option name="y" value="80" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -72,8 +72,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="536" />
-                            <option name="y" value="431" />
+                            <option name="x" value="579" />
+                            <option name="y" value="330" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -105,6 +105,27 @@
                               </value>
                             </entry>
                             <entry key="specifyMovieId">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="trendingMoviesFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="575" />
+                            <option name="y" value="624" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_trendingMoviesFragment_to_detailsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

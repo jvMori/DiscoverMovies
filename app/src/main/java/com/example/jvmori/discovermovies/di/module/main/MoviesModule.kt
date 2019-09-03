@@ -18,7 +18,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class MoviesModule  {
+class MoviesModule {
 
     @Provides
     @Named("Movies")

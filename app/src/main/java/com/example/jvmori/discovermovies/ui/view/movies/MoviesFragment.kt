@@ -37,14 +37,14 @@ private const val ARG_PARAM2 = "param2"
  * A simple [Fragment] subclass.
  *
  */
-class MoviesFragment : DaggerFragment(),
+abstract class MoviesFragment : DaggerFragment(),
     MoviesViewInterface,
     IOnClickListener,
     MoviesAdapter.OnAddBtnClickListener {
+
     private var genreId: Int? = null
 
-    @field:[Inject Named("Movies")]
-    lateinit var moviesPresenter: MoviesPresenterInterface
+    abstract var moviesPresenter: MoviesPresenterInterface
 
     @Inject
     lateinit var savingPresenter: SavingBasePresenter
@@ -87,9 +87,13 @@ class MoviesFragment : DaggerFragment(),
         bottomSheetDialogFragment.show(this.requireFragmentManager(), "Bottom Sheet Dialog")
     }
 
+    //TODO
     override fun onMovieClicked(movieResult: MovieResult) {
-        navigateToDetails(movieResult, this, R.id.action_moviesFragment_to_detailsFragment)
+        navigateToDetails(movieResult, this)
+        //navigateToDetails(movieResult, this, R.id.action_moviesFragment_to_detailsFragment)
     }
+
+    abstract fun navigateToDetails(movieResult: MovieResult, fragment: Fragment)
 
     override fun showProgressBar() {
         recyclerViewMovies.visibility = View.GONE
