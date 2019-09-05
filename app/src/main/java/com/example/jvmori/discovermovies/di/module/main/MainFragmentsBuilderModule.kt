@@ -6,6 +6,7 @@ import com.example.jvmori.discovermovies.ui.view.details.DetailsFragment
 import com.example.jvmori.discovermovies.ui.view.discover.DiscoverFragment
 import com.example.jvmori.discovermovies.ui.view.movies.GenreMoviesFragment
 import com.example.jvmori.discovermovies.ui.view.movies.MoviesFragment
+import com.example.jvmori.discovermovies.ui.view.movies.NowPlayingMoviesFragment
 import com.example.jvmori.discovermovies.ui.view.movies.TrendingMoviesFragment
 import com.example.jvmori.discovermovies.ui.view.search.SearchFragment
 import dagger.Module
@@ -25,6 +26,9 @@ abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeTrendingMoviesFragment() : TrendingMoviesFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeNowPlayingMoviesFragment() : NowPlayingMoviesFragment
 
     @ContributesAndroidInjector
     abstract fun contributeGenreMoviesFragment() : GenreMoviesFragment
