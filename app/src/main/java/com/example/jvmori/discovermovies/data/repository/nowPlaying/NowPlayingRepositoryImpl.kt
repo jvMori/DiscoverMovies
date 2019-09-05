@@ -1,37 +1,36 @@
 package com.example.jvmori.discovermovies.data.repository.nowPlaying
 
-import android.content.Context
-import com.example.jvmori.discovermovies.data.local.entity.Category
-import com.example.jvmori.discovermovies.data.local.Collection
-import com.example.jvmori.discovermovies.data.local.entity.MovieResult
+import android.util.Log
+import com.example.jvmori.discovermovies.data.local.MovieDao
+import com.example.jvmori.discovermovies.data.local.entity.DiscoverMovieResponse
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
-import com.example.jvmori.discovermovies.data.repository.BaseSaveRepository
-import io.reactivex.Flowable
-import io.reactivex.Single
+import com.example.jvmori.discovermovies.data.repository.movies.BaseMoviesRepository
+import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
+import com.example.jvmori.discovermovies.util.Const
+import io.reactivex.Maybe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class NowPlayingRepositoryImpl @Inject constructor (
-    private var tmdbAPI: TmdbAPI,
-    private val context: Context
-) : NowPlayingRepository, BaseSaveRepository(tmdbAPI, context) {
+    override var moviesDao: MovieDao,
+    private var tmdbApi: TmdbAPI
+) : BaseMoviesRepository {
 
-    override fun getNowPlayingRemote(): Flowable<List<MovieResult>> {
+    override fun getAllMoviesRemote(queryParam: DiscoverQueryParam): Maybe<DiscoverMovieResponse> {
         return tmdbApi.getNowPlaying()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext {
-               saveMovies("none", Category.NOW_PLAYING.toString(), it.results, Collection.NONE.toString())
-            }
+            .firstElement()
             .flatMap {
-                return@flatMap Flowable.just(it.results)
+                it.genreId = Const.genreIdForNowPlayingMovies
+                it.timestamp = System.currentTimeMillis()
+                return@flatMap Maybe.just(it)
             }
-    }
-
-    override fun getNowPlayingLocal(): Single<List<MovieResult>> {
-        return savedMovieDao.getAllFromCategory("none", Category.NOW_PLAYING.toString())
-            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess {
+                moviesDao.updateData(it)
+            }.doOnError {
+                Log.i("Error", "Error")
+            }
             .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 }

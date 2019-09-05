@@ -57,6 +57,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_discoverFragment_to_nowPlayingMoviesFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_discoverFragment_to_trendingMoviesFragment">
                               <value>
                                 <LayoutPositions />
@@ -84,6 +89,27 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_moviesFragment_to_detailsFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="nowPlayingMoviesFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="582" />
+                            <option name="y" value="912" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_nowPlayingMoviesFragment_to_detailsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

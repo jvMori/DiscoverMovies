@@ -17,10 +17,12 @@ import com.example.jvmori.discovermovies.data.local.entity.Genre
 import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.ui.adapters.BaseAdapter
 import com.example.jvmori.discovermovies.ui.adapters.SliderPagerAdapter
+import com.example.jvmori.discovermovies.ui.customViews.MoviesSectionView
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresPresenterInterface
 import com.example.jvmori.discovermovies.ui.presenter.genres.GenresViewInterface
 import com.example.jvmori.discovermovies.ui.presenter.nowPlaying.NowPlayingContract
 import com.example.jvmori.discovermovies.ui.presenter.trending.TrendingContract
+import com.example.jvmori.discovermovies.util.Const
 import com.example.jvmori.discovermovies.util.navigateToDetails
 import com.example.jvmori.discovermovies.util.navigateToMovieList
 import dagger.android.support.DaggerFragment
@@ -41,21 +43,20 @@ class DiscoverFragment : DaggerFragment(),
     GenresViewInterface,
     TrendingContract.TrendingView,
     NowPlayingContract.NowPlayingView,
-    BaseAdapter.IOnItemClickListener<MovieResult>
-{
+    BaseAdapter.IOnItemClickListener<MovieResult> {
 
     @Inject
     lateinit var genresPresenter: GenresPresenterInterface
     @Inject
     lateinit var trendingPresenter: TrendingContract.TrendingPresenter
     @Inject
-    lateinit var nowPlayingPresenter : NowPlayingContract.NowPlayingPresenter
+    lateinit var nowPlayingPresenter: NowPlayingContract.NowPlayingPresenter
 
     //TODO: dagger inject
     private var genresMap = mutableMapOf<Int, String>()
     private lateinit var contextActivity: Context
     private var timer: Timer? = null
-    private var movies : List<MovieResult>? = null
+    private var movies: List<MovieResult>? = null
 
     override fun onAttach(context: Context) {
         if (context is MainActivity) contextActivity = context
@@ -68,7 +69,7 @@ class DiscoverFragment : DaggerFragment(),
     ): View? {
         trendingPresenter.setView(this)
         nowPlayingPresenter.setView(this)
-        trendingPresenter.getTrending("week",3)
+        trendingPresenter.getTrending("week", 3)
         nowPlayingPresenter.fetchNowPlaying()
         return inflater.inflate(R.layout.fragment_discover, container, false)
     }
@@ -83,15 +84,18 @@ class DiscoverFragment : DaggerFragment(),
             override fun onPageScrollStateChanged(state: Int) {
 
             }
+
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-               restartTimer()
+                restartTimer()
             }
+
             override fun onPageSelected(position: Int) {
 
             }
         })
     }
-    private fun restartTimer(){
+
+    private fun restartTimer() {
         timer?.cancel()
         movies?.let {
             timer = Timer()
@@ -112,18 +116,35 @@ class DiscoverFragment : DaggerFragment(),
         setupSliderTimer(movies)
     }
 
-    override fun showAllTrending(movies: List<MovieResult>) {
-        popularMoviesSection.setRecyclerView(this.requireContext(), movies)
-        popularMoviesSection.setIOnItemClickedListener(this)
-        popularMoviesSection.clickOnMoreBtn {
-            navigateToMovieList(Genre(1000, "Trending"), this, R.id.action_discoverFragment_to_trendingMoviesFragment)
-        }
-        showRandomTrending(trendingPresenter.chooseRandomMovies(3, movies))
-}
-
     override fun showNowPlaying(movies: List<MovieResult>) {
-        nowPlayingMoviesSection.setRecyclerView(this.requireContext(), movies)
-        nowPlayingMoviesSection.setIOnItemClickedListener(this)
+        setupMoviesSectionView(
+            nowPlayingMoviesSection,
+            movies,
+            Genre(Const.genreIdForNowPlayingMovies, "NowPlaying"),
+            R.id.action_discoverFragment_to_nowPlayingMoviesFragment
+        )
+    }
+
+    override fun showAllTrending(movies: List<MovieResult>) {
+        setupMoviesSectionView(
+            popularMoviesSection,
+            movies,
+            Genre(Const.genreIdForTrendingMovies, "Trending"),
+            R.id.action_discoverFragment_to_trendingMoviesFragment
+        )
+        showRandomTrending(trendingPresenter.chooseRandomMovies(3, movies))
+    }
+
+    private fun setupMoviesSectionView(sectionId : MoviesSectionView,  movies: List<MovieResult>, genre: Genre, navActionId: Int) {
+        sectionId.setRecyclerView(this.requireContext(), movies)
+        sectionId.setIOnItemClickedListener(this)
+        sectionId.clickOnMoreBtn {
+            navigateToMovieList(
+                genre,
+                this,
+                navActionId
+            )
+        }
     }
 
     override fun onItemClicked(movieResult: MovieResult) {
@@ -161,7 +182,7 @@ class DiscoverFragment : DaggerFragment(),
         private val movies: List<MovieResult>
     ) : TimerTask() {
         override fun run() {
-            sliderPager?.let{
+            sliderPager?.let {
                 (context as MainActivity).runOnUiThread {
                     if (it.currentItem < movies.size - 1) {
                         it.setCurrentItem(it.currentItem + 1, true)

@@ -9,12 +9,16 @@ import javax.inject.Inject
 import javax.inject.Named
 import com.example.jvmori.discovermovies.util.navigateToDetails
 
-class TrendingMoviesFragment : MoviesFragment() {
+class NowPlayingMoviesFragment : MoviesFragment() {
 
-    @field:[Inject Named(Const.trendingNamed)]
+    @field:[Inject Named(Const.nowPlayingNamed)]
     override lateinit var moviesPresenter: MoviesPresenterInterface
 
     override fun navigateToDetails(movieResult: MovieResult, fragment: Fragment) {
-        navigateToDetails(movieResult, this, R.id.action_trendingMoviesFragment_to_detailsFragment)
+        navigateToDetails(
+            movieResult,
+            this,
+            R.id.action_nowPlayingMoviesFragment_to_detailsFragment
+        )
     }
 }

@@ -19,19 +19,6 @@ abstract class BaseSaveRepository(
 ){
     val savedMovieDao = MovieDatabase.invoke(context.applicationContext).savedMovieDao()
 
-    fun saveMovies(period: String, category : String, data: List<MovieResult>, collection: String) {
-        data.forEach {
-            updateInfo(it, category, period, collection)
-        }
-        Completable.fromAction{
-            savedMovieDao.updateMovies(period, category, data)
-        }.subscribeOn(Schedulers.io())
-            .doOnError {
-                Log.i(MainActivity.TAG, "error while saving trending movies")
-            }
-            .subscribe()
-    }
-
     private fun updateInfo(
         it: MovieResult,
         category: String,
@@ -53,8 +40,5 @@ abstract class BaseSaveRepository(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe()
-    }
-    fun isMovieUpToDate(movie: MovieResult): Boolean {
-        return movie.timestamp != 0L && System.currentTimeMillis() - movie.timestamp < Const.STALE_MS
     }
 }

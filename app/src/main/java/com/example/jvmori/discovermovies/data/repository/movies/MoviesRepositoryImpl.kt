@@ -8,7 +8,6 @@ import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 import com.example.jvmori.discovermovies.data.network.TmdbAPI
 import com.example.jvmori.discovermovies.data.repository.BaseSaveRepository
 import com.example.jvmori.discovermovies.ui.view.movies.DiscoverQueryParam
-import com.example.jvmori.discovermovies.util.Const
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -48,7 +47,7 @@ class MoviesRepositoryImpl @Inject constructor(
     }
 
     override fun getMovieFromDbByIdAndCategory(movie: MovieResult, category: String): Single<MovieResult> {
-        return savedMovieDao.getMovieByIdAndCategory(movie.id, category)
+        return savedMovieDao.getMovieByIdAndCollection(movie.id, category)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
     }

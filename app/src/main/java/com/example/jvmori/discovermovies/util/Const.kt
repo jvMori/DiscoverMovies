@@ -10,5 +10,9 @@ class Const
         const val STALE_MS = 3600 * 1000 // data is stale after 1 hour
         const val base_backdrop_url = "https://image.tmdb.org/t/p/w500/"
         const val genreIdForTrendingMovies = 1000
+        const val genreIdForNowPlayingMovies = 1001
+        const val nowPlayingNamed = "NowPlayingMovies"
+        const val trendingNamed = "TrendingMovies"
+        const val genreMovies = "Movies"
     }
 }
