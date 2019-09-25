@@ -20,6 +20,7 @@ import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesPresenterInte
 import com.example.jvmori.discovermovies.ui.presenter.movies.MoviesViewInterface
 import com.example.jvmori.discovermovies.ui.view.collections.AddToColBottomDialog
 import com.example.jvmori.discovermovies.ui.view.search.SearchFragment
+import com.example.jvmori.discovermovies.util.createAndSetupAdapter
 import com.example.jvmori.discovermovies.util.genreIdKey
 import com.example.jvmori.discovermovies.util.navigateToDetails
 import dagger.android.support.DaggerFragment
@@ -104,15 +105,7 @@ abstract class MoviesFragment : DaggerFragment(),
     }
 
     override fun displayAllItems(movieResponse: List<MovieResult>) {
-        moviesPresenter.let {
-            moviesAdapter = MoviesAdapter(this)
-            moviesAdapter?.setGenres(SearchFragment.genresMap)
-            recyclerViewMovies!!.layoutManager =
-                LinearLayoutManager(this.requireContext(), RecyclerView.VERTICAL, false)
-            recyclerViewMovies!!.setHasFixedSize(true)
-            recyclerViewMovies!!.adapter = moviesAdapter
-        }
-        moviesAdapter?.setOnAddBtnClickListener(this)
+        moviesAdapter = createAndSetupAdapter(this, recyclerViewMovies, this.requireContext(), this)
     }
 
     override fun displayError(s: String) {
