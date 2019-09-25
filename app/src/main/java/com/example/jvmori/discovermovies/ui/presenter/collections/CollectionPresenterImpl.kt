@@ -32,9 +32,11 @@ class CollectionPresenterImpl @Inject constructor(
             repository.displayAllSaved(CollectionData(collectionName, 0, false)).subscribe(
                 { success ->
                     collectionView.displaySaved(success, collectionName)
+                    collectionView.hideProgressBar()
                 },
                 {
                     Log.i(MainActivity.TAG, "Something went wrong!")
+                    collectionView.hideProgressBar()
                 }
             )
         )

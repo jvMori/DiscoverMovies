@@ -81,4 +81,16 @@ class AddToColBottomDialog(
         savingPresenter?.saveMovie(movieResult, item.collectionName)
     }
 
+    override fun showProgressBar() {
+
+    }
+
+    override fun hideProgressBar() {
+
+    }
+
+    override fun displayError(s: String) {
+
+    }
+
 }

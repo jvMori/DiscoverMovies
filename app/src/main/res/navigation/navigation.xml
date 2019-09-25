@@ -59,5 +59,7 @@
               android:name="com.example.jvmori.discovermovies.ui.view.collections.CollectionDetailsFragment"
               android:label="CollectionDetailsFragment">
         <argument android:name="collectionName" app:argType="string"/>
+        <action android:id="@+id/action_collectionDetailsFragment_to_detailsFragment"
+                app:destination="@id/detailsFragment"/>
     </fragment>
 </navigation>

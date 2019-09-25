@@ -74,4 +74,16 @@ class CollectionFragment : DaggerFragment(), CollectionView, BaseAdapter.IOnItem
     override fun onItemClicked(item: MovieResult) {
         navigateToDetails(item, this, R.id.action_collectionFragment_to_detailsFragment)
     }
+
+    override fun showProgressBar() {
+
+    }
+
+    override fun hideProgressBar() {
+
+    }
+
+    override fun displayError(s: String) {
+
+    }
 }
