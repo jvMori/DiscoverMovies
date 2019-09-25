@@ -8,6 +8,7 @@ import com.example.jvmori.discovermovies.data.local.entity.MovieResult
 
 const val genreIdKey = "genreId"
 const val movieResultKey = "movieResult"
+const val collectionDetailsKey = "collectionDetails"
 
 fun navigateToDetails(item : MovieResult, fragment : Fragment, actionId : Int){
     val bundle = Bundle()
@@ -18,5 +19,11 @@ fun navigateToDetails(item : MovieResult, fragment : Fragment, actionId : Int){
 fun navigateToMovieList(item : Genre, fragment: Fragment, actionId: Int){
     val bundle = Bundle()
     bundle.putInt(genreIdKey, item.idGenre)
+    NavHostFragment.findNavController(fragment).navigate(actionId, bundle)
+}
+
+fun navigateToCollectionDetails(collectionName : String, fragment : Fragment, actionId : Int){
+    val bundle = Bundle()
+    bundle.putString(collectionDetailsKey, collectionName)
     NavHostFragment.findNavController(fragment).navigate(actionId, bundle)
 }
