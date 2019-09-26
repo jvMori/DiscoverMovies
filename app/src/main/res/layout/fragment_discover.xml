@@ -29,7 +29,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/slider_pager" app:layout_constraintEnd_toEndOf="parent"
         />
-        <com.mori.jvmori.discovermovies.ui.customViews.MoviesSectionView
+        <com.example.jvmori.discovermovies.ui.customViews.MoviesSectionView
                 android:id="@+id/popularMoviesSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/worm_dots_indicator"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
 
-        <com.mori.jvmori.discovermovies.ui.customViews.MoviesSectionView
+        <com.example.jvmori.discovermovies.ui.customViews.MoviesSectionView
                 android:id="@+id/nowPlayingMoviesSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
