@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools" package="com.example.jvmori.discovermovies">
+          xmlns:tools="http://schemas.android.com/tools" package="com.mori.jvmori.discovermovies">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-            android:name=".application.MoviesApplication"
+            android:name="com.mori.jvmori.discovermovies.application.MoviesApplication"
             android:allowBackup="true"
             android:largeHeap="true"
             android:icon="@mipmap/ic_launcher"
@@ -12,7 +12,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity"
+        <activity android:name="com.mori.jvmori.discovermovies.MainActivity"
                   android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
